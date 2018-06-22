@@ -22,19 +22,16 @@ public class ResultResponse {
 
 
 
+    @SerializedName("client_id")
+    private String client_id;
 
-
-    @SerializedName("business_id")
-    private String business_id;
-
-    public String getBusiness_id() {
-        return business_id;
+    public String getClient_id() {
+        return client_id;
     }
 
-    public void setBusiness_id(String business_id) {
-        this.business_id = business_id;
+    public void setClient_id(String client_id) {
+        this.client_id = client_id;
     }
-
 
     @SerializedName("data")
     private String image;

@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="view"
+            type="mychevroletconnect.com.chevroletapp.ui.register.RegisterView" />
 
     </data>
 
@@ -49,6 +52,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="visible"
+            android:padding="8dp"
             android:id="@+id/reg_usergroup">
 
 
@@ -99,6 +103,21 @@
                 android:background="@drawable/edittext_selector"
                 android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:hint="First Name"
+                android:inputType="textPersonName|textCapWords"
+                android:maxLength="100"
+                android:padding="12dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                android:textColorHint="@android:color/darker_gray" />
+
+            <!-- middle name -->
+            <EditText
+                android:id="@+id/et_middle_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_selector"
+                android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:hint="Middle Name"
                 android:inputType="textPersonName|textCapWords"
                 android:maxLength="100"
                 android:padding="12dp"
@@ -205,6 +224,85 @@
 
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:padding="5dp"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/ic_register_additional"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="User Information (Optional)"
+                    android:layout_marginLeft="3dp"
+                    android:textColor="@color/gray"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+
+            </LinearLayout>
+
+
+            <!-- citizenship -->
+            <EditText
+                android:id="@+id/et_citizenship"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_selector"
+                android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:hint="Citizenship"
+                android:inputType="textPersonName|textCapWords"
+                android:maxLength="100"
+                android:padding="12dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                android:textColorHint="@android:color/darker_gray" />
+
+            <!-- occupation -->
+            <EditText
+                android:id="@+id/et_occupation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_selector"
+                android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:hint="Occupation"
+                android:inputType="textPersonName|textCapWords"
+                android:maxLength="100"
+                android:padding="12dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                android:textColorHint="@android:color/darker_gray" />
+
+            <Spinner
+                android:id="@+id/sp_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_spinner"
+                android:fontFamily="sans-serif"
+                android:padding="12dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                android:textColorHint="@android:color/darker_gray" />
+
+
+
+            <Spinner
+                android:id="@+id/sp_civil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_spinner"
+                android:fontFamily="sans-serif"
+                android:padding="12dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                android:textColorHint="@android:color/darker_gray" />
 
 
 
@@ -216,7 +314,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:foreground="?attr/selectableItemBackground"
-                android:onClick="@{() -> view.onNext()}"
+                android:onClick="@{() -> view.onSubmit()}"
                 app:cardBackgroundColor="@color/colorPrimary"
                 app:cardCornerRadius="24dp"
                 app:contentPadding="14dp">
@@ -236,92 +334,139 @@
 
         </LinearLayout>
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="vertical"-->
-            <!--android:id="@+id/reg_businessgroup"-->
-            <!--android:visibility="visible"-->
-            <!--&gt;-->
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Business Info"-->
-                <!--android:textColor="@color/darkGray"-->
-                <!--android:textSize="18sp"-->
-                <!--android:textStyle="bold" />-->
-            <!--<EditText-->
-                <!--android:id="@+id/et_businessname"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,."-->
-                <!--android:background="@drawable/edittext_selector"-->
-                <!--android:hint="Business Name"-->
-                <!--android:maxLength="150"-->
-                <!--android:padding="12dp"-->
-                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"-->
-                <!--android:textColorHint="@android:color/darker_gray" />-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:id="@+id/reg_cargroup"
+            android:visibility="gone"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:padding="5dp"
+                android:orientation="horizontal">
 
-            <!--<EditText-->
-                <!--android:id="@+id/et_businessaddress"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="@drawable/edittext_selector"-->
-                <!--android:hint="Address"-->
-                <!--android:maxLength="150"-->
-                <!--android:padding="12dp"-->
-                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"-->
-                <!--android:textColorHint="@android:color/darker_gray" />-->
 
-            <!--<EditText-->
-                <!--android:id="@+id/et_businesscontact"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="@drawable/edittext_selector"-->
-                <!--android:hint="Contact"-->
-                <!--android:maxLength="11"-->
-                <!--android:padding="12dp"-->
-                <!--android:inputType="phone"-->
-                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"-->
-                <!--android:textColorHint="@android:color/darker_gray" />-->
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/ic_garage"
+                    />
 
-            <!--<EditText-->
-                <!--android:id="@+id/et_businessdescription"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="@drawable/edittext_selector"-->
-                <!--android:hint="Description"-->
-                <!--android:maxLength="350"-->
-                <!--android:lines="2"-->
-                <!--android:padding="12dp"-->
-                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"-->
-                <!--android:textColorHint="@android:color/darker_gray" />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Car Information"
+                    android:layout_marginLeft="3dp"
+                    android:textColor="@color/gray"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
-            <!--<android.support.v7.widget.CardView-->
-                <!--android:id="@+id/btn_register2"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_horizontal"-->
-                <!--android:layout_marginTop="@dimen/activity_horizontal_margin"-->
-                <!--android:foreground="?attr/selectableItemBackground"-->
-                <!--android:onClick="@{() -> view.onSubmit()}"-->
-                <!--app:cardBackgroundColor="@color/colorPrimary"-->
-                <!--app:cardCornerRadius="24dp"-->
-                <!--app:contentPadding="14dp">-->
+            </LinearLayout>
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="48dp"-->
-                    <!--android:layout_marginRight="48dp"-->
-                    <!--android:text="Next"-->
-                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
-                    <!--android:textColor="@android:color/white"-->
-                    <!--android:textStyle="bold" />-->
+            <EditText
+                android:id="@+id/et_car_model"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.1234567890"
+                android:background="@drawable/edittext_selector"
+                android:hint="Model"
+                android:maxLength="150"
+                android:padding="12dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                android:textColorHint="@android:color/darker_gray" />
 
-            <!--</android.support.v7.widget.CardView>-->
+            <EditText
+                android:id="@+id/et_car_year_model"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_selector"
+                android:hint="Year Model"
+                android:inputType="number"
+                android:maxLength="4"
+                android:padding="12dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                android:textColorHint="@android:color/darker_gray" />
 
-        <!--</LinearLayout>-->
+            <EditText
+                android:id="@+id/et_car_plate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_selector"
+                android:hint="Plate Number"
+                android:maxLength="11"
+                android:padding="12dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                android:textColorHint="@android:color/darker_gray" />
+
+            <EditText
+                android:id="@+id/et_car_chassis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_selector"
+                android:hint="Chassis Number"
+                android:maxLength="350"
+                android:lines="2"
+                android:inputType="number"
+                android:padding="12dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                android:textColorHint="@android:color/darker_gray" />
+
+
+            <FrameLayout
+                android:id="@+id/layout_car_dop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_spinner"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:onClick="@{() -> view.onBirthdayClicked()}"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/et_car_dop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:hint="Date of Purchased"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColorHint="@android:color/darker_gray" />
+
+
+
+            </FrameLayout>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/btn_register2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:foreground="?attr/selectableItemBackground"
+
+                android:onClick="@{() -> view.onNext()}"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="24dp"
+                app:contentPadding="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="48dp"
+                    android:layout_marginRight="48dp"
+                    android:text="Register"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
     </LinearLayout>
     </ScrollView>
 </layout>

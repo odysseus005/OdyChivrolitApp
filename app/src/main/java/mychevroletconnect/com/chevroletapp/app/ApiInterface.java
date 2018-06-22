@@ -30,24 +30,29 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(Endpoints.CLIENT)
     Call<ResultResponse> register(@Field(Constants.TAG) String tag,
-                                  @Field(Constants.EMAIL) String username,
+                                  @Field(Constants.EMAIL) String email,
                                   @Field(Constants.PASSWORD) String password,
-                                  @Field(Constants.FIRST_NAME) String firstName,
+                                  @Field(Constants.FIRST_NAME)String firstName,
+                                  @Field(Constants.MIDDLENAME)String middleName,
                                   @Field(Constants.LAST_NAME) String lastName,
-                                  @Field(Constants.CONTACT) String contact,
                                   @Field(Constants.BIRTHDAY) String birthday,
+                                  @Field(Constants.CONTACT) String contact,
                                   @Field(Constants.ADDRESS) String address,
-                                  @Field(Constants.POSITION) String position,
-                                  @Field(Constants.BUSINESS_ID) String businessID
+                                  @Field(Constants.CITIZENSHIP)String citizenship,
+                                  @Field(Constants.OCCUPATION) String occupation,
+                                  @Field(Constants.GENDER) String gender,
+                                  @Field(Constants.CIVIL_STATUS)String civil
     );
 
     @FormUrlEncoded
-    @POST(Endpoints.CLIENT)
+    @POST(Endpoints.GARAGE)
     Call<ResultResponse> registerCar(@Field(Constants.TAG) String tag,
-                                     @Field(Constants.BUSINESS_NAME) String bName,
-                                     @Field(Constants.BUSINESS_ADDRESS) String bAddress,
-                                     @Field(Constants.BUSINESS_CONTACT) String bContact,
-                                     @Field(Constants.BUSINESS_DESCRIPTION) String bDescription
+                                     @Field(Constants.GARAGE_CHASSIS) String garage_chassis,
+                                     @Field(Constants.GARAGE_MODEL) String garage_model,
+                                     @Field(Constants.GARAGE_YEAR_MODEL) String garage_year,
+                                     @Field(Constants.GARAGE_PLATE) String garage_plate,
+                                     @Field(Constants.GARAGE_PURCHASE) String garage_purchase,
+                                     @Field(Constants.USER_ID) String user_id
     );
 
 

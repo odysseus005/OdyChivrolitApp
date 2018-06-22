@@ -25,15 +25,19 @@ public class RegisterPresenter extends MvpNullObjectBasePresenter<RegisterView> 
                          String password,
                          String confirmPassword,
                          String firstName,
+                         String middleName,
                          String lastName,
                          String birthday,
                          String contact,
                          String address,
-                         String position,
-                         String bussinessID) {
+                         String citizenship,
+                         String occupation,
+                         String gender,
+                         String civil
+                         ) {
 
         if (email.equals("") || password.equals("") || confirmPassword.equals("") || firstName.equals("") || lastName.equals("") || birthday.equals("") ||
-                contact.equals("") || address.equals("")) {
+                contact.equals("") || middleName.equals("") ||  address.equals("")) {
             getView().showAlert("Fill-up all fields");
         }else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) { //check if email is valid
             getView().showAlert("Invalid email address.");
@@ -48,7 +52,7 @@ public class RegisterPresenter extends MvpNullObjectBasePresenter<RegisterView> 
             getView().showAlert("Password does not match");
         } else {
             getView().startLoading();
-            App.getInstance().getApiInterface().register(Endpoints.REGISTER,email, password, firstName, lastName, contact, birthday, address,position,bussinessID)
+            App.getInstance().getApiInterface().register(Endpoints.REGISTER,email, password, firstName, middleName, lastName, birthday, contact, address, citizenship, occupation, gender, civil)
                     .enqueue(new Callback<ResultResponse>() {
                         @Override
                         public void onResponse(Call<ResultResponse> call, Response<ResultResponse> response) {
@@ -56,7 +60,8 @@ public class RegisterPresenter extends MvpNullObjectBasePresenter<RegisterView> 
                             if (response.isSuccessful()) {
                                 switch (response.body().getResult()) {
                                     case Constants.SUCCESS:
-                                        getView().onRegistrationSuccess();
+
+                                        getView().onUserRegistrationSuccess(response.body().getClient_id());
                                         break;
                                     case Constants.EMAIL_EXIST:
                                         getView().showAlert("Email already exists");
@@ -88,13 +93,17 @@ public class RegisterPresenter extends MvpNullObjectBasePresenter<RegisterView> 
     }
 
 
-    public void registerCar(String businessName,String businessAddress,String businessContact, String businessDescription) {
+    public void registerCar(String model,
+                            String chasis,
+                            String plate,
+                            String year,
+                            String dop,String cid) {
 
-        if (businessName.equals("") || businessAddress.equals("") || businessContact.equals("") || businessDescription.equals("")) {
+        if (model.equals("") || chasis.equals("") || plate.equals("") || year.equals("")||dop.equals("")) {
             getView().showAlert("Fill-up all fields");
         }else {
             getView().startLoading();
-            App.getInstance().getApiInterface().registerCar(Endpoints.BUSINESS_REGISTER,businessName,businessAddress,businessContact,businessDescription)
+            App.getInstance().getApiInterface().registerCar(Endpoints.ADD_GARAGE,chasis,model,year,plate,dop,cid)
                     .enqueue(new Callback<ResultResponse>() {
                         @Override
                         public void onResponse(Call<ResultResponse> call, Response<ResultResponse> response) {
@@ -102,8 +111,8 @@ public class RegisterPresenter extends MvpNullObjectBasePresenter<RegisterView> 
                             if (response.isSuccessful()) {
                                 switch (response.body().getResult()) {
                                     case Constants.SUCCESS:
+                                        getView().onRegistrationSuccess();
 
-                                        getView().onUserRegistrationSuccess(response.body().getBusiness_id());
                                         break;
                                     case Constants.EMAIL_EXIST:
                                         getView().showAlert("Email already exists");

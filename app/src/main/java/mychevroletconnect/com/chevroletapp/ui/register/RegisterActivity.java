@@ -2,43 +2,50 @@ package mychevroletconnect.com.chevroletapp.ui.register;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Toast;
-
+import android.support.v7.app.AlertDialog;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import mychevroletconnect.com.chevroletapp.R;
+import mychevroletconnect.com.chevroletapp.databinding.ActivityRegisterBinding;
+import mychevroletconnect.com.chevroletapp.ui.login.LoginActivity;
+
 
 public class RegisterActivity extends MvpViewStateActivity<RegisterView, RegisterPresenter> implements RegisterView, TextWatcher {
-  //  private ActivityRegisterBinding binding;
+    private ActivityRegisterBinding binding;
     private ProgressDialog progressDialog;
     private String etAddress;
-    private String business_id;
+    private String car_id;
+    private ArrayList<String> gender;
+    private ArrayList<String> civil;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // setContentView(R.layout.activity_register);
         setRetainInstance(true);
-//        binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
-//        binding.setView(getMvpView());
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
+        binding.setView(getMvpView());
 
-      /*  setSupportActionBar(binding.toolbar);
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
-            getSupportActionBar().setTitle("Registration");
-     */
+        populateGenderAndCivil();
     }
 
     @Override
@@ -83,20 +90,15 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
     @Override
     public void onNext()
     {
-       // binding.regBusinessgroup.setVisibility(View.VISIBLE);
-        //binding.regUsergroup.setVisibility(View.GONE);
+        binding.regCargroup.setVisibility(View.VISIBLE);
+        binding.regUsergroup.setVisibility(View.GONE);
 
-//        presenter.registerUser(
-//                binding.etEmail.getText().toString(),
-//                binding.etPassword.getText().toString(),
-//                binding.etRepeatPassword.getText().toString(),
-//                binding.etFirstName.getText().toString(),
-//                binding.etLastName.getText().toString(),
-//                binding.etBirthday.getText().toString(),
-//                binding.etMobileNumber.getText().toString(),
-//                binding.etAddress.getText().toString(),
-//                "Owner",
-//                business_id);
+        presenter.registerCar(binding.etCarModel.getText().toString(),
+                binding.etCarChassis.getText().toString(),
+                binding.etCarPlate.getText().toString(),
+                binding.etCarYearModel.getText().toString(),
+                binding.etCarDop.getText().toString(),
+              car_id);
     }
 
 
@@ -104,12 +106,24 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
     public void onSubmit() {
 
 
-//        presenter.registerBusiness(binding.etBusinessname.getText().toString(),
-//        binding.etBusinessaddress.getText().toString(),
-//        binding.etBusinesscontact.getText().toString(),
-//        binding.etBusinessdescription.getText().toString());
 
 
+
+        presenter.registerUser(
+                binding.etEmail.getText().toString(),
+                binding.etPassword.getText().toString(),
+                binding.etRepeatPassword.getText().toString(),
+                binding.etFirstName.getText().toString(),
+                binding.etMiddleName.getText().toString(),
+                binding.etLastName.getText().toString(),
+                binding.etBirthday.getText().toString(),
+                binding.etMobileNumber.getText().toString(),
+                binding.etAddress.getText().toString(),
+                binding.etCitizenship.getText().toString(),
+                binding.etOccupation.getText().toString(),
+                binding.spGender.getSelectedItem().toString(),
+                binding.spCivil.getSelectedItem().toString()
+               );
 
 
     }
@@ -119,18 +133,6 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void setEditTextValue(String email, String password, String confirmPassword, String firstName, String lastName, String birthday, String contact, String address) {
-//        binding.etEmail.setText(email);
-//        binding.etPassword.setText(password);
-//        binding.etRepeatPassword.setText(confirmPassword);
-//        binding.etFirstName.setText(firstName);
-//        binding.etLastName.setText(lastName);
-//        binding.etBirthday.setText(birthday);
-//        binding.etMobileNumber.setText(contact);
-//        binding.etAddress.setText(address);
-
-    }
 
     @Override
     public void startLoading() {
@@ -150,38 +152,37 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
 
     @Override
     public void onRegistrationSuccess() {
-//        new AlertDialog.Builder(this)
-//                .setTitle("Register Successful")
-//                .setMessage("Go Back to Login Page Thank you!")
-//                .setCancelable(false)
-//                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        RegisterActivity.this.finish();
-//                       // Toast.makeText(UserRegisterActivity.this, "An email has been sent to your email for verification!", Toast.LENGTH_SHORT).show();
-//                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-//                        finish();
-//                    }
-//                })
-//                .show();
+        new AlertDialog.Builder(this)
+                .setTitle("Register Successful")
+                .setMessage("Go Back to Login Page Thank you!")
+                .setCancelable(false)
+                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        RegisterActivity.this.finish();
+                       // Toast.makeText(UserRegisterActivity.this, "An email has been sent to your email for verification!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                        finish();
+                    }
+                })
+                .show();
     }
 
     @Override
-    public void onUserRegistrationSuccess(String bid) {
+    public void onUserRegistrationSuccess(String cid) {
 
-//        binding.regBusinessgroup.setVisibility(View.GONE);
-//        binding.regUsergroup.setVisibility(View.VISIBLE);
-//
-//        if(!(bid==null)) {
-//            binding.regBusinessgroup.setVisibility(View.GONE);
-//            binding.regUsergroup.setVisibility(View.VISIBLE);
-//
-//            business_id = bid;
-//        }
-//        else
-//        {
-//            showAlert("Error on Registering Business");
-//        }
+        binding.regCargroup.setVisibility(View.VISIBLE);
+        binding.regUsergroup.setVisibility(View.GONE);
+
+        if(!(cid==null)) {
+            binding.regCargroup.setVisibility(View.VISIBLE);
+            binding.regUsergroup.setVisibility(View.GONE);
+            car_id = cid;
+        }
+        else
+        {
+            showAlert("Error on Registering Account");
+        }
 
 
     }
@@ -198,7 +199,7 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-//                binding.etBirthday.setText(dateFormatter.format(newDate.getTime()));
+                binding.etBirthday.setText(dateFormatter.format(newDate.getTime()));
             }
 
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -226,7 +227,7 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
     @Override
     public void onBackPressed()
     {
-//        startActivity(new Intent(this, LoginActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
 
@@ -234,6 +235,67 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
 
     private void initializeViewStateValues() {
         RegisterViewState registerViewState = (RegisterViewState) getViewState();
+
+    }
+
+
+    private void populateGenderAndCivil() {
+
+
+
+        gender = new ArrayList<>();
+        gender.add("Male");
+        gender.add("Female");
+
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(RegisterActivity.this, R.layout.spinner_custom_item, gender);
+        binding.spGender.setAdapter(arrayAdapter);
+
+
+        /**
+         * Triggers on click of the spinner
+         */
+        binding.spGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+       civil = new ArrayList<>();
+       civil.add("Single");
+       civil.add("Married");
+       civil.add("Widowed");
+       civil.add("Seperated");
+
+
+
+        ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<>(RegisterActivity.this, R.layout.spinner_custom_item,civil);
+        binding.spCivil.setAdapter(arrayAdapter2);
+
+
+        /**
+         * Triggers on click of the spinner
+         */
+        binding.spCivil.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
     }
 
