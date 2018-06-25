@@ -19,8 +19,12 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 
 import io.realm.Realm;
+import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityLoginBinding;
+import mychevroletconnect.com.chevroletapp.databinding.DialogVerificationBinding;
 import mychevroletconnect.com.chevroletapp.model.data.User;
+import mychevroletconnect.com.chevroletapp.ui.forgot.ForgotPasswordActivity;
+import mychevroletconnect.com.chevroletapp.ui.register.RegisterActivity;
 
 
 /**
@@ -50,32 +54,14 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
 
 
         dialog = new Dialog(LoginActivity.this);
-    //KEYHASH
-       /* try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "jazevangelio.newvawepp",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.d("LOG","KEYHASG");
-
-        } catch (NoSuchAlgorithmException e) {
-            Log.d("LOG","KEY Algo");
-        }*/
-
-
          user = realm.where(User.class).findFirst();
         if (user != null) {
             onLoginSuccess(user);
         }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.setView(getMvpView());
-        binding.etEmail.addTextChangedListener(this);
-        binding.etPassword.addTextChangedListener(this);
+//        binding.username.addTextChangedListener(this);
+//        binding.password.addTextChangedListener(this);
 
 
 
@@ -142,8 +128,8 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
         finish();*/
 
         presenter.login(
-                binding.etEmail.getText().toString(),
-                binding.etPassword.getText().toString()
+                binding.username.getText().toString(),
+                binding.password.getText().toString()
         );
     }
 
@@ -159,8 +145,8 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
 
     @Override
     public void setEditTextValue(String username, String password) {
-        binding.etEmail.setText(username);
-        binding.etPassword.setText(password);
+        binding.username.setText(username);
+        binding.password.setText(password);
     }
 
     @Override
@@ -183,7 +169,7 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
     public void onLoginSuccess(final User user) {
 
 
-        if(!(user.getFirstlogin().equalsIgnoreCase("true")))
+        if(!(user.getFirstlogin().equalsIgnoreCase("APPROVED")))
         {
 
             dialog = new Dialog(LoginActivity.this);
@@ -192,22 +178,10 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
                     R.layout.dialog_verification,
                     null,
                     false);
-            dialogBinding.send.setOnClickListener(new View.OnClickListener() {
+            dialogBinding.close.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(dialogBinding.etCode.getText().toString().equalsIgnoreCase(user.getFirstlogin()))
-                        presenter.firstLogin(String.valueOf(user.getUserId()));
-                    else
-                        showAlert("Invalid Code");
 
-                }
-            });
-
-            dialog.setOnCancelListener(new DialogInterface.OnCancelListener()
-            {
-                @Override
-                public void onCancel(DialogInterface dialog)
-                {
                     final Realm realm = Realm.getDefaultInstance();
                     realm.executeTransactionAsync(new Realm.Transaction() {
                         @Override
@@ -228,11 +202,12 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
                             Toast.makeText(LoginActivity.this, "Realm Error", Toast.LENGTH_SHORT).show();
                         }
                     });
+
                 }
             });
 
             dialog.setContentView(dialogBinding.getRoot());
-            dialog.setCancelable(true);
+            dialog.setCancelable(false);
             dialog.show();
 
 
@@ -240,7 +215,7 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
         }else {
 
 
-            startActivity(new Intent(this, MainActivity.class));
+            //startActivity(new Intent(this, MainActivity.class));
             finish();
         }
 
@@ -249,52 +224,9 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
     @Override
     public void onBackPressed() {
 
-        Log.d("TAG",">>");
-       /* if (dialog.isShowing()) {
-
-            Log.d("TAG","SASAs");
-            final Realm realm = Realm.getDefaultInstance();
-            realm.executeTransactionAsync(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    realm.deleteAll();
-                }
-            }, new Realm.Transaction.OnSuccess() {
-                @Override
-                public void onSuccess() {
-                    realm.close();
-                    dialog.dismiss();
-                }
-            }, new Realm.Transaction.OnError() {
-                @Override
-                public void onError(Throwable error) {
-                    error.printStackTrace();
-                    realm.close();
-                    Toast.makeText(LoginActivity.this, "Realm Error", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-
-        } else {*/
-            finish();
-       // }
+      finish();
     }
 
-    @Override
-    public void onLoginGuestClicked() {
-
-        startActivity(new Intent(this, BusinessListActivity.class));
-
-    }
-
-
-   /* @Override
-    public void onCodeSuccess() {
-        startActivity(new Intent(this, GuestActivity.class));
-        finish();
-        showAlert("Verification Success!");
-
-    }*/
 
 
     @Override

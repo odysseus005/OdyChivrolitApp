@@ -5,7 +5,7 @@
     <data>
         <variable
             name="view"
-            type="com.portablesalescounterapp.ui.login.LoginView" />
+            type="mychevroletconnect.com.chevroletapp.ui.login.LoginView" />
     </data>
 
 
@@ -22,7 +22,7 @@
 
         <ImageView
             android:id="@+id/imageView5"
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:layout_above="@+id/textUsername"
@@ -105,6 +105,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:text="Sign up now!"
         android:id="@+id/signup"
+        android:onClick="@{()-> view.onRegisterButtonClicked()}"
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryDark"
         android:layout_marginLeft="8dp" />

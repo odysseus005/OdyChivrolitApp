@@ -6,6 +6,12 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 
 import io.realm.Realm;
+import mychevroletconnect.com.chevroletapp.R;
+import mychevroletconnect.com.chevroletapp.app.App;
+import mychevroletconnect.com.chevroletapp.app.Constants;
+import mychevroletconnect.com.chevroletapp.app.Endpoints;
+import mychevroletconnect.com.chevroletapp.model.data.User;
+import mychevroletconnect.com.chevroletapp.model.response.LoginResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,11 +43,10 @@ public class LoginPresenter extends MvpNullObjectBasePresenter<LoginView> {
                                             realm.executeTransactionAsync(new Realm.Transaction() {
                                                 @Override
                                                 public void execute(Realm realm) {
-                                                    realm.delete(Business.class);
+
                                                     user = response.body().getUser();
-                                                    Business business = response.body().getBusiness();
                                                     realm.copyToRealmOrUpdate(user);
-                                                    realm.copyToRealmOrUpdate(business);
+
 
                                                 }
                                             }, new Realm.Transaction.OnSuccess() {
@@ -94,60 +99,6 @@ public class LoginPresenter extends MvpNullObjectBasePresenter<LoginView> {
 
 
 
-    public void firstLogin(String userId) {
-        getView().startLoading();
-        App.getInstance().getApiInterface().updateUserCode(Endpoints.FIRSTLOGIN,userId).enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(Call<LoginResponse> call, final Response<LoginResponse> response) {
-                getView().stopLoading();
-                if (response.isSuccessful()) {
-                    if (response.body().getResult().equals(Constants.SUCCESS)) {
-
-                        final Realm realm = Realm.getDefaultInstance();
-                        realm.executeTransactionAsync(new Realm.Transaction() {
-                            @Override
-                            public void execute(Realm realm) {
-                                user = response.body().getUser();
-                                realm.copyToRealmOrUpdate(user);
-
-
-                            }
-                        }, new Realm.Transaction.OnSuccess() {
-                            @Override
-                            public void onSuccess() {
-                                realm.close();
-
-                                getView().showAlert("Verification Successful!");
-                                getView().onLoginSuccess(user);
-
-                            }
-                        }, new Realm.Transaction.OnError() {
-                            @Override
-                            public void onError(Throwable error) {
-                                realm.close();
-                                Log.e(TAG, "onError: Unable to save USER", error);
-                                getView().showAlert("Error Saving API Response");
-                            }
-                        });
-                    } else {
-                        getView().showAlert(String.valueOf(R.string.cantConnect));
-                    }
-                } else {
-                    getView().showAlert(response.message() != null ? response.message()
-                            : "Unknown Error");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                getView().stopLoading();
-                Log.e(TAG, "onFailure: Error calling login api", t);
-                getView().stopLoading();
-                getView().showAlert("Error Connecting to Server");
-            }
-        });
-
-    }
 
 
 
