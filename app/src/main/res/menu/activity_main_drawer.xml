@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_logout"
+            android:title="Account" />
+        <item
+            android:id="@+id/nav_dealer"
+            android:icon="@drawable/ic_logout"
+            android:title="" />
+        <item
+            android:id="@+id/nav_promo"
+            android:icon="@drawable/ic_logout"
+            android:title="Profile" />
+        <item
+            android:id="@+id/nav_showroom"
+            android:icon="@drawable/ic_logout"
+            android:title="Profile" />
+        <item
+            android:id="@+id/nav_parts"
+            android:icon="@drawable/ic_logout"
+            android:title="Profile" />
+        <item
+            android:id="@+id/nav_testdrive"
+            android:icon="@drawable/ic_logout"
+            android:title="Profile" />
+        <item
+            android:id="@+id/nav_roadside"
+            android:icon="@drawable/ic_logout"
+            android:title="Profile" />
+        <item
+            android:id="@+id/nav_pms"
+            android:icon="@drawable/ic_logout"
+            android:title="Profile" />
+        <item
+            android:id="@+id/nav_warranty"
+            android:icon="@drawable/ic_logout"
+            android:title="Profile" />
+        <item
+            android:id="@+id/nav_care"
+            android:icon="@drawable/ic_logout"
+            android:title="Profile" />
+
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_logout"
+                android:title="Logout" />
+
+
+
+    </group>
+
+
+
+
+</menu>
