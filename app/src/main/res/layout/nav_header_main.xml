@@ -7,7 +7,7 @@
 
         <variable
             name="user"
-            type="tip.edu.ph.runrio.model.data.User" />
+            type="mychevroletconnect.com.chevroletapp.model.data.User" />
     </data>
 
     <FrameLayout
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:text="@{user.emailAddress}"
+                android:text="@{user.email}"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead" />
 
         </LinearLayout>

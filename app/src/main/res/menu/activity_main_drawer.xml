@@ -9,13 +9,17 @@
             android:icon="@drawable/ic_logout"
             android:title="Account" />
         <item
+            android:id="@+id/nav_login"
+            android:icon="@drawable/ic_logout"
+            android:title="Login" />
+        <item
             android:id="@+id/nav_dealer"
             android:icon="@drawable/ic_logout"
-            android:title="" />
+            android:title="Dealer" />
         <item
             android:id="@+id/nav_promo"
             android:icon="@drawable/ic_logout"
-            android:title="Profile" />
+            android:title="Promo" />
         <item
             android:id="@+id/nav_showroom"
             android:icon="@drawable/ic_logout"
