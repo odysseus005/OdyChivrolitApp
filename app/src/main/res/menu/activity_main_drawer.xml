@@ -3,62 +3,83 @@
 
     <group android:checkableBehavior="single">
 
+        <item android:title="Account">
+        <menu>
+        <item
+            android:id="@+id/nav_appointment"
+            android:icon="@drawable/ic_nav_appointment"
+            android:title="Appointment" />
+
+        <item
+            android:id="@+id/nav_garage"
+            android:icon="@drawable/ic_nav_garage"
+            android:title="Garage" />
 
         <item
             android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_logout"
-            android:title="Account" />
+            android:icon="@drawable/ic_nav_profile"
+            android:title="Profile" />
         <item
             android:id="@+id/nav_login"
-            android:icon="@drawable/ic_logout"
+            android:icon="@drawable/ic_nav_login"
             android:title="Login" />
+
+        </menu>
+        </item>
+
+
         <item
             android:id="@+id/nav_dealer"
-            android:icon="@drawable/ic_logout"
-            android:title="Dealer" />
+            android:icon="@drawable/ic_nav_dealer"
+            android:title="Dealer Locator" />
         <item
             android:id="@+id/nav_promo"
-            android:icon="@drawable/ic_logout"
+            android:icon="@drawable/ic_nav_promo"
             android:title="Promo" />
         <item
             android:id="@+id/nav_showroom"
-            android:icon="@drawable/ic_logout"
-            android:title="Profile" />
+            android:icon="@drawable/ic_nav_show"
+            android:title="Showroom" />
         <item
             android:id="@+id/nav_parts"
-            android:icon="@drawable/ic_logout"
-            android:title="Profile" />
+            android:icon="@drawable/ic_nav_parts"
+            android:title="Parts Inquiry" />
         <item
             android:id="@+id/nav_testdrive"
-            android:icon="@drawable/ic_logout"
-            android:title="Profile" />
-        <item
-            android:id="@+id/nav_roadside"
-            android:icon="@drawable/ic_logout"
-            android:title="Profile" />
-        <item
-            android:id="@+id/nav_pms"
-            android:icon="@drawable/ic_logout"
-            android:title="Profile" />
-        <item
-            android:id="@+id/nav_warranty"
-            android:icon="@drawable/ic_logout"
-            android:title="Profile" />
+            android:icon="@drawable/ic_nav_test"
+            android:title="Testdrive" />
+
         <item
             android:id="@+id/nav_care"
-            android:icon="@drawable/ic_logout"
-            android:title="Profile" />
+            android:icon="@drawable/ic_nav_care"
+            android:title="We Care Program" />
+        <item
+            android:id="@+id/nav_roadside"
+            android:icon="@drawable/ic_nav_road"
+            android:title="Roadside" />
 
-            <item
+        <item
+            android:id="@+id/nav_pms"
+            android:icon="@drawable/ic_nav_maintenance"
+            android:title="Preventive Maintenance" />
+        <item
+            android:id="@+id/nav_warranty"
+            android:icon="@drawable/ic_nav_warranty"
+            android:title="Warranty" />
+
+
+
+
+
+    <item android:title="">
+        <menu>
+    <item
                 android:id="@+id/nav_logout"
-                android:icon="@drawable/ic_logout"
+                android:icon="@drawable/ic_nav_logout"
                 android:title="Logout" />
 
 
-
+</menu>
+    </item>
     </group>
-
-
-
-
 </menu>

@@ -181,7 +181,7 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
         }
         else
         {
-            showAlert("Error on Registering Account");
+            showAlert("Error on Adding Car!");
         }
 
 

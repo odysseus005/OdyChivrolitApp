@@ -115,7 +115,7 @@ public class RegisterPresenter extends MvpNullObjectBasePresenter<RegisterView> 
 
                                         break;
                                     case Constants.EMAIL_EXIST:
-                                        getView().showAlert("Email already exists");
+                                        getView().showAlert("Car already exists");
                                         break;
                                     default:
                                         getView().showAlert("Can't Connect to Server");

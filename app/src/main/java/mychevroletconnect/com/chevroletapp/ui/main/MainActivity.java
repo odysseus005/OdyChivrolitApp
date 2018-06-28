@@ -9,6 +9,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,9 +58,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         binding.navView.setNavigationItemSelectedListener(this);
+        Menu nav_Menu =  binding.navView.getMenu();
+        nav_Menu.findItem(R.id.nav_login).setVisible(false);
 
        // MainTabAdapter mAdapter = new MainTabAdapter(getSupportFragmentManager());
-
       //  binding.appBarMain.viewPager.setAdapter(mAdapter);
        // binding.appBarMain.tabs.setupWithViewPager(binding.appBarMain.viewPager, true);
 
@@ -71,14 +73,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         user = realm.where(User.class).findFirstAsync();
         if(user.isLoaded() && user.isValid())
                     updateUI(true);
-        else
-            updateUI(false);
+
 
     }
 
 
     private void updateUI(boolean loginChecker) {
-        if (loginChecker){
+
             txtName.setText(user.getFullName());
         txtEmail.setText(user.getEmail());
         String imageURL = "";
@@ -93,8 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .transform(new CircleTransform(this))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfile);
-    }
-       // startActivity(new Intent(this, LoginActivity.class));
+
     }
 
     @Override
