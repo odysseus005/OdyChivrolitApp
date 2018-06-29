@@ -45,6 +45,7 @@ public class LoginPresenter extends MvpNullObjectBasePresenter<LoginView> {
                                                 public void execute(Realm realm) {
 
                                                     user = response.body().getUser();
+                                                    Log.e(">>>>>", "sasa"+user.getFullName());
                                                     realm.copyToRealmOrUpdate(user);
 
 

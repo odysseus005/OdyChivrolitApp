@@ -60,6 +60,10 @@ public interface ApiInterface {
     @POST(Endpoints.CLIENT)
     Call<ResultResponse> checkEmail(@Field(Constants.TAG) String tag, @Field(Constants.EMAIL) String email);
 
-
+    @FormUrlEncoded
+    @POST(Endpoints.CLIENT)
+    Call<ResultResponse> changePassword(@Field(Constants.TAG) String tag,
+                                        @Field(Constants.USER_ID) String user_id,
+                                        @Field(Constants.PASSWORD) String password);
 
 }

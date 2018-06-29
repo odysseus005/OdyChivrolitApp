@@ -425,7 +425,7 @@
                 android:clickable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center_vertical"
-                android:onClick="@{() -> view.onBirthdayClicked()}"
+                android:onClick="@{() -> view.onPurchasedClicked()}"
                 android:padding="12dp">
 
                 <TextView

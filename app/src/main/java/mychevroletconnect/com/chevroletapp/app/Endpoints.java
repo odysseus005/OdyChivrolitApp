@@ -5,9 +5,9 @@ package mychevroletconnect.com.chevroletapp.app;
 public class Endpoints {
 
     public static final String _ID = "{id}/";
-    public static final String BASE_URL = "http://api.mychevroletconnect.webstarterz.com/";
-    public static final String URL_IMAGE = BASE_URL+ "/api/images/";
-    public static final String API_URL = BASE_URL+ "/api/";
+    public static final String BASE_URL = "http://api.mychevroletconnect.webstarterz.com";
+    public static final String URL_IMAGE = BASE_URL+ "/images/";
+    public static final String API_URL = BASE_URL;//+ "/api/";
     public static final String IMAGE_UPLOAD = BASE_URL + "/src/v1/";
 
 
@@ -16,7 +16,7 @@ public class Endpoints {
     public static final String LOGIN = "loginClient";
     public static final String REGISTER = "registerClient";
     public static final String UPDATEUSER = "editProfile";
-    public static final String UPDATEPASS = "editProfile2";
+    public static final String UPDATEPASS = "editPassword";
     public static final String FORGOTPASS = "forgotPass";
     public static final String FIRSTLOGIN = "firstLogin";
 

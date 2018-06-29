@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="mychevroletconnect.com.chevroletapp.ui.profile.edit.EditProfileActivity" />
+
+        <variable
+            name="user"
+            type="mychevroletconnect.com.chevroletapp.model.data.User" />
+
+        <variable
+            name="view"
+            type="mychevroletconnect.com.chevroletapp.ui.profile.edit.EditProfileView" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:title="Edit Profile" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:background="@color/colorPrimary"
+            android:visibility="visible">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_vertical_margin">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="112dp"
+                    android:layout_height="112dp"
+                    android:layout_gravity="center"
+                    android:paddingTop="@dimen/nav_header_vertical_spacing"
+                    tools:ignore="ContentDescription" />
+
+                <Button
+                    android:id="@+id/btn_change_image"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:onClick="@{() -> activity.onChangeUserImage()}"
+                    android:text="Select Profile Photo"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/ic_edit_profile_dialog"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_gravity="center_vertical"
+                        android:text="Edit Profile Information"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="First Name"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+                <!-- first name -->
+                <EditText
+                    android:id="@+id/et_first_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edittext_selector"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:text='@{user.firstname}'
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLength="100"
+                    android:padding="12dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:textColorHint="@android:color/darker_gray" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Middle Name"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+                <!-- middle name -->
+                <EditText
+                    android:id="@+id/et_middle_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edittext_selector"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:text='@{user.middlename}'
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLength="100"
+                    android:padding="12dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:textColorHint="@android:color/darker_gray" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Last Name"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+                <!-- last name -->
+                <EditText
+                    android:id="@+id/et_last_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edittext_selector"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                    android:text='@{user.lastname}'
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLength="100"
+                    android:padding="12dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:textColorHint="@android:color/darker_gray" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Address"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+                <!-- address -->
+                <EditText
+                    android:id="@+id/et_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edittext_selector"
+                    android:text='@{user.address}'
+                    android:inputType="textPostalAddress"
+                    android:maxLength="255"
+                    android:padding="12dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:textColorHint="@android:color/darker_gray" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Birthday"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+
+                <FrameLayout
+                    android:id="@+id/layout_birthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_spinner"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:onClick="@{() -> view.onBirthdayClicked()}"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:id="@+id/et_birthday"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text='@{user.birthday}'
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColorHint="@android:color/darker_gray" />
+
+
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Contact Number"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+                <!-- mobile number -->
+                <EditText
+                    android:id="@+id/et_mobile_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edittext_selector"
+                    android:text='@{user.contact}'
+                    android:inputType="number"
+                    android:maxLength="11"
+                    android:padding="12dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:textColorHint="@android:color/darker_gray" />
+
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Citizenship"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+
+                <!-- citizenship -->
+                <EditText
+                    android:id="@+id/et_citizenship"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edittext_selector"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:text='@{user.citizenship}'
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLength="100"
+                    android:padding="12dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:textColorHint="@android:color/darker_gray" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Occupation"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+                <!-- occupation -->
+                <EditText
+                    android:id="@+id/et_occupation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edittext_selector"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:text='@{user.occupation}'
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLength="100"
+                    android:padding="12dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:textColorHint="@android:color/darker_gray" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Gender"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+                <Spinner
+                    android:id="@+id/sp_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_spinner"
+                    android:fontFamily="sans-serif"
+                    android:padding="12dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:textColorHint="@android:color/darker_gray" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Civil Status"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+                <Spinner
+                    android:id="@+id/sp_civil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_spinner"
+                    android:fontFamily="sans-serif"
+                    android:padding="12dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:textColorHint="@android:color/darker_gray" />
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
+                    android:padding="6dp"
+                    android:textSize="12sp"
+                    android:onClick="@{()->view.onEdit()}"
+                    android:background="@drawable/rounded_button_solid"
+                    android:layout_marginTop="20dp"
+                    android:text="Save" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</layout>

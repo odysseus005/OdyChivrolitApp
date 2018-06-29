@@ -21,4 +21,6 @@ public interface RegisterView extends MvpView {
     void onUserRegistrationSuccess(String bussinessID);
 
     void onBirthdayClicked();
+
+    void onPurchasedClicked();
 }

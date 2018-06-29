@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         realm = Realm.getDefaultInstance();
-
+        user = realm.where(User.class).findFirst();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.appBarMain.toolbar);
@@ -70,15 +70,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         txtEmail = (TextView) binding.navView.getHeaderView(0).findViewById(R.id.txt_email);
         imgProfile = (ImageView) binding.navView.getHeaderView(0).findViewById(R.id.imageView);
 
-        user = realm.where(User.class).findFirstAsync();
-        if(user.isLoaded() && user.isValid())
-                    updateUI(true);
 
+
+
+        if(user != null)
+                    updateUI();
 
     }
 
 
-    private void updateUI(boolean loginChecker) {
+    private void updateUI() {
 
             txtName.setText(user.getFullName());
         txtEmail.setText(user.getEmail());
@@ -88,10 +89,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             imageURL = Endpoints.URL_IMAGE + (user.getImage());
         }
 
-        Log.d("MainActivity", "imageUrl: " + imageURL);
+        Log.d(">>>>>>>>>>", "imageUrl: " + imageURL);
         Glide.with(this)
                 .load(imageURL)
                 .transform(new CircleTransform(this))
+                .error(R.drawable.profile_default)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfile);
 

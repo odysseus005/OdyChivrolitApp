@@ -20,6 +20,9 @@ public class User extends RealmObject {
     @Expose
     private String email;
 
+    @SerializedName("client_password")
+    @Expose
+    private String password;
 
     @SerializedName("client_first_name")
     @Expose
@@ -75,6 +78,14 @@ public class User extends RealmObject {
 
     private String fullName;
 
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
 
     public String getFullName() {

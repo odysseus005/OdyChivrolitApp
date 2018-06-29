@@ -144,7 +144,7 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
 
        /* startActivity(new Intent(this, GuestActivity.class));
         finish();*/
-      showAlert("Sasas");
+
         presenter.login(
                 binding.appBarLogin.username.getText().toString(),
                 binding.appBarLogin.password.getText().toString()
@@ -222,6 +222,8 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
                             Toast.makeText(LoginActivity.this, "Realm Error", Toast.LENGTH_SHORT).show();
                         }
                     });
+
+                    dialog.dismiss();
 
                 }
             });
