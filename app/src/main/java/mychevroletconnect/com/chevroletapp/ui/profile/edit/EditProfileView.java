@@ -14,7 +14,6 @@ public interface EditProfileView extends MvpView{
 
     void stopLoading();
 
-    void onChangePassword();
 
     void finishAct();
 
@@ -22,5 +21,5 @@ public interface EditProfileView extends MvpView{
 
     void finish();
 
-    void onPasswordChanged();
+
 }

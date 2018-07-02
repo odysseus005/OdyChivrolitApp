@@ -5,6 +5,7 @@ package mychevroletconnect.com.chevroletapp.app;
 
 import java.util.Map;
 
+import mychevroletconnect.com.chevroletapp.model.data.User;
 import mychevroletconnect.com.chevroletapp.model.response.LoginResponse;
 import mychevroletconnect.com.chevroletapp.model.response.ResultResponse;
 import okhttp3.MultipartBody;
@@ -65,5 +66,21 @@ public interface ApiInterface {
     Call<ResultResponse> changePassword(@Field(Constants.TAG) String tag,
                                         @Field(Constants.USER_ID) String user_id,
                                         @Field(Constants.PASSWORD) String password);
+
+    @FormUrlEncoded
+    @POST(Endpoints.CLIENT)
+    Call<User> updateUser(@Field(Constants.TAG) String tag,
+                          @Field(Constants.USER_ID) String user_id,
+                          @Field(Constants.FIRST_NAME) String first_name,
+                          @Field(Constants.LAST_NAME) String last_name,
+                          @Field(Constants.CONTACT) String contact,
+                          @Field(Constants.BIRTHDAY) String birthday,
+                          @Field(Constants.ADDRESS) String address);
+
+    @Multipart
+    @POST("upload.php?")
+    Call<ResultResponse> uploadFile(@Part MultipartBody.Part file, @Part("name") RequestBody name);
+
+
 
 }

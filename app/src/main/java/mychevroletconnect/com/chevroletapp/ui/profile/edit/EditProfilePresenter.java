@@ -8,6 +8,10 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import java.io.File;
 
 import io.realm.Realm;
+import mychevroletconnect.com.chevroletapp.app.App;
+import mychevroletconnect.com.chevroletapp.app.Endpoints;
+import mychevroletconnect.com.chevroletapp.model.data.User;
+import mychevroletconnect.com.chevroletapp.model.response.ResultResponse;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -33,7 +37,7 @@ public class EditProfilePresenter extends MvpNullObjectBasePresenter<EditProfile
             getView().showAlert("Fill-up all fields");
         } else {
             getView().startLoading();
-            App.getInstance().getApiInterface().updateUser(Endpoints.UPDATEUSER,userId, firstName, lastName, contact, birthday, address, position)
+            App.getInstance().getApiInterface().updateUser(Endpoints.UPDATEUSER,userId, firstName, lastName, contact, birthday, address)
                     .enqueue(new Callback<User>() {
                         @Override
                         public void onResponse(Call<User> call, final Response<User> response) {
