@@ -48,13 +48,14 @@
                 android:orientation="vertical"
                 android:padding="@dimen/activity_vertical_margin">
 
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="112dp"
-                    android:layout_height="112dp"
+                <de.hdodenhof.circleimageview.CircleImageView
+                   android:id="@+id/imageView"
                     android:layout_gravity="center"
-                    android:paddingTop="@dimen/nav_header_vertical_spacing"
-                    tools:ignore="ContentDescription" />
+                    android:layout_marginTop="@dimen/nav_header_vertical_spacing"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:civ_fill_color="@color/dialog"
+                    />
 
                 <Button
                     android:id="@+id/btn_change_image"

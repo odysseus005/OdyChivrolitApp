@@ -22,6 +22,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -33,6 +35,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -41,6 +44,7 @@ import mychevroletconnect.com.chevroletapp.databinding.ActivityEditProfileBindin
 import io.realm.Realm;
 import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.model.data.User;
+import mychevroletconnect.com.chevroletapp.ui.register.RegisterActivity;
 import mychevroletconnect.com.chevroletapp.util.CircleTransform;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
@@ -55,6 +59,8 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
     private ProgressDialog progressDialog;
     private User user;
     private Dialog dialog;
+    private ArrayList<String> gender;
+    private ArrayList<String> civil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +84,7 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
 
         presenter.onStart();
         loadImage();
+        populateGenderAndCivil();
 
     }
 
@@ -94,7 +101,7 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
     private void loadImage() {
         String imageURL = "";
        // if (user.getImage() != null && !user.getImage().isEmpty()) {
-            imageURL = Endpoints.URL_IMAGE+user.getEmail();
+            imageURL = Endpoints.URL_IMAGE+user.getImage();
             Log.d("TAG",imageURL);
        // }
         Glide.with(this)
@@ -106,12 +113,12 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
     }
     public void onEdit() {
 
-        presenter.updateUser(user.getUserId() + "",
-                binding.firstName.getText().toString(),
-                binding.lastName.getText().toString(),
-                binding.contact.getText().toString(),
-                binding.birthday.getText().toString(),
-                binding.address.getText().toString(), user.getPosition());
+//        presenter.updateUser(user.getUserId() + "",
+//                binding.firstName.getText().toString(),
+//                binding.lastName.getText().toString(),
+//                binding.contact.getText().toString(),
+//                binding.birthday.getText().toString(),
+//                binding.address.getText().toString(), user.getPosition());
     }
 
     @Override
@@ -137,15 +144,7 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
         }
     }
 
-    @Override
-    public void onChangePassword(){
-        presenter.updateUser(user.getUserId() + "",
-                binding.firstName.getText().toString(),
-                binding.lastName.getText().toString(),
-                binding.contact.getText().toString(),
-                binding.birthday.getText().toString(),
-                binding.address.getText().toString(), user.getPosition());
-    }
+
 
 
     @Override
@@ -163,7 +162,7 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                binding.birthday.setText(dateFormatter.format(newDate.getTime()));
+                binding.etBirthday.setText(dateFormatter.format(newDate.getTime()));
             }
 
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -171,19 +170,13 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
 
     }
 
-    @Override
-    public void onPasswordChanged() {
-        if(dialog.isShowing()){
-            dialog.dismiss();
-            showAlert("Password Successfully Changed!");
-        }
-    }
+
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.profile, menu);
+       // getMenuInflater().inflate(R.menu.profile, menu);
         return true;
     }
 
@@ -311,7 +304,7 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
                 .setPositiveButton("UPLOAD", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        presenter.upload(user.getEmail(),imageFile);
+                        presenter.upload(user.getEmail()+".jpg",imageFile);
                     }
                 })
                 .setNegativeButton("CANCEL", null)
@@ -346,6 +339,47 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+
+    private void populateGenderAndCivil() {
+
+
+
+        gender = new ArrayList<>();
+        gender.add("Male");
+        gender.add("Female");
+
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_custom_item, gender);
+        binding.spGender.setAdapter(arrayAdapter);
+
+        if(!(user.getGender().equalsIgnoreCase("Male")))
+        binding.spGender.setSelection(1);
+
+
+
+        civil = new ArrayList<>();
+        civil.add("Single");
+        civil.add("Married");
+        civil.add("Widowed");
+        civil.add("Seperated");
+
+
+
+        ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<>(this, R.layout.spinner_custom_item,civil);
+        binding.spCivil.setAdapter(arrayAdapter2);
+
+        if(user.getCivil_status().equalsIgnoreCase("Single"))
+            binding.spCivil.setSelection(0);
+        else if((user.getCivil_status().equalsIgnoreCase("Married")))
+            binding.spCivil.setSelection(1);
+        else if((user.getCivil_status().equalsIgnoreCase("Widowed")))
+            binding.spCivil.setSelection(2);
+        else
+            binding.spCivil.setSelection(3);
+
+
     }
 
 

@@ -26,6 +26,7 @@ import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityMainBinding;
 import mychevroletconnect.com.chevroletapp.model.data.User;
 import mychevroletconnect.com.chevroletapp.ui.login.LoginActivity;
+import mychevroletconnect.com.chevroletapp.ui.profile.ProfileActivity;
 import mychevroletconnect.com.chevroletapp.util.CircleTransform;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.appBarMain.toolbar);
+        //getSupportActionBar().setIcon(R.mipmap.ic_launcher);
         getSupportActionBar().setTitle("Chevrolet App");
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout,
@@ -61,9 +63,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Menu nav_Menu =  binding.navView.getMenu();
         nav_Menu.findItem(R.id.nav_login).setVisible(false);
 
-       // MainTabAdapter mAdapter = new MainTabAdapter(getSupportFragmentManager());
-      //  binding.appBarMain.viewPager.setAdapter(mAdapter);
-       // binding.appBarMain.tabs.setupWithViewPager(binding.appBarMain.viewPager, true);
+        MainTabAdapter mAdapter = new MainTabAdapter(getSupportFragmentManager());
+        binding.appBarMain.viewPager.setAdapter(mAdapter);
+        binding.appBarMain.tabs.setupWithViewPager(binding.appBarMain.viewPager, true);
 
         //binding.appBarMain.tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
         txtName = (TextView) binding.navView.getHeaderView(0).findViewById(R.id.txt_name);
@@ -121,12 +123,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-           // startActivity(new Intent(this, EventListActivity.class));
+            startActivity(new Intent(this, ProfileActivity.class));
         } else if (id == R.id.nav_login) {
             startActivity(new Intent(this, LoginActivity.class));
         }else if (id == R.id.nav_dealer) {
 
-        } else if (id == R.id.nav_promo) {
+        }else if (id == R.id.nav_appointment) {
+           // startActivity(new Intent(this, MainActivity.class));
+        }
+        else if (id == R.id.nav_promo) {
 
         } else if (id == R.id.nav_showroom) {
 

@@ -38,5 +38,17 @@
 
         <activity android:name=".ui.forgot.ForgotPasswordActivity" />
 
+
+
+        <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.profile.edit.EditProfileActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Register"/>
+
+
     </application>
 </manifest>

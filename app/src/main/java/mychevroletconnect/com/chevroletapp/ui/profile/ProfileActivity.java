@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -48,33 +49,31 @@ public class ProfileActivity extends MvpViewStateActivity<ProfileView, ProfilePr
         setRetainInstance(true);
         realm = Realm.getDefaultInstance();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_profile);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("My Profile");
+
+        binding.toolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
+        binding.toolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
+
+       user = realm.where(User.class).findFirst();
+       if(user!=null) {
+           // binding.setProfile(user);
+           String imageURL = "";
+           imageURL = Endpoints.URL_IMAGE + user.getImage();
+           Log.d("TAG", imageURL);
+           Glide.with(ProfileActivity.this)
+                   .load(imageURL)
+                   .transform(new CircleTransform(ProfileActivity.this))
+                   .diskCacheStrategy(DiskCacheStrategy.ALL)
+                   .error(R.drawable.profile_default)
+                   .into(binding.layoutHeader.imageView);
+
+           getSupportActionBar().setTitle(user.getFullName());
 
 
-
-
-        user = realm.where(User.class).findFirstAsync();
-        user.addChangeListener(new RealmChangeListener<RealmModel>() {
-            @Override
-            public void onChange(RealmModel element) {
-                if (user.isLoaded() && user.isValid()) {
-                    binding.setProfile(user);
-                    String imageURL = "";
-                    imageURL = Endpoints.URL_IMAGE+user.getEmail();
-                        Log.d("TAG",imageURL);
-                    Glide.with(ProfileActivity.this)
-                            .load(imageURL)
-                            .transform(new CircleTransform(ProfileActivity.this))
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .error(R.drawable.profile_default)
-                            .into(binding.layoutHeader.imageView);
-                }
-            }
-        });
-        binding.setView(getMvpView());
+           binding.setProfile(user);
+           binding.setView(getMvpView());
+       }
     }
 
     @Override
@@ -153,6 +152,8 @@ public class ProfileActivity extends MvpViewStateActivity<ProfileView, ProfilePr
         dialogBinding.send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Log.d(">>>>",user.getPassword());
                 presenter.changePassword(dialogBinding.etCurrPassword.getText().toString(),
                         dialogBinding.etNewPassword.getText().toString(),
                         dialogBinding.etConfirmPass.getText().toString());
