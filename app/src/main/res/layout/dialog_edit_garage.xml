@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+
+        <variable
+            name="view"
+            type="mychevroletconnect.com.chevroletapp.ui.garage.GarageListView" />
+
+        <variable
+            name="garage"
+            type="mychevroletconnect.com.chevroletapp.model.data.Garage" />
+
+        <variable
+            name="contentVisible"
+            type="boolean" />
+
+    </data>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minWidth="400dp"
+        android:background="@color/dialog"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:padding="5dp"
+            android:gravity="center_vertical"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:scaleType="centerCrop"
+                android:tint="@color/white"
+                android:src="@drawable/ic_edit_garage_white"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Edit Car Profile "
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:background="@color/colorPrimary"
+            android:padding="@dimen/activity_vertical_margin">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="112dp"
+                android:layout_height="112dp"
+                android:layout_gravity="center"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                />
+
+            <Button
+                android:id="@+id/btn_change_image"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Select Car Picture"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Car Nickname"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+
+
+        <EditText
+            android:id="@+id/et_car_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.1234567890"
+            android:background="@drawable/edittext_selector"
+            android:hint="Car Nickname"
+            android:maxLength="150"
+            android:layout_marginTop="4dp"
+            android:text='@{garage.garageName}'
+            android:padding="12dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+            android:textColorHint="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Model"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+
+        <EditText
+            android:id="@+id/et_car_model"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.1234567890"
+            android:background="@drawable/edittext_selector"
+            android:hint="Model"
+            android:layout_marginTop="4dp"
+            android:text='@{garage.garageModel}'
+            android:maxLength="150"
+            android:padding="12dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+            android:textColorHint="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Year Model"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+        <EditText
+            android:id="@+id/et_car_year_model"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_selector"
+            android:hint="Year Model"
+            android:layout_marginTop="4dp"
+            android:text='@{garage.garageYear}'
+            android:inputType="number"
+            android:maxLength="4"
+            android:padding="12dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+            android:textColorHint="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Plate Number"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+        <EditText
+            android:id="@+id/et_car_plate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_selector"
+            android:hint="Plate Number"
+            android:layout_marginTop="4dp"
+            android:text='@{garage.garagePlate}'
+            android:maxLength="11"
+            android:padding="12dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+            android:textColorHint="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Chassis Number"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+        <EditText
+            android:id="@+id/et_car_chassis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_selector"
+            android:hint="Chassis Number"
+            android:layout_marginTop="4dp"
+            android:text='@{garage.garageChassis}'
+            android:maxLength="350"
+            android:lines="2"
+            android:inputType="number"
+            android:padding="12dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+            android:textColorHint="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Date of Purchased"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+
+        <FrameLayout
+            android:id="@+id/layout_car_dop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_spinner"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> view.onBirthdayEdit()}"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/et_car_dop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:hint="Date of Purchased"
+                android:text='@{garage.garagePurchase}'
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColorHint="@android:color/darker_gray" />
+
+
+
+        </FrameLayout>
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/editProfileCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/button_rounded_solid"
+                android:clickable="true"
+                android:padding="8dp"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
+                android:text="CANCEL"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+            <TextView
+                android:id="@+id/editProfileSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/button_rounded_solid"
+                android:clickable="true"
+                android:padding="8dp"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
+                android:text="SAVE"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    </ScrollView>
+</layout>

@@ -99,7 +99,7 @@ public class RegisterPresenter extends MvpNullObjectBasePresenter<RegisterView> 
                             String year,
                             String dop,String cid,String carname) {
 
-        if (model.equals("") || chasis.equals("") || plate.equals("") || year.equals("")||dop.equals("")||carname.equals("")) {
+        if (model.equals("")  || plate.equals("") || year.equals("")||dop.equals("")||carname.equals("")) {
             getView().showAlert("Fill-up all fields");
         }else {
             getView().startLoading();

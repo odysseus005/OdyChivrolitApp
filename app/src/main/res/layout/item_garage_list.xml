@@ -135,6 +135,18 @@
 
         </LinearLayout>
 
+        <android.support.design.widget.FloatingActionButton
+            android:layout_height="50dp"
+            android:layout_width="50dp"
+            app:layout_anchor="@id/garageListCardview"
+            app:layout_anchorGravity="right|end|bottom"
+            app:fabSize="normal"
+            android:src="@drawable/ic_delete"
+            android:layout_marginRight="75dp"
+            android:scaleType="center"
+            android:id="@+id/garageListEdit"
+            android:clickable="true"/>
+
 
         <android.support.design.widget.FloatingActionButton
             android:layout_height="50dp"
@@ -143,22 +155,13 @@
             app:layout_anchorGravity="right|end|bottom"
             app:fabSize="normal"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_appointment_add"
+            android:tint="@color/white"
+            android:src="@drawable/ic_edit_garage_white"
             android:scaleType="center"
             android:id="@+id/garageListDelete"
             android:clickable="true"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_height="50dp"
-            android:layout_width="50dp"
-            app:layout_anchor="@id/garageListCardview"
-            app:layout_anchorGravity="right|end|bottom"
-            app:fabSize="normal"
-            android:src="@drawable/ic_appointment_add"
-            android:layout_marginRight="75dp"
-            android:scaleType="center"
-            android:id="@+id/garageListEdit"
-            android:clickable="true"/>
+
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

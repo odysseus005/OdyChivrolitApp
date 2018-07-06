@@ -49,20 +49,9 @@ public class GarageListAdapter extends RecyclerView.Adapter<GarageListAdapter.Vi
                 false);
 
 
-        itemEventBinding.garageListEdit.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on click
-
-            }
-        });
-
-        itemEventBinding.garageListDelete.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Perform action on click
 
 
-            }
-        });
+
 
 
 
@@ -70,10 +59,29 @@ public class GarageListAdapter extends RecyclerView.Adapter<GarageListAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(GarageListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(GarageListAdapter.ViewHolder holder, final int position) {
         holder.itemEventBinding.setGarage(garage.get(position));
         holder.itemEventBinding.setView(view);
 
+
+
+        holder.itemEventBinding.garageListEdit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+
+                view.setEditGarageList(garage.get(position));
+
+            }
+        });
+
+
+        holder.itemEventBinding.garageListDelete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+
+
+            }
+        });
 
         Glide.with(holder.itemView.getContext())
                 .load(Endpoints.URL_IMAGE+garage.get(position).getGarageId()+garage.get(position).getGarageChassis())

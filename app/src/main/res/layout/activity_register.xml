@@ -420,7 +420,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext_selector"
-                android:hint="Chassis Number"
+                android:hint="Chassis Number(Optional)"
                 android:maxLength="350"
                 android:lines="2"
                 android:inputType="number"

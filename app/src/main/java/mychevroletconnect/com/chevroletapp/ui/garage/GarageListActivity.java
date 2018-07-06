@@ -1,5 +1,7 @@
 package mychevroletconnect.com.chevroletapp.ui.garage;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -18,16 +21,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityGarageBinding;
+import mychevroletconnect.com.chevroletapp.databinding.DialogAddGarageBinding;
+import mychevroletconnect.com.chevroletapp.databinding.DialogEditGarageBinding;
 import mychevroletconnect.com.chevroletapp.model.data.Garage;
 import mychevroletconnect.com.chevroletapp.model.data.User;
 
@@ -46,7 +57,8 @@ public class GarageListActivity
     private GarageListAdapter garageListAdapter;
     private String searchText;
     public String id;
-
+    DialogEditGarageBinding editDialogBinding;
+    DialogAddGarageBinding addDialogBinding;
 
 
 
@@ -95,7 +107,11 @@ public class GarageListActivity
 
 
 
-
+        binding.addGarage.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                addCar();
+            }
+        });
 
 
     }
@@ -251,11 +267,134 @@ public class GarageListActivity
 
 
 
+    @Override
+    public void setDeleteGarageList(Garage event) {
+
+
+        showError("SASASAS");
+
+    }
+
+    @Override
+    public void setEditGarageList(Garage event) {
+
+
+      Dialog dialog = new Dialog(this);
+        editDialogBinding = DataBindingUtil.inflate(
+                getLayoutInflater(),
+                R.layout.dialog_edit_garage,
+                null,
+                false);
+        editDialogBinding.btnChangeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(GarageListActivity.this, editDialogBinding.btnChangeImage);
+                popupMenu.inflate(R.menu.edit_product_image);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_select_picture:
+                                selectPicture();
+                                break;
+                            case R.id.action_take_picture:
+                                takePicture();
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                popupMenu.show();
+            }
+        });
+
+
+    }
 
 
 
     @Override
     public void showGarageListDetails(Garage event) {
+
+
+    }
+
+
+    @Override
+    public void onBirthdayClicked() {
+        Calendar newCalendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                addDialogBinding.etCarDop.setText(dateFormatter.format(newDate.getTime()));
+            }
+
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
+
+    }
+
+
+    @Override
+    public void onBirthdayEdit() {
+        Calendar newCalendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                editDialogBinding.etCarDop.setText(dateFormatter.format(newDate.getTime()));
+            }
+
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
+
+    }
+
+
+    public void addCar()
+    {
+
+      final Dialog dialog = new Dialog(this);
+
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+        addDialogBinding = DataBindingUtil.inflate(
+                getLayoutInflater(),
+                R.layout.dialog_add_garage,
+                null,
+                false);
+
+
+        addDialogBinding.setView(getMvpView());
+
+
+        addDialogBinding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        addDialogBinding.send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.registerCar(addDialogBinding.etCarModel.getText().toString(),
+                        addDialogBinding.etCarChassis.getText().toString(),
+                        addDialogBinding.etCarPlate.getText().toString(),
+                        addDialogBinding.etCarYearModel.getText().toString(),
+                        addDialogBinding.etCarDop.getText().toString(),
+                        String.valueOf(user.getUserId()),
+                        addDialogBinding.etCarName.getText().toString());
+                //dialog.dismiss();
+            }
+        });
+        dialog.setContentView(addDialogBinding.getRoot());
+        dialog.setCancelable(false);
+        dialog.show();
 
 
     }

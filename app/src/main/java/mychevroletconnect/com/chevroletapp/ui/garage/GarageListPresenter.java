@@ -4,13 +4,16 @@ import android.util.Log;
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
+import java.io.IOException;
 import java.util.List;
 
 import io.realm.Realm;
 import mychevroletconnect.com.chevroletapp.app.App;
+import mychevroletconnect.com.chevroletapp.app.Constants;
 import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.model.data.Garage;
 import mychevroletconnect.com.chevroletapp.model.response.GarageListResponse;
+import mychevroletconnect.com.chevroletapp.model.response.ResultResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,6 +75,55 @@ public class GarageListPresenter extends MvpBasePresenter<GarageListView> {
     }
 
 
+    public void registerCar(String model,
+                            String chasis,
+                            String plate,
+                            String year,
+                            String dop,String cid,String carname) {
 
+        if (model.equals("")  || plate.equals("") || year.equals("")||dop.equals("")||carname.equals("")) {
+            getView().showError("Fill-up all fields");
+        }else {
+            //getView().startLoading();
+            App.getInstance().getApiInterface().registerCar(Endpoints.ADD_GARAGE,chasis,model,year,plate,dop,cid,carname)
+                    .enqueue(new Callback<ResultResponse>() {
+                        @Override
+                        public void onResponse(Call<ResultResponse> call, Response<ResultResponse> response) {
+                           // getView().stopLoading();
+                            if (response.isSuccessful()) {
+                                switch (response.body().getResult()) {
+                                    case Constants.SUCCESS:
+                                        getView().showError("Registration Successful!");
+
+                                        break;
+                                    case Constants.EMAIL_EXIST:
+                                        getView().showError("Car already exists");
+                                        break;
+                                    default:
+                                        getView().showError("Can't Connect to Server");
+                                        break;
+                                }
+                            } else {
+                                try {
+                                    String errorBody = response.errorBody().string();
+                                    getView().showError(errorBody);
+                                } catch (IOException e) {
+                                    //Log.e(TAG, "onResponse: Error parsing error body as string", e);
+                                    getView().showError(response.message() != null ?
+                                            response.message() : "Unknown Exception");
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultResponse> call, Throwable t) {
+                            //Log.e(TAG, "onFailure: Error calling register api", t);
+                          //  getView().stopLoading();
+                            getView().showError("Error Connecting to Server");
+                        }
+                    });
+        }
+
+    }
 
 }
