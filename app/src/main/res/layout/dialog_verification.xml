@@ -45,11 +45,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:textSize="18sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         android:gravity="center"
-                        android:hint="This account is still on the process of verification please wait for the confirmation via email. Thank you!"
-
+                        android:padding="5dp"
+                        android:hint="A code has been sent to your email account. "
                         android:textColor="@color/gray"
 
                         />
@@ -64,7 +64,6 @@
                         android:layout_marginTop="10dp"
                         android:background="@drawable/edittext_selector"
                         android:hint="Code"
-                        android:visibility="gone"
                         android:gravity="center"
                         android:layout_gravity="center"
                         android:maxLength="150"
@@ -85,7 +84,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/close"
+                        android:id="@+id/send"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:background="@drawable/rounded_button_solid"
@@ -93,7 +92,7 @@
                         android:padding="8dp"
                         android:paddingEnd="20dp"
                         android:paddingStart="20dp"
-                        android:text="CLOSE"
+                        android:text="SEND"
                         android:layout_marginRight="@dimen/activity_half_margin"
                         android:textAllCaps="true"
                         android:layout_gravity="center"

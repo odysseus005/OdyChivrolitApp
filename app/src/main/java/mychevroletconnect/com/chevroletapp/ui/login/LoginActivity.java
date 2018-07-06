@@ -2,6 +2,7 @@ package mychevroletconnect.com.chevroletapp.ui.login;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.media.Image;
@@ -198,9 +199,22 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
                     R.layout.dialog_verification,
                     null,
                     false);
-            dialogBinding.close.setOnClickListener(new View.OnClickListener() {
+
+            dialogBinding.send.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(dialogBinding.etCode.getText().toString().equalsIgnoreCase(user.getCode()))
+                        presenter.firstLogin(String.valueOf(user.getUserId()));
+                    else
+                        showAlert("Invalid Code");
+
+                }
+            });
+
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
+                @Override
+                public void onCancel(DialogInterface dialog)
+                {
 
                     final Realm realm = Realm.getDefaultInstance();
                     realm.executeTransactionAsync(new Realm.Transaction() {
@@ -223,13 +237,11 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
                         }
                     });
 
-                    dialog.dismiss();
-
                 }
             });
 
             dialog.setContentView(dialogBinding.getRoot());
-            dialog.setCancelable(false);
+            dialog.setCancelable(true);
             dialog.show();
 
 
@@ -259,7 +271,7 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-            // startActivity(new Intent(this, EventListActivity.class));
+            // startActivity(new Intent(this, GarageListActivity.class));
         } else if (id == R.id.nav_login) {
             startActivity(new Intent(this, LoginActivity.class));
         }else if (id == R.id.nav_dealer) {

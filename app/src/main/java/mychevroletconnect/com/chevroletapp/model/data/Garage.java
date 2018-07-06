@@ -33,11 +33,23 @@ public class Garage extends RealmObject {
     @Expose
     private String garagePlate;
 
-
-
     @SerializedName("g_purchaseDate")
     @Expose
     private String garagePurchase;
+
+
+    @SerializedName("g_name")
+    @Expose
+    private String garageName;
+
+
+    public String getGarageName() {
+        return garageName;
+    }
+
+    public void setGarageName(String garageName) {
+        this.garageName = garageName;
+    }
 
     public int getGarageId() {
         return garageId;

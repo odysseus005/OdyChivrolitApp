@@ -38,7 +38,9 @@
 
         <activity android:name=".ui.forgot.ForgotPasswordActivity" />
 
-
+        <activity
+            android:name=".ui.garage.GarageListActivity"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.profile.ProfileActivity"

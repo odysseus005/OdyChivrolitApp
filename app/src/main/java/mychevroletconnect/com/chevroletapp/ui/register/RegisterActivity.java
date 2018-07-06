@@ -98,7 +98,8 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
                 binding.etCarPlate.getText().toString(),
                 binding.etCarYearModel.getText().toString(),
                 binding.etCarDop.getText().toString(),
-              car_id);
+              car_id,
+                binding.etCarName.getText().toString());
     }
 
 

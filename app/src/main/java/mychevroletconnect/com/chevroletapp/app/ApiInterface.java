@@ -3,9 +3,12 @@ package mychevroletconnect.com.chevroletapp.app;
 
 
 
+import java.util.List;
 import java.util.Map;
 
+import mychevroletconnect.com.chevroletapp.model.data.Garage;
 import mychevroletconnect.com.chevroletapp.model.data.User;
+import mychevroletconnect.com.chevroletapp.model.response.GarageListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.LoginResponse;
 import mychevroletconnect.com.chevroletapp.model.response.ResultResponse;
 import okhttp3.MultipartBody;
@@ -45,16 +48,12 @@ public interface ApiInterface {
                                   @Field(Constants.CIVIL_STATUS)String civil
     );
 
+
     @FormUrlEncoded
-    @POST(Endpoints.GARAGE)
-    Call<ResultResponse> registerCar(@Field(Constants.TAG) String tag,
-                                     @Field(Constants.GARAGE_CHASSIS) String garage_chassis,
-                                     @Field(Constants.GARAGE_MODEL) String garage_model,
-                                     @Field(Constants.GARAGE_YEAR_MODEL) String garage_year,
-                                     @Field(Constants.GARAGE_PLATE) String garage_plate,
-                                     @Field(Constants.GARAGE_PURCHASE) String garage_purchase,
-                                     @Field(Constants.USER_ID) String user_id
-    );
+    @POST(Endpoints.CLIENT)
+    Call<LoginResponse> updateUserCode(@Field(Constants.TAG) String tag,
+                                       @Field(Constants.USER_ID) String user_id);
+
 
 
     @FormUrlEncoded
@@ -81,6 +80,27 @@ public interface ApiInterface {
     @POST("upload.php?")
     Call<ResultResponse> uploadFile(@Part MultipartBody.Part file, @Part("name") RequestBody name);
 
+
+
+
+
+    //Garage API
+
+    @FormUrlEncoded
+    @POST(Endpoints.GARAGE)
+    Call<ResultResponse> registerCar(@Field(Constants.TAG) String tag,
+                                     @Field(Constants.GARAGE_CHASSIS) String garage_chassis,
+                                     @Field(Constants.GARAGE_MODEL) String garage_model,
+                                     @Field(Constants.GARAGE_YEAR_MODEL) String garage_year,
+                                     @Field(Constants.GARAGE_PLATE) String garage_plate,
+                                     @Field(Constants.GARAGE_PURCHASE) String garage_purchase,
+                                     @Field(Constants.USER_ID) String user_id,
+                                     @Field(Constants.GARAGE_NAME) String garage_name
+    );
+
+    @FormUrlEncoded
+    @POST(Endpoints.GARAGE)
+    Call<GarageListResponse> getGarageList(@Field(Constants.TAG) String tag, @Field(Constants.USER_ID) String garage_id );
 
 
 }

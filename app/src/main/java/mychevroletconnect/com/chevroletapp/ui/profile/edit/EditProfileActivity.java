@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -44,7 +43,6 @@ import mychevroletconnect.com.chevroletapp.databinding.ActivityEditProfileBindin
 import io.realm.Realm;
 import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.model.data.User;
-import mychevroletconnect.com.chevroletapp.ui.register.RegisterActivity;
 import mychevroletconnect.com.chevroletapp.util.CircleTransform;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
@@ -108,7 +106,7 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
                 .load(imageURL)
                 .transform(new CircleTransform(this))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .error(R.drawable.profile_default)
+                .error(R.drawable.placeholder_profile)
                 .into(binding.imageView);
     }
     public void onEdit() {

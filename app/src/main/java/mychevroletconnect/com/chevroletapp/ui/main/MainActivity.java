@@ -19,18 +19,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmModel;
 import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityMainBinding;
 import mychevroletconnect.com.chevroletapp.model.data.User;
+import mychevroletconnect.com.chevroletapp.ui.garage.GarageListActivity;
 import mychevroletconnect.com.chevroletapp.ui.login.LoginActivity;
 import mychevroletconnect.com.chevroletapp.ui.profile.ProfileActivity;
 import mychevroletconnect.com.chevroletapp.util.CircleTransform;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -95,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Glide.with(this)
                 .load(imageURL)
                 .transform(new CircleTransform(this))
-                .error(R.drawable.profile_default)
+                .error(R.drawable.placeholder_profile)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfile);
 
@@ -128,8 +124,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(this, LoginActivity.class));
         }else if (id == R.id.nav_dealer) {
 
-        }else if (id == R.id.nav_appointment) {
-           // startActivity(new Intent(this, MainActivity.class));
+        }else if (id == R.id.nav_garage) {
+            startActivity(new Intent(this, GarageListActivity.class));
         }
         else if (id == R.id.nav_promo) {
 
