@@ -368,6 +368,19 @@
             </LinearLayout>
 
             <EditText
+                android:id="@+id/et_car_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.1234567890"
+                android:background="@drawable/edittext_selector"
+                android:hint="Car Nickname"
+                android:maxLength="150"
+                android:padding="12dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                android:textColorHint="@android:color/darker_gray" />
+
+
+            <EditText
                 android:id="@+id/et_car_model"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -407,7 +420,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext_selector"
-                android:hint="Chassis Number"
+                android:hint="Chassis Number(Optional)"
                 android:maxLength="350"
                 android:lines="2"
                 android:inputType="number"

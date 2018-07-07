@@ -4,12 +4,9 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,8 +19,6 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmModel;
 import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityProfileBinding;
@@ -65,7 +60,7 @@ public class ProfileActivity extends MvpViewStateActivity<ProfileView, ProfilePr
                    .load(imageURL)
                    .transform(new CircleTransform(ProfileActivity.this))
                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                   .error(R.drawable.profile_default)
+                   .error(R.drawable.placeholder_profile)
                    .into(binding.layoutHeader.imageView);
 
            getSupportActionBar().setTitle(user.getFullName());

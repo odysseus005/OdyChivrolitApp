@@ -2,10 +2,12 @@ package mychevroletconnect.com.chevroletapp.app;
 
 public class Constants {
     // id to handle the notification in the notification tray
-    public static final int NOTIFICATION_ID = 100;
-    public static final int NOTIFICATION_ID_BIG_IMAGE = 101;
 
 
+
+    public static final String SUCCESS = "success";
+    public static final String MESSAGE = "message";
+    public static final String DATA = "data";
 
     public static final String ID = "id";
     public static final String TAG = "tag";
@@ -15,7 +17,6 @@ public class Constants {
     public static final String REPORT_TYPE = "reportType";
 
     //Login and Register
-    public static final String SUCCESS = "success";
     public static final String NOT_EXIST = "doesNotExist";
     public static final String WRONG_PASSWORD = "wrong";
     public static final String EMAIL_EXIST = "existing";
@@ -42,6 +43,7 @@ public class Constants {
     public static final String GARAGE_PLATE = "g_plateNum";
     public static final String GARAGE_CHASSIS = "g_chassis";
     public static final String GARAGE_PURCHASE = "g_purchaseDate";
+    public static final String GARAGE_NAME = "g_name";
 
    
 
