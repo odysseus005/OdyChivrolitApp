@@ -14,6 +14,10 @@ public interface AppointmentView extends MvpView {
 
     void setAppointment();
 
+    void loadGarage();
+
+    void loadDealer();
+
     void showAppointmentDetails(Appointment appoint);
 
     void stopRefresh();
@@ -21,7 +25,9 @@ public interface AppointmentView extends MvpView {
     void showError(String message);
 
     void showReturn(String message);
+    void startLoading();
 
+    void stopLoading();
 
 
 

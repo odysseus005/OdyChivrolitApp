@@ -19,6 +19,7 @@ import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.databinding.ItemGarageListBinding;
 import mychevroletconnect.com.chevroletapp.model.data.Garage;
+import mychevroletconnect.com.chevroletapp.util.DateTimeUtils;
 
 
 public class GarageListAdapter extends RecyclerView.Adapter<GarageListAdapter.ViewHolder> {
@@ -79,12 +80,16 @@ public class GarageListAdapter extends RecyclerView.Adapter<GarageListAdapter.Vi
             public void onClick(View v) {
                 // Perform action on click
 
+                view.setDeleteGarageList(garage.get(position));
+
 
             }
         });
 
+        holder.itemEventBinding.garageDop.setText(DateTimeUtils.toReadable(garage.get(position).getGaragePurchase()));
+
         Glide.with(holder.itemView.getContext())
-                .load(Endpoints.URL_IMAGE+garage.get(position).getGarageId()+garage.get(position).getGarageChassis())
+                .load(Endpoints.URL_IMAGE+garage.get(position).getGarageId()+garage.get(position).getGarageName())
                 .centerCrop()
                 .error(R.drawable.placeholder_garage)
                 .into(holder.itemEventBinding.garageListImage);

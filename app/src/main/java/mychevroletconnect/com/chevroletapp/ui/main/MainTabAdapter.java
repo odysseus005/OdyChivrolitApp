@@ -8,10 +8,7 @@ import mychevroletconnect.com.chevroletapp.ui.main.currentAppointment.Appointmen
 import mychevroletconnect.com.chevroletapp.ui.main.pastAppointment.PastAppointmentAppointmentActivity;
 
 
-/**
- * @author pocholomia
- * @since 25/10/2016
- */
+
 class MainTabAdapter extends FragmentStatePagerAdapter {
 
     private static final String[] TITLES = {"CURRENT", "PAST"};

@@ -100,6 +100,25 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(Endpoints.GARAGE)
+    Call<ResultResponse> editCar(@Field(Constants.TAG) String tag,
+                                     @Field(Constants.GARAGE_CHASSIS) String garage_chassis,
+                                     @Field(Constants.GARAGE_MODEL) String garage_model,
+                                     @Field(Constants.GARAGE_YEAR_MODEL) String garage_year,
+                                     @Field(Constants.GARAGE_PLATE) String garage_plate,
+                                     @Field(Constants.GARAGE_PURCHASE) String garage_purchase,
+                                     @Field(Constants.GARAGE_ID) String car_id,
+                                     @Field(Constants.GARAGE_NAME) String garage_name
+    );
+
+
+    @FormUrlEncoded
+    @POST(Endpoints.GARAGE)
+    Call<ResultResponse> deleteCar(@Field(Constants.TAG) String tag, @Field(Constants.GARAGE_ID) String garage_id,@Field(Constants.USER_ID) String user_id );
+
+
+
+    @FormUrlEncoded
+    @POST(Endpoints.GARAGE)
     Call<GarageListResponse> getGarageList(@Field(Constants.TAG) String tag, @Field(Constants.USER_ID) String garage_id );
 
 

@@ -81,21 +81,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="May 29"
-                    android:id="@+id/garageListDate"
+                    android:text="@{garage.garagePlate}"
                     android:gravity="center"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:textColor="@color/colorAccentDark" />
 
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="2018"
-                    android:gravity="center"
-                    android:id="@+id/garageListYear"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/colorAccentDark" />
 
             </LinearLayout>
 
@@ -116,15 +107,26 @@
                     android:layout_marginLeft="3dp"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                     android:textColor="@color/black" />
+
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Open SUSE Conference"
-                    android:drawableLeft="@drawable/ic_location_on"
+                    android:text='@{garage.garageModel+" "+garage.garageYear}'
                     android:drawablePadding="1dp"
                     android:maxLines="2"
                     android:ellipsize="end"
-                    android:id="@+id/garageListLocation"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:textColor="@color/black" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="1dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:id="@+id/garageDop"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
                     android:textColor="@color/black" />
 
@@ -144,7 +146,7 @@
             android:src="@drawable/ic_delete"
             android:layout_marginRight="75dp"
             android:scaleType="center"
-            android:id="@+id/garageListEdit"
+            android:id="@+id/garageListDelete"
             android:clickable="true"/>
 
 
@@ -158,7 +160,7 @@
             android:tint="@color/white"
             android:src="@drawable/ic_edit_garage_white"
             android:scaleType="center"
-            android:id="@+id/garageListDelete"
+            android:id="@+id/garageListEdit"
             android:clickable="true"/>
 
 

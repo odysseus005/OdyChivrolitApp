@@ -10,13 +10,15 @@ public interface GarageListView extends MvpView {
 
 
 
+    void startLoading();
 
+    void stopLoading();
 
     void setDeleteGarageList(Garage garage);
 
     void onBirthdayClicked();
 
-    void onBirthdayEdit();
+
 
     void setEditGarageList(Garage garage);
 
@@ -27,6 +29,10 @@ public interface GarageListView extends MvpView {
     void stopRefresh();
 
     void showError(String message);
+
+    void closeDialog(String message);
+
+    void onRefresh();
 
 
 

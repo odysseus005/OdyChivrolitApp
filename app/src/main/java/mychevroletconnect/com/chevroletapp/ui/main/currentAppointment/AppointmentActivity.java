@@ -1,6 +1,8 @@
 package mychevroletconnect.com.chevroletapp.ui.main.currentAppointment;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,6 +29,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 
@@ -42,7 +45,11 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityAppointmentCurrentBinding;
+import mychevroletconnect.com.chevroletapp.databinding.DialogAddAppointmentBinding;
+import mychevroletconnect.com.chevroletapp.databinding.DialogChooseDealerBinding;
 import mychevroletconnect.com.chevroletapp.model.data.Appointment;
+import mychevroletconnect.com.chevroletapp.model.data.Dealer;
+import mychevroletconnect.com.chevroletapp.model.data.Garage;
 import mychevroletconnect.com.chevroletapp.model.data.User;
 
 
@@ -53,16 +60,23 @@ public class AppointmentActivity
         extends MvpViewStateFragment<AppointmentView, AppointmentPresenter>
         implements SwipeRefreshLayout.OnRefreshListener, AppointmentView {
 
+
+    private ProgressDialog progressDialog;
     private static final String TAG = AppointmentActivity.class.getSimpleName();
     private ActivityAppointmentCurrentBinding binding;
     private Realm realm;
     private User user;
     private RealmResults<Appointment> appointmentlmResults;
+    private RealmResults<Garage> garageRealmResults;
+    private RealmResults<Dealer> dealerRealmResults;
     private String searchText;
     public String id;
+    private GarageAdapter garageListAdapter;
+    private DealerAdapter dealerListAdapter;
     private AppointmentAdapter appointmentListAdapter;
-   // private DialogAppointmentProfileBinding dialogBinding;
-
+    private DialogAddAppointmentBinding dialogBinding;
+    private DialogChooseDealerBinding dealerBinding;
+    private Dialog dialog;
 
 
     public AppointmentActivity(){
@@ -120,24 +134,19 @@ public class AppointmentActivity
             Log.d(TAG, "No User found");
             //  finish();
         }
-       appointmentListAdapter = new AppointmentAdapter(getActivity(), getMvpView());
-        binding.recyclerView.setAdapter(appointmentListAdapter);
 
         presenter.onStart();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Appointment");
 
+        garageListAdapter = new GarageAdapter(getActivity(), getMvpView());
+        dealerListAdapter = new DealerAdapter(getActivity(), getMvpView());
         presenter.loadAppointmentList(String.valueOf(user.getUserId()));
-
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Appointment");
-
-
         appointmentListAdapter = new AppointmentAdapter(getActivity(), getMvpView());
         binding.recyclerView.setAdapter(appointmentListAdapter);
-
-
         binding.swipeRefreshLayout.setOnRefreshListener(this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-       // binding.recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        // binding.recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -149,19 +158,16 @@ public class AppointmentActivity
         });
 
 
-
         binding.attendeeScan.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                setAppointment();
+
+                presenter.loadGarageList(user.getUserId());
+
             }
         });
 
 
-
-
-
-        }
-
+    }
 
     @NonNull
     @Override
@@ -262,19 +268,12 @@ public class AppointmentActivity
         realm = Realm.getDefaultInstance();
         User user = realm.where(User.class).findFirst();
         appointmentlmResults = realm.where(Appointment.class).findAll();
-
-
-
             if (appointmentlmResults.isLoaded() && appointmentlmResults.isValid()) {
                 getMvpView().setAppointmentList();
-
             }else
             {
                 presenter.loadAppointmentList(String.valueOf(user.getUserId()));
-
             }
-
-
     }
 
     @Override
@@ -300,6 +299,23 @@ public class AppointmentActivity
     }
 
 
+
+    @Override
+    public void startLoading() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("Loading...");
+            progressDialog.setCancelable(false);
+        }
+        progressDialog.show();
+    }
+
+    @Override
+    public void stopLoading() {
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
 
 
     @Override
@@ -331,81 +347,154 @@ public class AppointmentActivity
     public void showAppointmentDetails(final Appointment attendee) {
 
 
-//        dialogBinding = DataBindingUtil.inflate(getLayoutInflater(),
-//                R.layout.dialog_attendee_profile, null, false);
-//        final AlertDialog alert = new AlertDialog.Builder(getActivity())
-//                .create();
-//        alert.setCancelable(true);
-//        alert.setView(dialogBinding.getRoot(),0,0,0,0);
-//        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        dialogBinding.setProfile(attendee);
-//        dialogBinding.setView(getMvpView());
-//        int pictureSwitcher;
-//
-//        int min = 1;
-//        int max = 2;
-//
-//        Random r = new Random();
-//        int i1 = r.nextInt(max - min + 1) + min;
-//
-//        if(i1==1)
-//            pictureSwitcher = R.drawable.ic_profile_m;
-//        else
-//            pictureSwitcher = R.drawable.ic_profile_g;
-//
-//
-//        Glide.with(this)
-//                .load(pictureSwitcher)
-//                .transform(new CircleTransform(getActivity()))
-//                .into(dialogBinding.imageRunnerProfile);
-//
-//
-//        if(attendee.getStatus().equals("1"))
-//        {
-//            Glide.with(this)
-//                    .load(R.drawable.ic_attendance_check)
-//                    .transform(new CircleTransform(getActivity()))
-//                    .into(dialogBinding.attendeeStatusDetail);
-//
-//            dialogBinding.attendeeStatusDetailCard.setCardBackgroundColor(getContext().getResources().getColor(R.color.greenSuccessDark));
-//
-//
-//            dialogBinding.attendeeProfileMark.setVisibility(View.GONE);
-//        }else
-//        {
-//
-//            dialogBinding.attendeeProfileMark.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//
-//                    presenter.markAppointment(eventID,attendee.getId(),token.getToken());
-//                    alert.dismiss();
-//
-//                }
-//            });
-//
-//        }
-//
-//
-//        dialogBinding.runnerProfileClose.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                alert.dismiss();
-//            }
-//        });
-//        alert.show();
     }
 
 
+        @Override
+        public void loadGarage()
+        {
+            garageRealmResults = realm.where(Garage.class).findAll();
+            garageListAdapter.setGarageResult(realm.copyToRealmOrUpdate(garageRealmResults.where()
+                    .findAll()));
+            garageListAdapter.notifyDataSetChanged();
 
+
+            if(garageListAdapter.getItemCount()==0)
+            {
+               showError("No Available Cars");
+            }else
+            {
+                setAppointment();
+            }
+
+
+        }
+
+
+    @Override
+    public void loadDealer()
+    {
+        dealerRealmResults = realm.where(Dealer.class).findAll();
+        dealerListAdapter.setDealerResult(realm.copyToRealmOrUpdate(dealerRealmResults.where()
+                .findAll()));
+        dealerListAdapter.notifyDataSetChanged();
+
+
+        if(dealerListAdapter.getItemCount()==0)
+        {
+            showError("Can't Connect to Server");
+        }else
+        {
+            chooseDelear();
+        }
+
+
+    }
 
 
     @Override
     public void setAppointment(){
 
 
+
+        dialog = new Dialog(getContext());
+
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+        dialogBinding = DataBindingUtil.inflate(
+                getLayoutInflater(),
+                R.layout.dialog_add_appointment,
+                null,
+                false);
+
+
+        dialogBinding.setView(getMvpView());
+
+
+        dialogBinding.recyclerView.setAdapter(garageListAdapter);
+
+
+        dialogBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL, false));
+        dialogBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
+        dialogBinding.layoutDealer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              presenter.loadDealerList(user.getUserId());
+            }
+        });
+
+        dialogBinding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialogBinding.send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        dialog.setContentView(dialogBinding.getRoot());
+        dialog.setCancelable(false);
+        dialog.show();
+
+
     }
+
+
+
+
+    public void chooseDelear()
+    {
+
+
+        dialog = new Dialog(getContext());
+
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+        dealerBinding = DataBindingUtil.inflate(
+                getLayoutInflater(),
+                R.layout.dialog_choose_dealer,
+                null,
+                false);
+
+
+        dealerBinding.setView(getMvpView());
+
+
+        dealerBinding.searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                searchText = query;
+               // prepareList();
+
+                return true;
+
+            }
+        });
+
+        dealerBinding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+
 
 
 

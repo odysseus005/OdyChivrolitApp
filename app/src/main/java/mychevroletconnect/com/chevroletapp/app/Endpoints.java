@@ -26,8 +26,8 @@ public class Endpoints {
     public static final String GARAGE = "new_car.php?";
     public static final String GET_GARAGE = "allGarage";
     public static final String ADD_GARAGE = "registerGarageCar";
-    public static final String UPDATE_GARAGE = "updateEmployee";
-    public static final String DELETE_GARAGE = "deleteEmployee";
+    public static final String UPDATE_GARAGE = "editGarage";
+    public static final String DELETE_GARAGE = "deleteGarage";
 
 
 
