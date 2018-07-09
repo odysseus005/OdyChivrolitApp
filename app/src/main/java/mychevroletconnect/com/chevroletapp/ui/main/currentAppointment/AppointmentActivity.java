@@ -38,6 +38,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import io.realm.Case;
@@ -50,6 +51,7 @@ import mychevroletconnect.com.chevroletapp.databinding.DialogChooseDealerBinding
 import mychevroletconnect.com.chevroletapp.model.data.Appointment;
 import mychevroletconnect.com.chevroletapp.model.data.Dealer;
 import mychevroletconnect.com.chevroletapp.model.data.Garage;
+import mychevroletconnect.com.chevroletapp.model.data.Service;
 import mychevroletconnect.com.chevroletapp.model.data.User;
 
 
@@ -69,6 +71,7 @@ public class AppointmentActivity
     private RealmResults<Appointment> appointmentlmResults;
     private RealmResults<Garage> garageRealmResults;
     private RealmResults<Dealer> dealerRealmResults;
+    private RealmResults<Service> servicesRealmResults;
     private String searchText;
     public String id;
     private GarageAdapter garageListAdapter;
@@ -76,8 +79,8 @@ public class AppointmentActivity
     private AppointmentAdapter appointmentListAdapter;
     private DialogAddAppointmentBinding dialogBinding;
     private DialogChooseDealerBinding dealerBinding;
-    private Dialog dialog;
-
+    private Dialog dialog,dialog2;
+    private ArrayList<String> civil;
 
     public AppointmentActivity(){
 
@@ -393,6 +396,25 @@ public class AppointmentActivity
 
 
     @Override
+    public void loadService()
+    {
+       servicesRealmResults = realm.where(Service.class).findAll();
+
+
+
+        if(servicesRealmResults.isEmpty())
+        {
+            showError("Can't Connect to Server");
+        }else
+        {
+            chooseDelear();
+        }
+
+
+    }
+
+
+    @Override
     public void setAppointment(){
 
 
@@ -453,9 +475,9 @@ public class AppointmentActivity
     {
 
 
-        dialog = new Dialog(getContext());
+        dialog2 = new Dialog(getContext());
 
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog2.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
         dealerBinding = DataBindingUtil.inflate(
                 getLayoutInflater(),
@@ -465,6 +487,14 @@ public class AppointmentActivity
 
 
         dealerBinding.setView(getMvpView());
+
+
+        dealerBinding.recyclerView.setAdapter(dealerListAdapter);
+
+
+        dealerBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        dealerBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+
 
 
         dealerBinding.searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
@@ -489,9 +519,13 @@ public class AppointmentActivity
         dealerBinding.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                dialog2.dismiss();
             }
         });
+
+        dialog2.setContentView(dealerBinding.getRoot());
+        dialog2.setCancelable(false);
+        dialog2.show();
     }
 
 

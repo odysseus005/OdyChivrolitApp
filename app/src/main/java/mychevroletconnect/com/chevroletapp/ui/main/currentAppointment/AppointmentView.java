@@ -18,6 +18,8 @@ public interface AppointmentView extends MvpView {
 
     void loadDealer();
 
+    void loadService();
+
     void showAppointmentDetails(Appointment appoint);
 
     void stopRefresh();

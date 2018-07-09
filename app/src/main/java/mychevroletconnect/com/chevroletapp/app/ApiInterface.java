@@ -8,9 +8,11 @@ import java.util.Map;
 
 import mychevroletconnect.com.chevroletapp.model.data.Garage;
 import mychevroletconnect.com.chevroletapp.model.data.User;
+import mychevroletconnect.com.chevroletapp.model.response.DealerListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.GarageListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.LoginResponse;
 import mychevroletconnect.com.chevroletapp.model.response.ResultResponse;
+import mychevroletconnect.com.chevroletapp.model.response.ServiceListResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -120,6 +122,16 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(Endpoints.GARAGE)
     Call<GarageListResponse> getGarageList(@Field(Constants.TAG) String tag, @Field(Constants.USER_ID) String garage_id );
+
+
+    //Dealer API
+    @FormUrlEncoded
+    @POST(Endpoints.DEALER)
+    Call<DealerListResponse> getDealerList(@Field(Constants.TAG) String tag, @Field(Constants.USER_ID) String dealer_id );
+
+    @FormUrlEncoded
+    @POST(Endpoints.DEALER)
+    Call<ServiceListResponse> getServiceList(@Field(Constants.TAG) String tag, @Field(Constants.USER_ID) String dealer_id );
 
 
 }

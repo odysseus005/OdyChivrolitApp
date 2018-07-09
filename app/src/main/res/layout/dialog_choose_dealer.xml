@@ -60,7 +60,7 @@
         <SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
-            android:layout_margin="5dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/bg_searchview"
             android:iconifiedByDefault="false"
             android:queryBackground="@android:color/transparent"
@@ -73,7 +73,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:background="#ededed"
+            android:background="@color/dialog"
             android:layout_marginTop="10dp"
             android:layout_height="match_parent" />
 
