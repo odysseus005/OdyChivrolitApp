@@ -50,6 +50,7 @@
                 android:text="Add Appointment "
                 android:layout_marginLeft="5dp"
                 android:textColor="@color/white"
+
                 android:textSize="18sp"
                 android:textStyle="bold"
                 />
@@ -58,6 +59,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
+            android:layout_marginTop="4dp"
             android:layout_height="wrap_content">
 
     <LinearLayout
@@ -78,7 +80,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:scaleType="centerCrop"
-                android:background="@drawable/ic_garage"
+                android:tint="@color/gray"
+                android:src="@drawable/ic_garage"
                 />
 
             <TextView
@@ -112,7 +115,7 @@
                 android:layout_height="35dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_nav_dealer"
-                android:tint="@color/colorPrimary"
+                android:tint="@color/gray"
                 />
 
             <TextView
@@ -138,7 +141,7 @@
             android:padding="12dp">
 
             <TextView
-                android:id="@+id/et_car_dop"
+                android:id="@+id/et_dealer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -150,6 +153,75 @@
 
         </FrameLayout>
 
+        <FrameLayout
+            android:id="@+id/layout_advisor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_spinner"
+            android:visibility="gone"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/et_advisor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:hint="Request Advisor"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColorHint="@android:color/darker_gray" />
+
+
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:scaleType="centerCrop"
+                android:tint="@color/gray"
+                android:src="@drawable/ic_nav_appointment"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Appointment Details"
+                android:layout_marginLeft="3dp"
+                android:textColor="@color/gray"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Select Service"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/gray"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view2"
+            android:layout_width="match_parent"
+            android:padding="15dp"
+            android:background="#ededed"
+            android:layout_height="wrap_content" />
+
 
         <LinearLayout
                     android:layout_width="match_parent"
@@ -157,7 +229,6 @@
                     android:minWidth="300dp"
                     android:padding="16dp"
                     android:gravity="right"
-
                     android:orientation="horizontal">
 
 

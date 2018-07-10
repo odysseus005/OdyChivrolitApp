@@ -75,12 +75,14 @@ public class AppointmentActivity
     private String searchText;
     public String id;
     private GarageAdapter garageListAdapter;
+    private ServiceAdapter serviceListAdapter;
     private DealerAdapter dealerListAdapter;
     private AppointmentAdapter appointmentListAdapter;
     private DialogAddAppointmentBinding dialogBinding;
     private DialogChooseDealerBinding dealerBinding;
     private Dialog dialog,dialog2;
     private ArrayList<String> civil;
+    private String selectedDealerId;
 
     public AppointmentActivity(){
 
@@ -143,6 +145,8 @@ public class AppointmentActivity
 
         garageListAdapter = new GarageAdapter(getActivity(), getMvpView());
         dealerListAdapter = new DealerAdapter(getActivity(), getMvpView());
+        serviceListAdapter = new ServiceAdapter(getActivity(),getMvpView());
+
         presenter.loadAppointmentList(String.valueOf(user.getUserId()));
         appointmentListAdapter = new AppointmentAdapter(getActivity(), getMvpView());
         binding.recyclerView.setAdapter(appointmentListAdapter);
@@ -165,6 +169,7 @@ public class AppointmentActivity
             public void onClick(View v) {
 
                 presenter.loadGarageList(user.getUserId());
+                presenter.loadServiceList(user.getUserId());
 
             }
         });
@@ -200,31 +205,6 @@ public class AppointmentActivity
         });
 
     }
-    private void prepareList() {
-        if (appointmentlmResults.isLoaded() && appointmentlmResults.isValid()) {
-            if (searchText.isEmpty()) {
-
-
-                appointmentlmResults = realm.where(Appointment.class).findAllAsync();
-                appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
-                        .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
-                appointmentListAdapter.notifyDataSetChanged();
-
-            } else {
-
-                appointmentlmResults = realm.where(Appointment.class).findAllAsync();
-                appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
-                        .contains("emailAddress",searchText, Case.INSENSITIVE)
-                        .or()
-                        .contains("firstName",searchText, Case.INSENSITIVE)
-                        .or()
-                        .contains("lastName",searchText, Case.INSENSITIVE)
-                        .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
-                appointmentListAdapter.notifyDataSetChanged();
-            }
-        }
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -256,13 +236,7 @@ public class AppointmentActivity
 
     @Override
     public void onRefresh() {
-
-
-
-
             presenter.loadAppointmentList(String.valueOf(user.getUserId()));
-
-
     }
 
 
@@ -335,8 +309,6 @@ public class AppointmentActivity
     @Override
     public void showReturn(String message) {
 
-
-
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         loadData();
     }
@@ -350,6 +322,16 @@ public class AppointmentActivity
     public void showAppointmentDetails(final Appointment attendee) {
 
 
+    }
+
+
+    @Override
+    public void selectDealer(Dealer dealer) {
+
+        dialogBinding.etDealer.setText(dealer.getDealerName());
+        selectedDealerId = String.valueOf(dealer.getDealerId());
+        dialogBinding.layoutAdvisor.setVisibility(View.VISIBLE);
+        dialog2.dismiss();
     }
 
 
@@ -399,17 +381,24 @@ public class AppointmentActivity
     public void loadService()
     {
        servicesRealmResults = realm.where(Service.class).findAll();
-
-
-
-        if(servicesRealmResults.isEmpty())
+        serviceListAdapter.setServiceResult(realm.copyToRealmOrUpdate(servicesRealmResults.where()
+                .findAll()));
+        serviceListAdapter.notifyDataSetChanged();
+        if(serviceListAdapter.getItemCount()==0)
         {
             showError("Can't Connect to Server");
-        }else
-        {
-            chooseDelear();
         }
 
+
+    }
+
+
+    @Override
+    public void loadKms()
+    {
+
+           // showError("Load KMS");
+        showError(serviceListAdapter.getSelectedService());
 
     }
 
@@ -438,6 +427,15 @@ public class AppointmentActivity
 
         dialogBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL, false));
         dialogBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
+
+
+        dialogBinding.recyclerView2.setAdapter(serviceListAdapter);
+
+
+        dialogBinding.recyclerView2.setLayoutManager(new LinearLayoutManager(getContext()));
+        dialogBinding.recyclerView2.setItemAnimator(new DefaultItemAnimator());
 
 
         dialogBinding.layoutDealer.setOnClickListener(new View.OnClickListener() {
@@ -509,7 +507,7 @@ public class AppointmentActivity
             public boolean onQueryTextSubmit(String query) {
 
                 searchText = query;
-               // prepareList();
+               searchDealer();
 
                 return true;
 
@@ -529,6 +527,31 @@ public class AppointmentActivity
     }
 
 
+
+    private void searchDealer() {
+        if (dealerRealmResults.isLoaded() && dealerRealmResults.isValid()) {
+            if (searchText.isEmpty()) {
+
+
+                dealerRealmResults = realm.where(Dealer.class).findAllAsync();
+                dealerListAdapter.setDealerResult(realm.copyToRealmOrUpdate(dealerRealmResults.where()
+                        .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
+                dealerListAdapter.notifyDataSetChanged();
+
+            } else {
+
+                dealerRealmResults = realm.where(Dealer.class).findAllAsync();
+                dealerListAdapter.setDealerResult(realm.copyToRealmOrUpdate(dealerRealmResults.where()
+                        .contains("dealerName",searchText, Case.INSENSITIVE)
+                        .or()
+                        .contains("dealerAddress",searchText, Case.INSENSITIVE)
+                        .or()
+                        .contains("dealerLocation",searchText, Case.INSENSITIVE)
+                        .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
+                dealerListAdapter.notifyDataSetChanged();
+            }
+        }
+    }
 
 
 

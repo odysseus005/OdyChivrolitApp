@@ -3,6 +3,7 @@ package mychevroletconnect.com.chevroletapp.ui.main.currentAppointment;
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
 import mychevroletconnect.com.chevroletapp.model.data.Appointment;
+import mychevroletconnect.com.chevroletapp.model.data.Dealer;
 
 
 public interface AppointmentView extends MvpView {
@@ -19,6 +20,10 @@ public interface AppointmentView extends MvpView {
     void loadDealer();
 
     void loadService();
+
+    void loadKms();
+
+    void selectDealer(Dealer dealer);
 
     void showAppointmentDetails(Appointment appoint);
 

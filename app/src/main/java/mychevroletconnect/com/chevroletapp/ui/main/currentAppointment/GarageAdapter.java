@@ -130,7 +130,7 @@ public class GarageAdapter extends RecyclerView.Adapter<GarageAdapter.ViewHolder
         return chooseGarage;
     }
 
-    public Garage getGarage()
+    public Garage getSelectedGarage()
     {
 
         return garage.get(chooseGarage);

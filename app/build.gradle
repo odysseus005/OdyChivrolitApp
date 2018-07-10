@@ -53,4 +53,5 @@ dependencies {
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
     compile 'de.hdodenhof:circleimageview:2.2.0'
 
+
 }

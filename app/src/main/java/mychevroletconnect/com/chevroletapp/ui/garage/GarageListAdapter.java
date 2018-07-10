@@ -1,10 +1,7 @@
 package mychevroletconnect.com.chevroletapp.ui.garage;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.support.v4.app.ShareCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +16,7 @@ import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.databinding.ItemGarageListBinding;
 import mychevroletconnect.com.chevroletapp.model.data.Garage;
-import mychevroletconnect.com.chevroletapp.util.DateTimeUtils;
+import mychevroletconnect.com.chevroletapp.util.FunctionUtils;
 
 
 public class GarageListAdapter extends RecyclerView.Adapter<GarageListAdapter.ViewHolder> {
@@ -86,7 +83,7 @@ public class GarageListAdapter extends RecyclerView.Adapter<GarageListAdapter.Vi
             }
         });
 
-        holder.itemEventBinding.garageDop.setText(DateTimeUtils.toReadable(garage.get(position).getGaragePurchase()));
+        holder.itemEventBinding.garageDop.setText(FunctionUtils.toReadable(garage.get(position).getGaragePurchase()));
 
         Glide.with(holder.itemView.getContext())
                 .load(Endpoints.URL_IMAGE+garage.get(position).getGarageId()+garage.get(position).getGarageName())

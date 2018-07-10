@@ -10,7 +10,7 @@ import java.util.Locale;
  * @author pocholomia
  * @since 13/09/2016
  */
-public class DateTimeUtils {
+public class FunctionUtils {
 
     public static final String FULL_23_HR_DATE = "yyyy-MM-dd";
     public static final String DATE_ONLY = "MMM dd, yyyy";
@@ -34,6 +34,11 @@ public class DateTimeUtils {
             e.printStackTrace();
         }
         return "error";
+    }
+
+
+    public static String removeLastChar(String str) {
+        return str.substring(0, str.length() - 1);
     }
 
 }
