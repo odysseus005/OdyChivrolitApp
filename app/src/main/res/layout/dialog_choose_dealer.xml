@@ -21,7 +21,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:minWidth="400dp"
         android:background="@color/dialog"
         android:padding="16dp"
@@ -57,6 +57,14 @@
                 />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1"
+            android:orientation="vertical">
+
+
         <SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
@@ -68,11 +76,7 @@
             android:queryHint="Search Dealer"
             android:layout_height="50dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:weightSum="1"
-            android:orientation="vertical">
+
 
 
         <android.support.v7.widget.RecyclerView
@@ -80,19 +84,19 @@
             android:layout_width="match_parent"
             android:background="@color/dialog"
             android:layout_marginTop="10dp"
-            android:layout_weight=".7"
+            android:padding="10dp"
+            android:layout_weight=".8"
             android:layout_height="0dp" />
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_weight=".3"
+            android:layout_weight=".2"
             android:layout_height="0dp"
             android:minWidth="300dp"
-                    android:padding="16dp"
-                    android:gravity="right"
-
-                    android:orientation="horizontal">
+            android:padding="16dp"
+            android:gravity="right"
+            android:orientation="horizontal">
 
 
                     <TextView

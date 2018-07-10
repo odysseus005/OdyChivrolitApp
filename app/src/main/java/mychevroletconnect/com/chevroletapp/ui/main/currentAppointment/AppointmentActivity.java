@@ -1,6 +1,7 @@
 package mychevroletconnect.com.chevroletapp.ui.main.currentAppointment;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -30,6 +31,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 
@@ -38,7 +42,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import io.realm.Case;
@@ -47,12 +55,16 @@ import io.realm.RealmResults;
 import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityAppointmentCurrentBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogAddAppointmentBinding;
+import mychevroletconnect.com.chevroletapp.databinding.DialogChooseDateBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogChooseDealerBinding;
+import mychevroletconnect.com.chevroletapp.model.data.Advisor;
 import mychevroletconnect.com.chevroletapp.model.data.Appointment;
 import mychevroletconnect.com.chevroletapp.model.data.Dealer;
 import mychevroletconnect.com.chevroletapp.model.data.Garage;
+import mychevroletconnect.com.chevroletapp.model.data.Pms;
 import mychevroletconnect.com.chevroletapp.model.data.Service;
 import mychevroletconnect.com.chevroletapp.model.data.User;
+import mychevroletconnect.com.chevroletapp.ui.register.RegisterActivity;
 
 
 import static android.app.Activity.RESULT_OK;
@@ -72,6 +84,8 @@ public class AppointmentActivity
     private RealmResults<Garage> garageRealmResults;
     private RealmResults<Dealer> dealerRealmResults;
     private RealmResults<Service> servicesRealmResults;
+    private List<Advisor> advisorRealmResults;
+    private List<Pms> pmsRealmResults;
     private String searchText;
     public String id;
     private GarageAdapter garageListAdapter;
@@ -80,9 +94,10 @@ public class AppointmentActivity
     private AppointmentAdapter appointmentListAdapter;
     private DialogAddAppointmentBinding dialogBinding;
     private DialogChooseDealerBinding dealerBinding;
-    private Dialog dialog,dialog2;
+    private DialogChooseDateBinding dateBinding;
+    private Dialog dialog,dialog2,dialog3;
     private ArrayList<String> civil;
-    private String selectedDealerId;
+    private String selectedDealerId,advisorPosition,pmsPosition;
 
     public AppointmentActivity(){
 
@@ -146,7 +161,6 @@ public class AppointmentActivity
         garageListAdapter = new GarageAdapter(getActivity(), getMvpView());
         dealerListAdapter = new DealerAdapter(getActivity(), getMvpView());
         serviceListAdapter = new ServiceAdapter(getActivity(),getMvpView());
-
         presenter.loadAppointmentList(String.valueOf(user.getUserId()));
         appointmentListAdapter = new AppointmentAdapter(getActivity(), getMvpView());
         binding.recyclerView.setAdapter(appointmentListAdapter);
@@ -170,6 +184,7 @@ public class AppointmentActivity
 
                 presenter.loadGarageList(user.getUserId());
                 presenter.loadServiceList(user.getUserId());
+                presenter.loadPMSList(user.getUserId());
 
             }
         });
@@ -330,8 +345,47 @@ public class AppointmentActivity
 
         dialogBinding.etDealer.setText(dealer.getDealerName());
         selectedDealerId = String.valueOf(dealer.getDealerId());
-        dialogBinding.layoutAdvisor.setVisibility(View.VISIBLE);
+        presenter.loadAdvisorList(dealer.getDealerId());
+        //dialogBinding.layoutAdvisor.setVisibility(View.VISIBLE);
         dialog2.dismiss();
+    }
+
+    @Override
+    public  void loadAdvisor()
+    {
+
+
+        List<String> advisor = new ArrayList<>();
+        advisorRealmResults = realm.where(Advisor.class).findAll();
+
+        if(!advisorRealmResults.isEmpty()) {
+            for (Advisor value : advisorRealmResults) {
+                advisor.add(value.getFullName());
+            }
+
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_custom_item, advisor);
+            dialogBinding.spAdvisor.setAdapter(arrayAdapter);
+
+            dialogBinding.spAdvisor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    advisorPosition=String.valueOf(advisorRealmResults.get(position).getAdvisorId());
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            dialogBinding.spAdvisor.setVisibility(View.VISIBLE);
+            dialogBinding.appointmentAdvisorTitle.setVisibility(View.VISIBLE);
+        }
+        else
+            showError("No Available Advisor");
+
     }
 
 
@@ -367,7 +421,7 @@ public class AppointmentActivity
 
         if(dealerListAdapter.getItemCount()==0)
         {
-            showError("Can't Connect to Server");
+            showError("Can't Load Dealer");
         }else
         {
             chooseDelear();
@@ -386,7 +440,7 @@ public class AppointmentActivity
         serviceListAdapter.notifyDataSetChanged();
         if(serviceListAdapter.getItemCount()==0)
         {
-            showError("Can't Connect to Server");
+            showError("Can't Load Services");
         }
 
 
@@ -394,11 +448,64 @@ public class AppointmentActivity
 
 
     @Override
-    public void loadKms()
+    public void loadKms(boolean check)
     {
+        pmsRealmResults = realm.where(Pms.class).findAll();
 
-           // showError("Load KMS");
-        showError(serviceListAdapter.getSelectedService());
+        if(!check && !pmsRealmResults.isEmpty() ) {
+
+
+
+
+           List<String> pms = new ArrayList<>();
+           for(Pms value : pmsRealmResults)
+           {
+              pms.add(value.getPmsMileage()+"km - "+value.getPmsMonth()+" months : "+value.getPmsName());
+           }
+
+           ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_custom_item, pms);
+           dialogBinding.spPms.setAdapter(arrayAdapter);
+
+           dialogBinding.spPms.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+               @Override
+               public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                 pmsPosition = String.valueOf(pmsRealmResults.get(position).getPmsId());
+               }
+
+               @Override
+               public void onNothingSelected(AdapterView<?> parent) {
+
+               }
+           });
+
+
+           dialogBinding.spPms.setVisibility(View.VISIBLE);
+           dialogBinding.appointmentPmsTitle.setVisibility(View.VISIBLE);
+       }
+       else
+       {
+           dialogBinding.spPms.setVisibility(View.GONE);
+           dialogBinding.appointmentPmsTitle.setVisibility(View.GONE);
+
+       }
+    }
+
+
+    @Override
+    public void setAppointmentDate() {
+        Calendar newCalendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                dateBinding.etAppointDate.setText(dateFormatter.format(newDate.getTime()));
+            }
+
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
 
     }
 

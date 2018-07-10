@@ -15,13 +15,17 @@ public interface AppointmentView extends MvpView {
 
     void setAppointment();
 
+    void setAppointmentDate();
+
     void loadGarage();
 
     void loadDealer();
 
     void loadService();
 
-    void loadKms();
+    void loadKms(boolean check);
+
+    void loadAdvisor();
 
     void selectDealer(Dealer dealer);
 

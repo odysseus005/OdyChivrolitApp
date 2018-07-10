@@ -30,10 +30,12 @@ public class Endpoints {
     public static final String DELETE_GARAGE = "deleteGarage";
 
 
-    //Dealer
-    public static final String DEALER = "new_dealer.php?";
+    //Data
+    public static final String DATA = "new_alldata.php?";
     public static final String GET_DEALER = "allDealer";
     public static final String GET_SERVICE = "allService";
+    public static final String GET_PMS = "allPMS";
+    public static final String GET_ADVISOR = "allAdvisor";
 
 
 

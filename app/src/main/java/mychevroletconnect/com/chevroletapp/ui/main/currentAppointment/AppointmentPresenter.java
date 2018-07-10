@@ -7,11 +7,15 @@ import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import io.realm.Realm;
 import mychevroletconnect.com.chevroletapp.app.App;
 import mychevroletconnect.com.chevroletapp.app.Endpoints;
+import mychevroletconnect.com.chevroletapp.model.data.Advisor;
 import mychevroletconnect.com.chevroletapp.model.data.Dealer;
 import mychevroletconnect.com.chevroletapp.model.data.Garage;
+import mychevroletconnect.com.chevroletapp.model.data.Pms;
 import mychevroletconnect.com.chevroletapp.model.data.Service;
+import mychevroletconnect.com.chevroletapp.model.response.AdvisorListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.DealerListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.GarageListResponse;
+import mychevroletconnect.com.chevroletapp.model.response.PmsListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.ServiceListResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -241,6 +245,114 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
 
                     @Override
                     public void onFailure(Call<ServiceListResponse> call, Throwable t) {
+                        t.printStackTrace();
+                        getView().stopLoading();
+                        if (isViewAttached()) {
+                            getView().stopRefresh();
+                            getView().showError(t.getLocalizedMessage());
+                        }
+                    }
+                });
+    }
+
+
+    public void loadPMSList(int userID) {
+
+        getView().startLoading();
+        App.getInstance().getApiInterface().getPMSList(Endpoints.GET_PMS,String.valueOf(userID))
+                .enqueue(new Callback<PmsListResponse>() {
+                    @Override
+                    public void onResponse(Call<PmsListResponse> call, final Response<PmsListResponse> response) {
+                        if (isViewAttached()) {
+                            getView().stopRefresh();
+                        }
+                        getView().stopLoading();
+                        if (response.isSuccessful()) {
+                            final Realm realm = Realm.getDefaultInstance();
+                            realm.executeTransactionAsync(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    realm.delete(Pms.class);
+                                    realm.copyToRealmOrUpdate(response.body().getData());
+
+                                }
+                            }, new Realm.Transaction.OnSuccess() {
+                                @Override
+                                public void onSuccess() {
+                                    realm.close();
+                                }
+                            }, new Realm.Transaction.OnError() {
+                                @Override
+                                public void onError(Throwable error) {
+                                    realm.close();
+                                    error.printStackTrace();
+                                    if (isViewAttached())
+                                        getView().showError(error.getLocalizedMessage());
+                                }
+                            });
+                        } else {
+                            if (isViewAttached())
+                                getView().showError(response.errorBody().toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<PmsListResponse> call, Throwable t) {
+                        t.printStackTrace();
+                        getView().stopLoading();
+                        if (isViewAttached()) {
+                            getView().stopRefresh();
+                            getView().showError(t.getLocalizedMessage());
+                        }
+                    }
+                });
+    }
+
+
+
+    public void loadAdvisorList(int dealerID) {
+
+        getView().startLoading();
+        App.getInstance().getApiInterface().getAdvisorList(Endpoints.GET_ADVISOR,String.valueOf(dealerID))
+                .enqueue(new Callback<AdvisorListResponse>() {
+                    @Override
+                    public void onResponse(Call<AdvisorListResponse> call, final Response<AdvisorListResponse> response) {
+                        if (isViewAttached()) {
+                            getView().stopRefresh();
+                        }
+                        getView().stopLoading();
+                        if (response.isSuccessful()) {
+                            final Realm realm = Realm.getDefaultInstance();
+                            realm.executeTransactionAsync(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    realm.delete(Advisor.class);
+                                    realm.copyToRealmOrUpdate(response.body().getData());
+
+                                }
+                            }, new Realm.Transaction.OnSuccess() {
+                                @Override
+                                public void onSuccess() {
+                                    realm.close();
+                                    getView().loadAdvisor();
+                                }
+                            }, new Realm.Transaction.OnError() {
+                                @Override
+                                public void onError(Throwable error) {
+                                    realm.close();
+                                    error.printStackTrace();
+                                    if (isViewAttached())
+                                        getView().showError(error.getLocalizedMessage());
+                                }
+                            });
+                        } else {
+                            if (isViewAttached())
+                                getView().showError(response.errorBody().toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AdvisorListResponse> call, Throwable t) {
                         t.printStackTrace();
                         getView().stopLoading();
                         if (isViewAttached()) {

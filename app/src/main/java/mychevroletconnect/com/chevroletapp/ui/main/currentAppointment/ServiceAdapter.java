@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
     private int chooseService;
     private String selected;
     private List<String> selectedList;
+    private boolean checkpms;
 
 
     public ServiceAdapter(Context context, AppointmentView view) {
@@ -33,7 +35,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         service = new ArrayList<>();
         selectedList = new ArrayList<>();
         chooseService = -1;
-
+        checkpms=false;
         selected="";
 
     }
@@ -75,13 +77,20 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
 
               if(service.get(position).getServiceName().contains("Preventive Maintenance") || service.get(position).getServiceName().contains("PMS") )
               {
-                  view.loadKms();
+                  view.loadKms(checkpms);
+                  if(checkpms)
+                      checkpms=false;
+                  else
+                      checkpms=true;
               }
+
 
               if(selectedList.contains(id))
                 selectedList.remove(id);
               else
                   selectedList.add(id);
+
+
 
 
             }
@@ -107,6 +116,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
 
     public String getSelectedService()
     {
+        selected="";
         for (String value : selectedList)
         {
             selected += value+",";

@@ -8,9 +8,11 @@ import java.util.Map;
 
 import mychevroletconnect.com.chevroletapp.model.data.Garage;
 import mychevroletconnect.com.chevroletapp.model.data.User;
+import mychevroletconnect.com.chevroletapp.model.response.AdvisorListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.DealerListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.GarageListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.LoginResponse;
+import mychevroletconnect.com.chevroletapp.model.response.PmsListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.ResultResponse;
 import mychevroletconnect.com.chevroletapp.model.response.ServiceListResponse;
 import okhttp3.MultipartBody;
@@ -124,14 +126,23 @@ public interface ApiInterface {
     Call<GarageListResponse> getGarageList(@Field(Constants.TAG) String tag, @Field(Constants.USER_ID) String garage_id );
 
 
-    //Dealer API
+    //DATA API
     @FormUrlEncoded
-    @POST(Endpoints.DEALER)
+    @POST(Endpoints.DATA)
     Call<DealerListResponse> getDealerList(@Field(Constants.TAG) String tag, @Field(Constants.USER_ID) String dealer_id );
 
     @FormUrlEncoded
-    @POST(Endpoints.DEALER)
+    @POST(Endpoints.DATA)
     Call<ServiceListResponse> getServiceList(@Field(Constants.TAG) String tag, @Field(Constants.USER_ID) String dealer_id );
+
+    @FormUrlEncoded
+    @POST(Endpoints.DATA)
+    Call<PmsListResponse> getPMSList(@Field(Constants.TAG) String tag, @Field(Constants.USER_ID) String pms_id );
+
+
+    @FormUrlEncoded
+    @POST(Endpoints.DATA)
+    Call<AdvisorListResponse> getAdvisorList(@Field(Constants.TAG) String tag, @Field("dealer_id") String advisor_id );
 
 
 }
