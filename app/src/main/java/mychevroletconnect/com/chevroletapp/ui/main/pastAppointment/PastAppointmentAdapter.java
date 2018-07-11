@@ -37,7 +37,7 @@ public class PastAppointmentAdapter extends RecyclerView.Adapter<PastAppointment
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ItemPastAppointmentBinding itemAppointmentBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.item_current_appointment,
+                R.layout.item_past_appointment,
                 parent,
                 false);
 

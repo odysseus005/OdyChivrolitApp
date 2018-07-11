@@ -124,16 +124,12 @@ public class GarageAdapter extends RecyclerView.Adapter<GarageAdapter.ViewHolder
     }
 
 
-    public int getChoosen()
+
+
+    public String getSelectedGarage()
     {
 
-        return chooseGarage;
-    }
-
-    public Garage getSelectedGarage()
-    {
-
-        return garage.get(chooseGarage);
+        return String.valueOf(garage.get(chooseGarage).getGarageId());
     }
 
 

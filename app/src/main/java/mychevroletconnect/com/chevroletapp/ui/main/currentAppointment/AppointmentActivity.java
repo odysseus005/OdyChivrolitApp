@@ -62,9 +62,11 @@ import mychevroletconnect.com.chevroletapp.model.data.Appointment;
 import mychevroletconnect.com.chevroletapp.model.data.Dealer;
 import mychevroletconnect.com.chevroletapp.model.data.Garage;
 import mychevroletconnect.com.chevroletapp.model.data.Pms;
+import mychevroletconnect.com.chevroletapp.model.data.Schedule;
 import mychevroletconnect.com.chevroletapp.model.data.Service;
 import mychevroletconnect.com.chevroletapp.model.data.User;
 import mychevroletconnect.com.chevroletapp.ui.register.RegisterActivity;
+import mychevroletconnect.com.chevroletapp.util.FunctionUtils;
 
 
 import static android.app.Activity.RESULT_OK;
@@ -84,6 +86,7 @@ public class AppointmentActivity
     private RealmResults<Garage> garageRealmResults;
     private RealmResults<Dealer> dealerRealmResults;
     private RealmResults<Service> servicesRealmResults;
+    private RealmResults<Schedule> scheduleRealmResults;
     private List<Advisor> advisorRealmResults;
     private List<Pms> pmsRealmResults;
     private String searchText;
@@ -92,12 +95,13 @@ public class AppointmentActivity
     private ServiceAdapter serviceListAdapter;
     private DealerAdapter dealerListAdapter;
     private AppointmentAdapter appointmentListAdapter;
+    private ScheduleAdapter scheduleListAdapter;
     private DialogAddAppointmentBinding dialogBinding;
     private DialogChooseDealerBinding dealerBinding;
     private DialogChooseDateBinding dateBinding;
     private Dialog dialog,dialog2,dialog3;
     private ArrayList<String> civil;
-    private String selectedDealerId,advisorPosition,pmsPosition;
+    private String selectedDealerId="",selectedadvisorPosition="",selectedpmsPosition="",selectedScheduleId="",selectedDate="",selectedService="",selectedGarage="";
 
     public AppointmentActivity(){
 
@@ -163,6 +167,7 @@ public class AppointmentActivity
         serviceListAdapter = new ServiceAdapter(getActivity(),getMvpView());
         presenter.loadAppointmentList(String.valueOf(user.getUserId()));
         appointmentListAdapter = new AppointmentAdapter(getActivity(), getMvpView());
+        scheduleListAdapter = new ScheduleAdapter(getActivity(), getMvpView());
         binding.recyclerView.setAdapter(appointmentListAdapter);
         binding.swipeRefreshLayout.setOnRefreshListener(this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -277,7 +282,7 @@ public class AppointmentActivity
     @Override
     public void setAppointmentList(){
 
-        appointmentlmResults = realm.where(Appointment.class).findAllAsync();
+        appointmentlmResults = realm.where(Appointment.class).findAll();
        appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
                .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
         appointmentListAdapter.notifyDataSetChanged();
@@ -324,8 +329,10 @@ public class AppointmentActivity
     @Override
     public void showReturn(String message) {
 
+        presenter.loadAppointmentList(String.valueOf(user.getUserId()));
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-        loadData();
+        dialog.dismiss();
+
     }
 
 
@@ -336,6 +343,7 @@ public class AppointmentActivity
     @Override
     public void showAppointmentDetails(final Appointment attendee) {
 
+        showError("Reservation Details Coming Soon..");
 
     }
 
@@ -346,7 +354,6 @@ public class AppointmentActivity
         dialogBinding.etDealer.setText(dealer.getDealerName());
         selectedDealerId = String.valueOf(dealer.getDealerId());
         presenter.loadAdvisorList(dealer.getDealerId());
-        //dialogBinding.layoutAdvisor.setVisibility(View.VISIBLE);
         dialog2.dismiss();
     }
 
@@ -370,7 +377,7 @@ public class AppointmentActivity
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                    advisorPosition=String.valueOf(advisorRealmResults.get(position).getAdvisorId());
+                    selectedadvisorPosition=String.valueOf(advisorRealmResults.get(position).getAdvisorId());
 
                 }
 
@@ -384,7 +391,7 @@ public class AppointmentActivity
             dialogBinding.appointmentAdvisorTitle.setVisibility(View.VISIBLE);
         }
         else
-            showError("No Available Advisor");
+            showError("No Available Adviser");
 
     }
 
@@ -448,6 +455,28 @@ public class AppointmentActivity
 
 
     @Override
+    public void loadTimeslot()
+    {
+        scheduleRealmResults = realm.where(Schedule.class).findAll();
+        scheduleListAdapter.setScheduleResult(realm.copyToRealmOrUpdate(scheduleRealmResults.where()
+                .findAll()));
+        scheduleListAdapter.notifyDataSetChanged();
+        if(scheduleListAdapter.getItemCount()==0)
+        {
+            showError("No Available Schedule Yet");
+        }
+        else
+        {
+            dateBinding.chooseSlotTitle.setVisibility(View.VISIBLE);
+            dateBinding.chooseSlotTitle2.setVisibility(View.VISIBLE);
+            dateBinding.recyclerView.setVisibility(View.VISIBLE);
+        }
+
+
+    }
+
+
+    @Override
     public void loadKms(boolean check)
     {
         pmsRealmResults = realm.where(Pms.class).findAll();
@@ -470,7 +499,7 @@ public class AppointmentActivity
                @Override
                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                 pmsPosition = String.valueOf(pmsRealmResults.get(position).getPmsId());
+                 selectedpmsPosition = String.valueOf(pmsRealmResults.get(position).getPmsId());
                }
 
                @Override
@@ -502,6 +531,11 @@ public class AppointmentActivity
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
                 dateBinding.etAppointDate.setText(dateFormatter.format(newDate.getTime()));
+
+                dateBinding.chooseSlotTitle.setVisibility(View.INVISIBLE);
+                dateBinding.chooseSlotTitle2.setVisibility(View.INVISIBLE);
+                dateBinding.recyclerView.setVisibility(View.INVISIBLE);
+                presenter.loadTimeslotList(user.getUserId(),selectedDealerId,dateFormatter.format(newDate.getTime()));
             }
 
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -545,10 +579,20 @@ public class AppointmentActivity
         dialogBinding.recyclerView2.setItemAnimator(new DefaultItemAnimator());
 
 
+        dialogBinding.layoutAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              if(!selectedDealerId.equals(""))
+                chooseDateandSlot();
+              else
+                  showError("Please Select Dealer First");
+            }
+        });
+
         dialogBinding.layoutDealer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              presenter.loadDealerList(user.getUserId());
+                presenter.loadDealerList(user.getUserId());
             }
         });
 
@@ -562,6 +606,20 @@ public class AppointmentActivity
         dialogBinding.send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+               selectedService = serviceListAdapter.getSelectedService();
+              selectedGarage =  garageListAdapter.getSelectedGarage();
+
+                if(selectedDealerId.equals("")||selectedScheduleId.equals("")||
+                        selectedDate.equals("")||selectedService.equals("")||selectedGarage.equals(""))
+                {
+                        showError("Please Fill up Required Fields!");
+                }else
+
+                    presenter.reserveSched(String.valueOf(user.getUserId()),selectedGarage,selectedScheduleId,selectedDealerId,selectedadvisorPosition,selectedService,selectedpmsPosition,selectedDate,dialogBinding.etRemars.getText().toString());
+
+
+
 
             }
         });
@@ -634,7 +692,6 @@ public class AppointmentActivity
     }
 
 
-
     private void searchDealer() {
         if (dealerRealmResults.isLoaded() && dealerRealmResults.isValid()) {
             if (searchText.isEmpty()) {
@@ -659,6 +716,63 @@ public class AppointmentActivity
             }
         }
     }
+
+
+    public void chooseDateandSlot()
+    {
+
+
+        dialog3 = new Dialog(getContext());
+
+        dialog3.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+        dateBinding = DataBindingUtil.inflate(
+                getLayoutInflater(),
+                R.layout.dialog_choose_date,
+                null,
+                false);
+
+
+        dateBinding.setView(getMvpView());
+
+
+        dateBinding.recyclerView.setAdapter(scheduleListAdapter);
+
+
+        dateBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        dateBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
+
+
+
+        dateBinding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog3.dismiss();
+            }
+        });
+
+        dateBinding.send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                dialogBinding.etDate.setText(dateBinding.etAppointDate.getText().toString());
+                dialogBinding.etTime.setText(FunctionUtils.hour24to12hour(scheduleListAdapter.getChoosenScheduleValue()));
+                selectedDate = dateBinding.etAppointDate.getText().toString();
+                selectedScheduleId = String.valueOf(scheduleListAdapter.getChoosenSchedule());
+                dialog3.dismiss();
+            }
+        });
+
+        dialog3.setContentView(dateBinding.getRoot());
+        dialog3.setCancelable(false);
+        dialog3.show();
+    }
+
+
+
 
 
 

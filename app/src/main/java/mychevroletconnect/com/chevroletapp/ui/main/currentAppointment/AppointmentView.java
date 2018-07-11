@@ -27,6 +27,8 @@ public interface AppointmentView extends MvpView {
 
     void loadAdvisor();
 
+    void loadTimeslot();
+
     void selectDealer(Dealer dealer);
 
     void showAppointmentDetails(Appointment appoint);
@@ -36,6 +38,7 @@ public interface AppointmentView extends MvpView {
     void showError(String message);
 
     void showReturn(String message);
+
     void startLoading();
 
     void stopLoading();

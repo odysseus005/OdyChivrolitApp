@@ -17,6 +17,49 @@ public class FunctionUtils {
     public static final String DATE_NUM_ONLY = "MM.dd.yyyy";
 
 
+    public static String appointListTimestampMonDate(String date) {
+
+
+        try {
+            SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd");
+
+
+            Date newDate = spf.parse(date);
+
+            spf= new SimpleDateFormat("MMM dd");
+            date = spf.format(newDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            date = "error";
+        }
+
+
+        return date;
+    }
+
+    public static String appointListTimestampYear(String date) {
+
+
+
+        try {
+
+
+            SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd");
+
+
+            Date  newDate = spf.parse(date);
+
+            spf= new SimpleDateFormat("yyyy");
+            date = spf.format(newDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            date = "error";
+        }
+
+
+        return date;
+    }
+
 
     public static String toReadable(String dateToConvert){
         String convertedDate;
@@ -30,6 +73,20 @@ public class FunctionUtils {
             SimpleDateFormat formatter = new SimpleDateFormat(DATE_ONLY,Locale.US);
             convertedDate = formatter.format(date);
             return convertedDate.toUpperCase();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "error";
+    }
+
+
+    public static String hour24to12hour(String time)
+    {
+        try {
+            final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            final Date dateObj = sdf.parse(time);
+            //DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+            return new SimpleDateFormat("hh:mm a").format(dateObj);
         } catch (Exception e) {
             e.printStackTrace();
         }

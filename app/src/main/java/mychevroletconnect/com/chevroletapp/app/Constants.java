@@ -8,12 +8,10 @@ public class Constants {
     public static final String SUCCESS = "success";
     public static final String MESSAGE = "message";
     public static final String DATA = "data";
-
-    public static final String ID = "id";
     public static final String TAG = "tag";
     public static final String EMAIL = "client_email_address";
     public static final String PASSWORD = "client_password";
-    public static final String DATE_TIME = "datetime";
+    public static final String DATE = "date";
     public static final String REPORT_TYPE = "reportType";
 
     //Login and Register
@@ -45,6 +43,16 @@ public class Constants {
     public static final String GARAGE_PURCHASE = "g_purchaseDate";
     public static final String GARAGE_NAME = "g_name";
 
-   
+
+    //Dealer
+    public static final String DEALER_ID = "dealer_id";
+
+    //Reservation
+    public static final String SCHEDULE_ID = "schedule_id";
+    public static final String ADVISOR_ID = "advisor_id";
+    public static final String SERVICE_ID = "service_id";
+    public static final String PMS_SERVICE_ID = "pms_service_id";
+    public static final String RESERVE_DATE = "reserve_date";
+    public static final String RESERVE_REMARK = "reserve_remarks";
 
 }

@@ -12,6 +12,7 @@ import java.util.List;
 import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.databinding.ItemCurrentAppointmentBinding;
 import mychevroletconnect.com.chevroletapp.model.data.Appointment;
+import mychevroletconnect.com.chevroletapp.util.FunctionUtils;
 
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.ViewHolder> {
@@ -49,6 +50,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         holder.itemAppointmentBinding.setAppointment(appointment.get(position));
         holder.itemAppointmentBinding.setView(view);
 
+
+        holder.itemAppointmentBinding.appointListDate.setText(FunctionUtils.appointListTimestampMonDate(appointment.get(position).getAppointDate()));
+        holder.itemAppointmentBinding.appointListYear.setText(FunctionUtils.appointListTimestampYear(appointment.get(position).getAppointDate()));
+
+        holder.itemAppointmentBinding.appointListTime.setText(FunctionUtils.hour24to12hour(appointment.get(position).getAppointschedTime()));
 
 
     }

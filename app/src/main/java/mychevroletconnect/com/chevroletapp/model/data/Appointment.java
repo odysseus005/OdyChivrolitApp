@@ -10,116 +10,135 @@ import io.realm.annotations.PrimaryKey;
 public class Appointment extends RealmObject {
 
     @PrimaryKey
-    @SerializedName("client_id")
+    @SerializedName("reserve_id")
     @Expose
-    private int userId;
+    private int appointId;
+
+
+
     @SerializedName("dealer_id")
     @Expose
-    private int dealerId;
-    @SerializedName("client_email_address")
-    @Expose
-    private String email;
+    private int appointdealerId;
 
-    @SerializedName("client_password")
-    @Expose
-    private String password;
 
-    @SerializedName("client_first_name")
+    @SerializedName("dealer_name")
+    @Expose
+    private String appointdealerName;
+
+
+    @SerializedName("dealer_address")
+    @Expose
+    private String appointdealerLocation;
+
+
+    @SerializedName("g_id")
+    @Expose
+    private int appointgaragerId;
+
+    @SerializedName("g_name")
+    @Expose
+    private String appointgaragerName;
+
+
+    @SerializedName("g_plateNum")
+    @Expose
+    private String appointgaragePlate;
+
+
+    @SerializedName("schedule_id")
+    @Expose
+    private int appointschedId;
+
+
+    @SerializedName("schedule_time")
+    @Expose
+    private String appointschedTime;
+
+
+    @SerializedName("advisor_id")
+    @Expose
+    private String appointsAdvisorId;
+
+
+    @SerializedName("advisor_first_name")
     @Expose
     private String firstname;
 
-    @SerializedName("client_last_name")
+    @SerializedName("advisor_last_name")
     @Expose
     private String lastname;
 
-    @SerializedName("client_middle_name")
+
+
+    @SerializedName("service_id")
     @Expose
-    private String middlename;
+    private String appointServicesId;
 
-
-    @SerializedName("client_contact_number")
+    @SerializedName("service_name")
     @Expose
-    private String contact;
+    private String appointServicesName;
 
-    @SerializedName("client_citizenship")
+    @SerializedName("pms_service_id")
     @Expose
-    private String citizenship;
+    private String appointPMSId;
 
-    @SerializedName("client_birthdate")
+    @SerializedName("mileage")
     @Expose
-    private String birthday;
+    private String appointPMSMil;
 
-    @SerializedName("client_gender")
+    @SerializedName("months")
     @Expose
-    private String gender;
+    private String appointPMSMonth;
 
-    @SerializedName("client_occupation")
+    @SerializedName("service")
     @Expose
-    private String occupation;
+    private String appointPMSService;
 
-    @SerializedName("client_civil_status")
+
+    @SerializedName("reserve_date")
     @Expose
-    private String civil_status;
+    private String appointDate;
 
-    @SerializedName("client_address")
+
+    @SerializedName("reserve_status")
     @Expose
-    private String address;
+    private String appointStatus;
 
-    @SerializedName("client_image")
+
+
+    @SerializedName("reserve_remarks")
     @Expose
-    private String image;
-
-
-    @SerializedName("client_status")
-    @Expose
-    private String firstlogin;
-
-
+    private String appointRemarks;
 
     private String fullName;
 
-
-    public String getPassword() {
-        return password;
+    public int getAppointId() {
+        return appointId;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAppointId(int appointId) {
+        this.appointId = appointId;
+    }
+
+    public int getAppointdealerId() {
+        return appointdealerId;
+    }
+
+    public void setAppointdealerId(int appointdealerId) {
+        this.appointdealerId = appointdealerId;
     }
 
 
-    public String getFullName() {
-        return firstname+" "+lastname;
+
+    public int getAppointschedId() {
+        return appointschedId;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setAppointschedId(int appointschedId) {
+        this.appointschedId = appointschedId;
     }
 
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getDealerId() {
-        return dealerId;
-    }
-
-    public void setDealerId(int dealerId) {
-        this.dealerId = dealerId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getFirstname() {
         return firstname;
@@ -137,85 +156,143 @@ public class Appointment extends RealmObject {
         this.lastname = lastname;
     }
 
-    public String getMiddlename() {
-        return middlename;
+    public String getAppointServicesId() {
+        return appointServicesId;
     }
 
-    public void setMiddlename(String middlename) {
-        this.middlename = middlename;
+    public void setAppointServicesId(String appointServicesId) {
+        this.appointServicesId = appointServicesId;
     }
 
-    public String getContact() {
-        return contact;
+    public String getAppointServicesName() {
+        return appointServicesName;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
+    public void setAppointServicesName(String appointServicesName) {
+        this.appointServicesName = appointServicesName;
     }
 
-    public String getCitizenship() {
-        return citizenship;
+    public String getAppointPMSId() {
+        return appointPMSId;
     }
 
-    public void setCitizenship(String citizenship) {
-        this.citizenship = citizenship;
+    public void setAppointPMSId(String appointPMSId) {
+        this.appointPMSId = appointPMSId;
     }
 
-    public String getBirthday() {
-        return birthday;
+    public String getAppointPMSMil() {
+        return appointPMSMil;
     }
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
+    public void setAppointPMSMil(String appointPMSMil) {
+        this.appointPMSMil = appointPMSMil;
     }
 
-    public String getGender() {
-        return gender;
+    public String getAppointPMSMonth() {
+        return appointPMSMonth;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setAppointPMSMonth(String appointPMSMonth) {
+        this.appointPMSMonth = appointPMSMonth;
     }
 
-    public String getOccupation() {
-        return occupation;
+    public String getAppointPMSService() {
+        return appointPMSService;
     }
 
-    public void setOccupation(String occupation) {
-        this.occupation = occupation;
+    public void setAppointPMSService(String appointPMSService) {
+        this.appointPMSService = appointPMSService;
     }
 
-    public String getCivil_status() {
-        return civil_status;
+    public String getAppointDate() {
+        return appointDate;
     }
 
-    public void setCivil_status(String civil_status) {
-        this.civil_status = civil_status;
+    public void setAppointDate(String appointDate) {
+        this.appointDate = appointDate;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAppointStatus() {
+        return appointStatus;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAppointStatus(String appointStatus) {
+        this.appointStatus = appointStatus;
     }
 
-    public String getImage() {
-        return image+email+".jpg";
+    public String getAppointRemarks() {
+        return appointRemarks;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setAppointRemarks(String appointRemarks) {
+        this.appointRemarks = appointRemarks;
     }
 
-    public String getFirstlogin() {
-        return firstlogin;
+    public String getAppointdealerName() {
+        return appointdealerName;
     }
 
-    public void setFirstlogin(String firstlogin) {
-        this.firstlogin = firstlogin;
+    public void setAppointdealerName(String appointdealerName) {
+        this.appointdealerName = appointdealerName;
     }
 
+    public String getAppointdealerLocation() {
+        return appointdealerLocation;
+    }
 
+    public void setAppointdealerLocation(String appointdealerLocation) {
+        this.appointdealerLocation = appointdealerLocation;
+    }
+
+    public int getAppointgaragerId() {
+        return appointgaragerId;
+    }
+
+    public void setAppointgaragerId(int appointgaragerId) {
+        this.appointgaragerId = appointgaragerId;
+    }
+
+    public String getAppointgaragerName() {
+        return appointgaragerName;
+    }
+
+    public void setAppointgaragerName(String appointgaragerName) {
+        this.appointgaragerName = appointgaragerName;
+    }
+
+    public String getAppointgaragePlate() {
+        return appointgaragePlate;
+    }
+
+    public void setAppointgaragePlate(String appointgaragePlate) {
+        this.appointgaragePlate = appointgaragePlate;
+    }
+
+    public String getAppointschedTime() {
+        return appointschedTime;
+    }
+
+    public void setAppointschedTime(String appointschedTime) {
+        this.appointschedTime = appointschedTime;
+    }
+
+    public String getAppointsAdvisorId() {
+        return appointsAdvisorId;
+    }
+
+    public void setAppointsAdvisorId(String appointsAdvisorId) {
+        this.appointsAdvisorId = appointsAdvisorId;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getAdvisorFullName() {
+        return firstname+" "+lastname;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 }

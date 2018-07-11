@@ -266,11 +266,11 @@ public class PastAppointmentAppointmentActivity
         appointmentListAdapter.notifyDataSetChanged();
 
 
-        if(appointmentListAdapter.getItemCount()==0)
-        {
+//        if(appointmentListAdapter.getItemCount()==0)
+//        {
             binding.appointmentcurrentNoRecyclerview.setVisibility(View.VISIBLE);
             binding.recyclerView.setVisibility(View.GONE);
-        }
+     //   }
     }
 
 

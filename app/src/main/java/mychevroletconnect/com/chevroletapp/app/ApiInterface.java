@@ -7,13 +7,16 @@ import java.util.List;
 import java.util.Map;
 
 import mychevroletconnect.com.chevroletapp.model.data.Garage;
+import mychevroletconnect.com.chevroletapp.model.data.Schedule;
 import mychevroletconnect.com.chevroletapp.model.data.User;
 import mychevroletconnect.com.chevroletapp.model.response.AdvisorListResponse;
+import mychevroletconnect.com.chevroletapp.model.response.AppointmentListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.DealerListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.GarageListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.LoginResponse;
 import mychevroletconnect.com.chevroletapp.model.response.PmsListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.ResultResponse;
+import mychevroletconnect.com.chevroletapp.model.response.ScheduleListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.ServiceListResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -142,7 +145,35 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(Endpoints.DATA)
-    Call<AdvisorListResponse> getAdvisorList(@Field(Constants.TAG) String tag, @Field("dealer_id") String advisor_id );
+    Call<AdvisorListResponse> getAdvisorList(@Field(Constants.TAG) String tag, @Field(Constants.DEALER_ID) String advisor_id );
 
+
+
+    //Schedule
+    @FormUrlEncoded
+    @POST(Endpoints.SCHEDULE)
+    Call<ScheduleListResponse> getTimeslot(@Field(Constants.TAG) String tag,
+                                           @Field(Constants.USER_ID) String user_id,
+                                           @Field(Constants.DEALER_ID) String dealer_id ,
+                                           @Field(Constants.DATE) String date_id  );
+
+    @FormUrlEncoded
+    @POST(Endpoints.SCHEDULE)
+    Call<ResultResponse> registerReservation(@Field(Constants.TAG) String tag,
+                                     @Field(Constants.USER_ID) String userID,
+                                     @Field(Constants.GARAGE_ID) String garID,
+                                     @Field(Constants.SCHEDULE_ID) String schedID,
+                                     @Field(Constants.DEALER_ID) String dealerID,
+                                     @Field(Constants.ADVISOR_ID) String advisorID,
+                                     @Field(Constants.SERVICE_ID) String serviceID,
+                                     @Field(Constants.PMS_SERVICE_ID) String pmsID,
+                                             @Field(Constants.RESERVE_DATE) String date,
+                                             @Field(Constants.RESERVE_REMARK) String remark
+
+                                             );
+
+    @FormUrlEncoded
+    @POST(Endpoints.SCHEDULE)
+    Call<AppointmentListResponse> getAppointmentList(@Field(Constants.TAG) String tag, @Field(Constants.USER_ID) String user_id );
 
 }

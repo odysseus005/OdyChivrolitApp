@@ -38,5 +38,10 @@ public class Endpoints {
     public static final String GET_ADVISOR = "allAdvisor";
 
 
+    //Schedule
+    public static final String SCHEDULE = "new_schedule.php?";
+    public static final String GET_APPOINTMENT = "allReservation";
+    public static final String GET_TIMESLOT = "daySchedule";
+    public static final String RESERVE_TIMESLOT = "registerReservation";
 
 }
