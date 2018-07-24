@@ -101,7 +101,7 @@ public class AppointmentActivity
     private DialogChooseDateBinding dateBinding;
     private Dialog dialog,dialog2,dialog3;
     private ArrayList<String> civil;
-    private String selectedDealerId="",selectedadvisorPosition="",selectedpmsPosition="",selectedScheduleId="",selectedDate="",selectedService="",selectedGarage="";
+    private String selectedDealerId="",selectedadvisorPosition="0",selectedpmsPosition="",selectedScheduleId="",selectedDate="",selectedService="",selectedGarage="";
 
     public AppointmentActivity(){
 
@@ -353,9 +353,11 @@ public class AppointmentActivity
 
         dialogBinding.etDealer.setText(dealer.getDealerName());
         selectedDealerId = String.valueOf(dealer.getDealerId());
-        presenter.loadAdvisorList(dealer.getDealerId());
+      //  presenter.loadAdvisorList(dealer.getDealerId());
         dialog2.dismiss();
     }
+
+
 
     @Override
     public  void loadAdvisor()
@@ -388,7 +390,7 @@ public class AppointmentActivity
             });
 
             dialogBinding.spAdvisor.setVisibility(View.VISIBLE);
-            dialogBinding.appointmentAdvisorTitle.setVisibility(View.VISIBLE);
+            //dialogBinding.appointmentAdvisorTitle.setVisibility(View.VISIBLE); //Hide advisor
         }
         else
             showError("No Available Adviser");
