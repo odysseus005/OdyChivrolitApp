@@ -60,6 +60,26 @@ public class FunctionUtils {
         return date;
     }
 
+    public static long milliseconds(String date)
+    {
+        //String date_ = date;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try
+        {
+            Date mDate = sdf.parse(date);
+            long timeInMilliseconds = mDate.getTime();
+            System.out.println("Date in milli :: " + timeInMilliseconds);
+            return timeInMilliseconds;
+        }
+        catch (ParseException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
 
     public static String toReadable(String dateToConvert){
         String convertedDate;

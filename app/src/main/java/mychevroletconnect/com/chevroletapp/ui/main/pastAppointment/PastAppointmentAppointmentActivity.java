@@ -1,5 +1,6 @@
 package mychevroletconnect.com.chevroletapp.ui.main.pastAppointment;
 
+import android.app.ProgressDialog;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -34,6 +35,7 @@ public class PastAppointmentAppointmentActivity
         extends MvpViewStateFragment<PastAppointmentView, PastAppointmentPresenter>
         implements SwipeRefreshLayout.OnRefreshListener, PastAppointmentView {
 
+    private ProgressDialog progressDialog;
     private static final String TAG = PastAppointmentAppointmentActivity.class.getSimpleName();
     private ActivityAppointmentPastBinding binding;
     private Realm realm;
@@ -108,7 +110,6 @@ public class PastAppointmentAppointmentActivity
 
         presenter.onStart();
 
-        presenter.loadAppointmentList(String.valueOf(user.getUserId()));
 
         appointmentListAdapter = new PastAppointmentAdapter(getActivity(), getMvpView());
         binding.recyclerView.setAdapter(appointmentListAdapter);
@@ -222,12 +223,26 @@ public class PastAppointmentAppointmentActivity
     @Override
     public void onRefresh() {
 
-
-
-
             presenter.loadAppointmentList(String.valueOf(user.getUserId()));
+    }
 
 
+
+    @Override
+    public void startLoading() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("Loading...");
+            progressDialog.setCancelable(false);
+        }
+        progressDialog.show();
+    }
+
+    @Override
+    public void stopLoading() {
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
     }
 
 
@@ -261,16 +276,18 @@ public class PastAppointmentAppointmentActivity
     public void setAppointmentList(){
 
         appointmentlmResults = realm.where(Appointment.class).findAllAsync();
-       appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
-               .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
+        appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
+                .lessThan("dateMs",System.currentTimeMillis())
+                .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
         appointmentListAdapter.notifyDataSetChanged();
 
 
-//        if(appointmentListAdapter.getItemCount()==0)
-//        {
+
+        if(appointmentListAdapter.getItemCount()==0)
+        {
             binding.appointmentcurrentNoRecyclerview.setVisibility(View.VISIBLE);
             binding.recyclerView.setVisibility(View.GONE);
-     //   }
+        }
     }
 
 

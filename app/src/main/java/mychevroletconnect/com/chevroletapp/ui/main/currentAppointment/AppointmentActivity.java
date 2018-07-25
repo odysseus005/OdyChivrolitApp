@@ -284,7 +284,10 @@ public class AppointmentActivity
 
         appointmentlmResults = realm.where(Appointment.class).findAll();
        appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
+               .greaterThan("dateMs",System.currentTimeMillis())
                .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
+
+
         appointmentListAdapter.notifyDataSetChanged();
 
 

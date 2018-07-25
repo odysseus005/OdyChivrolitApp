@@ -2,6 +2,7 @@ package mychevroletconnect.com.chevroletapp.ui.main.currentAppointment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -56,7 +57,44 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
         holder.itemAppointmentBinding.appointListTime.setText(FunctionUtils.hour24to12hour(appointment.get(position).getAppointschedTime()));
 
+        holder.itemAppointmentBinding.appointmentStatusColor.setBackgroundColor(getStatusColor(appointment.get(position).getAppointStatus()));
 
+    }
+
+    public int getStatusColor(String status)
+    {
+        int returnColor=0;
+        switch (status)
+        {
+            case "CONFIRMED":
+                returnColor = Color.parseColor("#9ccc65");
+                break;
+            case "CANCELLED":
+
+                returnColor = Color.parseColor("#b95d5d");
+                break;
+
+            case "RESCHEDULE":
+                returnColor = Color.parseColor("#78a741");
+
+                break;
+
+            case "NO SHOW":
+                returnColor = Color.parseColor("#424242");
+
+                break;
+            case "SUCCESSFUL":
+                returnColor = Color.parseColor("#9ccc65");
+
+                break;
+
+            default:
+                returnColor = Color.parseColor("#caad51");
+                break;
+
+        }
+
+        return  returnColor;
     }
 
 

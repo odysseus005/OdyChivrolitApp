@@ -21,6 +21,9 @@ public interface PastAppointmentView extends MvpView {
 
     void showReturn(String message);
 
+    void startLoading();
+
+    void stopLoading();
 
 
 

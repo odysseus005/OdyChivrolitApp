@@ -2,7 +2,9 @@ package mychevroletconnect.com.chevroletapp.ui.main.pastAppointment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -12,6 +14,7 @@ import java.util.List;
 import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.databinding.ItemPastAppointmentBinding;
 import mychevroletconnect.com.chevroletapp.model.data.Appointment;
+import mychevroletconnect.com.chevroletapp.util.FunctionUtils;
 
 
 public class PastAppointmentAdapter extends RecyclerView.Adapter<PastAppointmentAdapter.ViewHolder> {
@@ -49,10 +52,51 @@ public class PastAppointmentAdapter extends RecyclerView.Adapter<PastAppointment
         holder.itemAppointmentBinding.setAppointment(appointment.get(position));
         holder.itemAppointmentBinding.setView(view);
 
+        holder.itemAppointmentBinding.appointmentStatusColor.setBackgroundColor(getStatusColor(appointment.get(position).getAppointStatus()));
 
+        holder.itemAppointmentBinding.appointListDate.setText(FunctionUtils.appointListTimestampMonDate(appointment.get(position).getAppointDate()));
+        holder.itemAppointmentBinding.appointListYear.setText(FunctionUtils.appointListTimestampYear(appointment.get(position).getAppointDate()));
+
+        holder.itemAppointmentBinding.appointListTime.setText(appointment.get(position).getAppointStatus());
 
     }
 
+    public int getStatusColor(String status)
+    {
+        int returnColor=0;
+        Log.d(">>>>",status);
+        switch (status)
+        {
+            case "CONFIRMED":
+                returnColor = Color.parseColor("#9ccc65");
+                break;
+            case "CANCELLED":
+
+                returnColor = Color.parseColor("#b95d5d");
+                break;
+
+            case "RESCHEDULE":
+                returnColor = Color.parseColor("#9ccc65");
+
+                break;
+
+            case "NO SHOW":
+                returnColor = Color.parseColor("#424242");
+
+                break;
+            case "SUCCESSFUL":
+                returnColor = Color.parseColor("#78a741");
+
+                break;
+
+            default:
+                returnColor = Color.parseColor("#caad51");
+                break;
+
+        }
+
+        return  returnColor;
+    }
 
     public void clear() {
         appointment.clear();
