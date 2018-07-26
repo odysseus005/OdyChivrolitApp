@@ -1,5 +1,6 @@
 package mychevroletconnect.com.chevroletapp.ui.main.pastAppointment;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
@@ -27,6 +29,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityAppointmentPastBinding;
+import mychevroletconnect.com.chevroletapp.databinding.DialogAppointmentDetailPastBinding;
 import mychevroletconnect.com.chevroletapp.model.data.Appointment;
 import mychevroletconnect.com.chevroletapp.model.data.User;
 
@@ -44,7 +47,8 @@ public class PastAppointmentAppointmentActivity
     private String searchText;
     public String id;
     private PastAppointmentAdapter appointmentListAdapter;
-   // private DialogAppointmentProfileBinding dialogBinding;
+    private DialogAppointmentDetailPastBinding detailBinding;
+    private Dialog dialogDetail;
 
 
 
@@ -321,71 +325,28 @@ public class PastAppointmentAppointmentActivity
     @Override
     public void showAppointmentDetails(final Appointment attendee) {
 
+        dialogDetail = new Dialog(getContext());
 
-//        dialogBinding = DataBindingUtil.inflate(getLayoutInflater(),
-//                R.layout.dialog_attendee_profile, null, false);
-//        final AlertDialog alert = new AlertDialog.Builder(getActivity())
-//                .create();
-//        alert.setCancelable(true);
-//        alert.setView(dialogBinding.getRoot(),0,0,0,0);
-//        alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        dialogBinding.setProfile(attendee);
-//        dialogBinding.setView(getMvpView());
-//        int pictureSwitcher;
-//
-//        int min = 1;
-//        int max = 2;
-//
-//        Random r = new Random();
-//        int i1 = r.nextInt(max - min + 1) + min;
-//
-//        if(i1==1)
-//            pictureSwitcher = R.drawable.ic_profile_m;
-//        else
-//            pictureSwitcher = R.drawable.ic_profile_g;
-//
-//
-//        Glide.with(this)
-//                .load(pictureSwitcher)
-//                .transform(new CircleTransform(getActivity()))
-//                .into(dialogBinding.imageRunnerProfile);
-//
-//
-//        if(attendee.getStatus().equals("1"))
-//        {
-//            Glide.with(this)
-//                    .load(R.drawable.ic_attendance_check)
-//                    .transform(new CircleTransform(getActivity()))
-//                    .into(dialogBinding.attendeeStatusDetail);
-//
-//            dialogBinding.attendeeStatusDetailCard.setCardBackgroundColor(getContext().getResources().getColor(R.color.greenSuccessDark));
-//
-//
-//            dialogBinding.attendeeProfileMark.setVisibility(View.GONE);
-//        }else
-//        {
-//
-//            dialogBinding.attendeeProfileMark.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//
-//                    presenter.markAppointment(eventID,attendee.getId(),token.getToken());
-//                    alert.dismiss();
-//
-//                }
-//            });
-//
-//        }
-//
-//
-//        dialogBinding.runnerProfileClose.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                alert.dismiss();
-//            }
-//        });
-//        alert.show();
+        dialogDetail.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+        detailBinding = DataBindingUtil.inflate(
+                getLayoutInflater(),
+                R.layout.dialog_appointment_detail_past,
+                null,
+                false);
+
+
+        detailBinding.setView(getMvpView());
+
+
+
+
+
+
+        dialogDetail.setContentView(detailBinding.getRoot());
+        dialogDetail.setCancelable(true);
+        dialogDetail.show();
+
     }
 
 

@@ -55,6 +55,7 @@ import io.realm.RealmResults;
 import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityAppointmentCurrentBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogAddAppointmentBinding;
+import mychevroletconnect.com.chevroletapp.databinding.DialogAppointmentDetailBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogChooseDateBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogChooseDealerBinding;
 import mychevroletconnect.com.chevroletapp.model.data.Advisor;
@@ -98,8 +99,9 @@ public class AppointmentActivity
     private ScheduleAdapter scheduleListAdapter;
     private DialogAddAppointmentBinding dialogBinding;
     private DialogChooseDealerBinding dealerBinding;
+    private DialogAppointmentDetailBinding detailBinding;
     private DialogChooseDateBinding dateBinding;
-    private Dialog dialog,dialog2,dialog3;
+    private Dialog dialog,dialog2,dialog3,dialogDetail;
     private ArrayList<String> civil;
     private String selectedDealerId="",selectedadvisorPosition="0",selectedpmsPosition="",selectedScheduleId="",selectedDate="",selectedService="",selectedGarage="";
 
@@ -346,7 +348,42 @@ public class AppointmentActivity
     @Override
     public void showAppointmentDetails(final Appointment attendee) {
 
-        showError("Reservation Details Coming Soon..");
+
+        dialogDetail = new Dialog(getContext());
+
+        dialogDetail.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+        detailBinding = DataBindingUtil.inflate(
+                getLayoutInflater(),
+                R.layout.dialog_appointment_detail,
+                null,
+                false);
+
+
+        detailBinding.setView(getMvpView());
+
+
+
+
+
+        detailBinding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogDetail.dismiss();
+            }
+        });
+
+        detailBinding.resched.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+            }
+        });
+
+        dialogDetail.setContentView(detailBinding.getRoot());
+        dialogDetail.setCancelable(true);
+        dialogDetail.show();
 
     }
 

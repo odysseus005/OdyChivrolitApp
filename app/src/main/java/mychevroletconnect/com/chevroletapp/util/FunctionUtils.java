@@ -14,7 +14,7 @@ public class FunctionUtils {
 
     public static final String FULL_23_HR_DATE = "yyyy-MM-dd";
     public static final String DATE_ONLY = "MMM dd, yyyy";
-    public static final String DATE_NUM_ONLY = "MM.dd.yyyy";
+    public static final String DATE_NUM_ONLY = "E, MMM dd";
 
 
     public static String appointListTimestampMonDate(String date) {
@@ -90,7 +90,7 @@ public class FunctionUtils {
             date = targetFormat.parse(dateToConvert);
 
 
-            SimpleDateFormat formatter = new SimpleDateFormat(DATE_ONLY,Locale.US);
+            SimpleDateFormat formatter = new SimpleDateFormat(DATE_NUM_ONLY,Locale.US);
             convertedDate = formatter.format(date);
             return convertedDate.toUpperCase();
         } catch (Exception e) {
