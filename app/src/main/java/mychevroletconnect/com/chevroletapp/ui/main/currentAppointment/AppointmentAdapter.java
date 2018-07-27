@@ -4,7 +4,9 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -48,16 +50,25 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     @Override
     public void onBindViewHolder(AppointmentAdapter.ViewHolder holder, int position) {
-        holder.itemAppointmentBinding.setAppointment(appointment.get(position));
-        holder.itemAppointmentBinding.setView(view);
 
 
-        holder.itemAppointmentBinding.appointListDate.setText(FunctionUtils.appointListTimestampMonDate(appointment.get(position).getAppointDate()));
-        holder.itemAppointmentBinding.appointListYear.setText(FunctionUtils.appointListTimestampYear(appointment.get(position).getAppointDate()));
 
-        holder.itemAppointmentBinding.appointListTime.setText(FunctionUtils.hour24to12hour(appointment.get(position).getAppointschedTime()));
+//       if(appointment.get(position).getDateMs() > System.currentTimeMillis()) {
 
-        holder.itemAppointmentBinding.appointmentStatusColor.setBackgroundColor(getStatusColor(appointment.get(position).getAppointStatus()));
+
+           holder.itemAppointmentBinding.setAppointment(appointment.get(position));
+           holder.itemAppointmentBinding.setView(view);
+
+
+           holder.itemAppointmentBinding.appointListDate.setText(FunctionUtils.appointListTimestampMonDate(appointment.get(position).getAppointDate()));
+           holder.itemAppointmentBinding.appointListYear.setText(FunctionUtils.appointListTimestampYear(appointment.get(position).getAppointDate()));
+
+           holder.itemAppointmentBinding.appointListTime.setText(FunctionUtils.hour24to12hour(appointment.get(position).getAppointschedTime()));
+
+           holder.itemAppointmentBinding.appointmentStatusColor.setBackgroundColor(getStatusColor(appointment.get(position).getAppointStatus()));
+//       }
+//       else
+//           holder.itemAppointmentBinding.appointCard.setVisibility(View.GONE);
 
     }
 

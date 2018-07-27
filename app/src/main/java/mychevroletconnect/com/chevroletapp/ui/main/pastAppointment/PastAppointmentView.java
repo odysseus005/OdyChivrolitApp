@@ -13,7 +13,7 @@ public interface PastAppointmentView extends MvpView {
     void setAppointmentList();
 
 
-    void showAppointmentDetails(Appointment appoint);
+    void showAppointmentDetails2(Appointment appoint);
 
     void stopRefresh();
 

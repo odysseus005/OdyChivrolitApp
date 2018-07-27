@@ -5,7 +5,7 @@
     <data>
 
         <variable
-            name="appointment"
+            name="pastappointment"             
             type="mychevroletconnect.com.chevroletapp.model.data.Appointment" />
 
         <variable
@@ -19,14 +19,15 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="match_parent"
+        android:id="@+id/appointCardPast"
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.CardView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="@{() -> view.showAppointmentDetails(appointment)}"
-            android:id="@+id/appointListCardview"
+            android:id="@+id/pastappointlist"
+            android:onClick="@{() -> view.showAppointmentDetails2(pastappointment)}"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:layout_marginTop="3dp"
@@ -97,7 +98,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{appointment.appointdealerName}"
+                        android:text="@{pastappointment.appointdealerName}"
                         android:maxLines="2"
                         android:ellipsize="end"
                         android:layout_marginLeft="3dp"
@@ -106,7 +107,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{appointment.appointdealerLocation}"
+                        android:text="@{pastappointment.appointdealerLocation}"
                         android:drawableLeft="@drawable/ic_location_on"
                         android:drawablePadding="1dp"
                         android:maxLines="2"
@@ -119,7 +120,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text='@{appointment.appointgaragerName+" ("+appointment.appointgaragePlate+")"}'
+                        android:text='@{pastappointment.appointgaragerName+" ("+pastappointment.appointgaragePlate+")"}'
                         android:drawableLeft="@drawable/ic_car_small_tint"
                         android:drawablePadding="3dp"
                         android:maxLines="2"

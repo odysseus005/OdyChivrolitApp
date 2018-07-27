@@ -34,12 +34,12 @@ import mychevroletconnect.com.chevroletapp.model.data.Appointment;
 import mychevroletconnect.com.chevroletapp.model.data.User;
 
 
-public class PastAppointmentAppointmentActivity
+public class PastAppointmentActivity
         extends MvpViewStateFragment<PastAppointmentView, PastAppointmentPresenter>
         implements SwipeRefreshLayout.OnRefreshListener, PastAppointmentView {
 
     private ProgressDialog progressDialog;
-    private static final String TAG = PastAppointmentAppointmentActivity.class.getSimpleName();
+    private static final String TAG = PastAppointmentActivity.class.getSimpleName();
     private ActivityAppointmentPastBinding binding;
     private Realm realm;
     private User user;
@@ -52,7 +52,7 @@ public class PastAppointmentAppointmentActivity
 
 
 
-    public PastAppointmentAppointmentActivity(){
+    public PastAppointmentActivity(){
 
     }
 
@@ -107,8 +107,6 @@ public class PastAppointmentAppointmentActivity
             Log.d(TAG, "No User found");
             //  finish();
         }
-       appointmentListAdapter = new PastAppointmentAdapter(getActivity(), getMvpView());
-        binding.recyclerView.setAdapter(appointmentListAdapter);
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Appointment");
 
@@ -134,7 +132,7 @@ public class PastAppointmentAppointmentActivity
         });
 
 
-
+        presenter.loadAppointmentList(String.valueOf(user.getUserId()));
 
 
 
@@ -170,30 +168,30 @@ public class PastAppointmentAppointmentActivity
         });
 
     }
-    private void prepareList() {
-        if (appointmentlmResults.isLoaded() && appointmentlmResults.isValid()) {
-            if (searchText.isEmpty()) {
-
-
-                appointmentlmResults = realm.where(Appointment.class).findAllAsync();
-                appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
-                        .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
-                appointmentListAdapter.notifyDataSetChanged();
-
-            } else {
-
-                appointmentlmResults = realm.where(Appointment.class).findAllAsync();
-                appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
-                        .contains("emailAddress",searchText, Case.INSENSITIVE)
-                        .or()
-                        .contains("firstName",searchText, Case.INSENSITIVE)
-                        .or()
-                        .contains("lastName",searchText, Case.INSENSITIVE)
-                        .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
-                appointmentListAdapter.notifyDataSetChanged();
-            }
-        }
-    }
+//    private void prepareList() {
+//        if (appointmentlmResults.isLoaded() && appointmentlmResults.isValid()) {
+//            if (searchText.isEmpty()) {
+//
+//
+//                appointmentlmResults = realm.where(Appointment.class).findAllAsync();
+//                appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
+//                        .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
+//                appointmentListAdapter.notifyDataSetChanged();
+//
+//            } else {
+//
+//                appointmentlmResults = realm.where(Appointment.class).findAllAsync();
+//                appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
+//                        .contains("emailAddress",searchText, Case.INSENSITIVE)
+//                        .or()
+//                        .contains("firstName",searchText, Case.INSENSITIVE)
+//                        .or()
+//                        .contains("lastName",searchText, Case.INSENSITIVE)
+//                        .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
+//                appointmentListAdapter.notifyDataSetChanged();
+//            }
+//        }
+//    }
 
 
     @Override
@@ -211,7 +209,9 @@ public class PastAppointmentAppointmentActivity
     public void onResume() {
         super.onResume();
 
-        loadData();
+       loadData();
+
+
     }
 
 
@@ -279,9 +279,13 @@ public class PastAppointmentAppointmentActivity
     @Override
     public void setAppointmentList(){
 
+
+
+
+
         appointmentlmResults = realm.where(Appointment.class).findAllAsync();
         appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
-                .lessThan("dateMs",System.currentTimeMillis())
+// \               .lessThan("dateMs",System.currentTimeMillis())
                 .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
         appointmentListAdapter.notifyDataSetChanged();
 
@@ -289,7 +293,7 @@ public class PastAppointmentAppointmentActivity
 
         if(appointmentListAdapter.getItemCount()==0)
         {
-            binding.appointmentcurrentNoRecyclerview.setVisibility(View.VISIBLE);
+            binding.appointmentpasNoRecyclerview.setVisibility(View.VISIBLE);
             binding.recyclerView.setVisibility(View.GONE);
         }
     }
@@ -323,10 +327,9 @@ public class PastAppointmentAppointmentActivity
 
 
     @Override
-    public void showAppointmentDetails(final Appointment attendee) {
+    public void showAppointmentDetails2(Appointment appoint) {
 
-        dialogDetail = new Dialog(getContext());
-
+      dialogDetail = new Dialog(getContext(),R.style.RaffleDialogTheme);
         dialogDetail.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
         detailBinding = DataBindingUtil.inflate(
@@ -335,11 +338,29 @@ public class PastAppointmentAppointmentActivity
                 null,
                 false);
 
-
+        detailBinding.setAppointment(appoint);
         detailBinding.setView(getMvpView());
+        detailBinding.appointmentDetailsStatus.setTextColor(appointmentListAdapter.getStatusColor(appoint.getAppointStatus()));
 
+        String serviceFinal="Service: \n";
+        String[] items = appoint.getAppointServicesId().split(",");
+        for (String item : items)
+        {
+             serviceFinal += presenter.getService(item).getServiceName()+"\n";
+        }
+            detailBinding.appointmentDetailsService.setText(serviceFinal);
 
+        if(Integer.parseInt(appoint.getAppointPMSId())>0) {
+            detailBinding.appointmentDetailsPMS.setText("PMS Service: " + appoint.getAppointPMSMil() + "km - " + appoint.getAppointPMSMonth() + " months : " + appoint.getAppointPMSService());
+            detailBinding.appointmentDetailsPMS.setVisibility(View.VISIBLE);
+        }
 
+        detailBinding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogDetail.dismiss();
+            }
+        });
 
 
 

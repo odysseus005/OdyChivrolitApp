@@ -37,7 +37,7 @@
                 >
 
                 <ImageView
-                    android:id="@+id/eventDetailImage"
+                    android:id="@+id/appointDetailsImage"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:scaleType="centerCrop"
@@ -96,7 +96,7 @@
                             android:layout_gravity="center_vertical"
                             android:text="Car"
                             android:layout_marginLeft="3dp"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                     </LinearLayout>
 
@@ -143,7 +143,7 @@
                             android:layout_gravity="center_vertical"
                             android:text="Dealer "
                             android:layout_marginLeft="3dp"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                     </LinearLayout>
 
@@ -189,7 +189,7 @@
                             android:layout_gravity="center_vertical"
                             android:text="Schedule"
                             android:layout_marginLeft="0dp"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                     </LinearLayout>
 
@@ -210,7 +210,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_marginLeft="30dp"
                         android:layout_marginRight="30dp"
-                        android:text='@{"Time: "+appointment.appointschedTime}'
+                        android:text='@{"Time: "+FunctionUtils.hour24to12hour(appointment.appointschedTime)}'
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         />
 
@@ -236,7 +236,7 @@
                             android:layout_gravity="center_vertical"
                             android:text="Information"
                             android:layout_marginLeft="0dp"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                     </LinearLayout>
 
@@ -247,7 +247,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_marginLeft="30dp"
                         android:layout_marginRight="30dp"
-                        android:text='@{"Service: "+appointment.appointServicesName}'
+                        android:id="@+id/appointmentDetailsService"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         />
 
@@ -270,29 +270,58 @@
                         android:layout_marginLeft="30dp"
                         android:layout_marginRight="30dp"
                         android:lines="3"
-                        android:text='@{"Remarks: \n    "+appointment.appointRemarks}'
+                        android:text='@{"Remarks: "+appointment.appointRemarks}'
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         />
 
-
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="@dimen/activity_half_margin"
+                        android:gravity="center|right"
+                        android:padding="8dp"
+                        android:layout_gravity="center"
+                        android:text='Appointment Status'
+                        android:textAllCaps="true"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:textColor="@color/gray"
+                        />
                     <TextView
                         android:id="@+id/appointmentDetailsStatus"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginRight="@dimen/activity_half_margin"
-                        android:background="@color/gray"
+                        android:layout_height="60dp"
                         android:gravity="center|right"
-                        android:padding="8dp"
+                        android:padding="2dp"
                         android:layout_gravity="center"
                         android:paddingEnd="20dp"
                         android:paddingStart="20dp"
                         android:text='@{appointment.appointStatus}'
                         android:textAllCaps="true"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
+                        android:textColor="@color/black"
+
                          />
 
+
+
+
+                    <TextView
+                        android:id="@+id/cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:background="@drawable/rounded_button_solid"
+                        android:clickable="true"
+                        android:layout_gravity="center"
+                        android:padding="8dp"
+                        android:layout_margin="10dp"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp"
+                        android:text="Cancel"
+                        android:textAllCaps="true"
+                        android:gravity="center|right"
+                        android:paddingRight="25dp"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 

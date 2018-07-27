@@ -167,6 +167,7 @@ public class AppointmentActivity
         garageListAdapter = new GarageAdapter(getActivity(), getMvpView());
         dealerListAdapter = new DealerAdapter(getActivity(), getMvpView());
         serviceListAdapter = new ServiceAdapter(getActivity(),getMvpView());
+        presenter.loadServiceList(user.getUserId());
         presenter.loadAppointmentList(String.valueOf(user.getUserId()));
         appointmentListAdapter = new AppointmentAdapter(getActivity(), getMvpView());
         scheduleListAdapter = new ScheduleAdapter(getActivity(), getMvpView());
@@ -190,7 +191,7 @@ public class AppointmentActivity
             public void onClick(View v) {
 
                 presenter.loadGarageList(user.getUserId());
-                presenter.loadServiceList(user.getUserId());
+             //   presenter.loadServiceList(user.getUserId());
                 presenter.loadPMSList(user.getUserId());
 
             }
@@ -286,13 +287,11 @@ public class AppointmentActivity
 
         appointmentlmResults = realm.where(Appointment.class).findAll();
        appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
-               .greaterThan("dateMs",System.currentTimeMillis())
                .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
 
 
-        appointmentListAdapter.notifyDataSetChanged();
 
-
+        showError(appointmentListAdapter.getItemCount()+"");
         if(appointmentListAdapter.getItemCount()==0)
         {
             binding.appointmentcurrentNoRecyclerview.setVisibility(View.VISIBLE);
@@ -346,10 +345,10 @@ public class AppointmentActivity
 
 
     @Override
-    public void showAppointmentDetails(final Appointment attendee) {
+    public void showAppointmentDetails(final Appointment appointment) {
 
 
-        dialogDetail = new Dialog(getContext());
+        dialogDetail = new Dialog(getContext(),R.style.RaffleDialogTheme);
 
         dialogDetail.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
@@ -361,10 +360,7 @@ public class AppointmentActivity
 
 
         detailBinding.setView(getMvpView());
-
-
-
-
+        detailBinding.setAppointment(appointment);
 
         detailBinding.cancel.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -14,7 +14,7 @@ public class Service extends RealmObject {
     @PrimaryKey
     @SerializedName("service_id")
     @Expose
-    private int serviceId;
+    private String serviceId;
 
     @SerializedName("service_name")
     @Expose
@@ -27,11 +27,11 @@ public class Service extends RealmObject {
 
 
 
-    public int getServiceId() {
+    public String getServiceId() {
         return serviceId;
     }
 
-    public void setServiceId(int serviceId) {
+    public void setServiceId(String serviceId) {
         this.serviceId = serviceId;
     }
 

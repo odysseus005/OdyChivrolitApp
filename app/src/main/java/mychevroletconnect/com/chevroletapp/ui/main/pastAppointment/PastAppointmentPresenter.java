@@ -6,6 +6,7 @@ import io.realm.Realm;
 import mychevroletconnect.com.chevroletapp.app.App;
 import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.model.data.Appointment;
+import mychevroletconnect.com.chevroletapp.model.data.Service;
 import mychevroletconnect.com.chevroletapp.model.response.AppointmentListResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,7 +76,11 @@ public class PastAppointmentPresenter extends MvpBasePresenter<PastAppointmentVi
                 });
     }
 
-
+    Service getService(String id){
+        return realm.where(Service.class)
+                .equalTo("serviceId", id)
+                .findFirst();
+    }
 
 
 
