@@ -14,7 +14,7 @@ public class FunctionUtils {
 
     public static final String FULL_23_HR_DATE = "yyyy-MM-dd";
     public static final String DATE_ONLY = "MMM dd, yyyy";
-    public static final String DATE_NUM_ONLY = "MM.dd.yyyy";
+    public static final String DATE_NUM_ONLY = "E, MMM dd";
 
 
     public static String appointListTimestampMonDate(String date) {
@@ -60,6 +60,26 @@ public class FunctionUtils {
         return date;
     }
 
+    public static long milliseconds(String date)
+    {
+        //String date_ = date;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try
+        {
+            Date mDate = sdf.parse(date);
+            long timeInMilliseconds = mDate.getTime();
+            System.out.println("Date in milli :: " + timeInMilliseconds);
+            return timeInMilliseconds;
+        }
+        catch (ParseException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
 
     public static String toReadable(String dateToConvert){
         String convertedDate;
@@ -70,7 +90,7 @@ public class FunctionUtils {
             date = targetFormat.parse(dateToConvert);
 
 
-            SimpleDateFormat formatter = new SimpleDateFormat(DATE_ONLY,Locale.US);
+            SimpleDateFormat formatter = new SimpleDateFormat(DATE_NUM_ONLY,Locale.US);
             convertedDate = formatter.format(date);
             return convertedDate.toUpperCase();
         } catch (Exception e) {

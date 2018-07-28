@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import mychevroletconnect.com.chevroletapp.util.FunctionUtils;
 
 
 public class Appointment extends RealmObject {
@@ -109,6 +110,20 @@ public class Appointment extends RealmObject {
     @SerializedName("reserve_remarks")
     @Expose
     private String appointRemarks;
+
+
+
+
+    public long dateMs;
+
+    public long getDateMs() {
+        return FunctionUtils.milliseconds(appointDate);
+    }
+
+    public void setDateMs(long dateMs) {
+        this.dateMs = dateMs;
+    }
+
 
     private String fullName;
 

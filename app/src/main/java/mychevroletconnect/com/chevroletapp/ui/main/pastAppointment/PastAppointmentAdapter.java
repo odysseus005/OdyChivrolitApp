@@ -2,16 +2,20 @@ package mychevroletconnect.com.chevroletapp.ui.main.pastAppointment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import mychevroletconnect.com.chevroletapp.R;
-import mychevroletconnect.com.chevroletapp.databinding.ItemPastAppointmentBinding;
+import mychevroletconnect.com.chevroletapp.databinding.ItemAppointmentPastBinding;
 import mychevroletconnect.com.chevroletapp.model.data.Appointment;
+import mychevroletconnect.com.chevroletapp.util.FunctionUtils;
 
 
 public class PastAppointmentAdapter extends RecyclerView.Adapter<PastAppointmentAdapter.ViewHolder> {
@@ -35,24 +39,89 @@ public class PastAppointmentAdapter extends RecyclerView.Adapter<PastAppointment
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ItemPastAppointmentBinding itemAppointmentBinding = DataBindingUtil.inflate(
+        ItemAppointmentPastBinding itemAppointmentBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.item_past_appointment,
+                R.layout.item_appointment_past,
                 parent,
                 false);
+
+
+
 
         return new ViewHolder(itemAppointmentBinding);
     }
 
     @Override
-    public void onBindViewHolder(PastAppointmentAdapter.ViewHolder holder, int position) {
-        holder.itemAppointmentBinding.setAppointment(appointment.get(position));
-        holder.itemAppointmentBinding.setView(view);
+    public void onBindViewHolder(final PastAppointmentAdapter.ViewHolder holder,final int position) {
+
+
+        Appointment app = appointment.get(position);
+
+
+       // Log.d("?????? ",appointment.get(position).getDateMs()+"     >>>>"+System.currentTimeMillis());
+
+
+//        if(appointment.get(position).getDateMs() < System.currentTimeMillis()) {
+
+
+            holder.itemAppointmentBinding.setPastappointment(app);
+            holder.itemAppointmentBinding.setView(view);
+
+            holder.itemAppointmentBinding.appointmentStatusColor.setBackgroundColor(getStatusColor(app.getAppointStatus()));
+
+            holder.itemAppointmentBinding.appointListDate.setText(FunctionUtils.appointListTimestampMonDate(app.getAppointDate()));
+            holder.itemAppointmentBinding.appointListYear.setText(FunctionUtils.appointListTimestampYear(app.getAppointDate()));
+
+            holder.itemAppointmentBinding.appointListTime.setText(app.getAppointStatus());
+
+
+
+//        }else
+//            holder.itemAppointmentBinding.appointCardPast.setVisibility(View.GONE);
+
 
 
 
     }
 
+
+
+    public int getStatusColor(String status)
+    {
+        int returnColor=0;
+
+        switch (status)
+        {
+            case "CONFIRMED":
+                returnColor = Color.parseColor("#9ccc65");
+                break;
+            case "CANCELLED":
+
+                returnColor = Color.parseColor("#b95d5d");
+                break;
+
+            case "RESCHEDULE":
+                returnColor = Color.parseColor("#9ccc65");
+
+                break;
+
+            case "NO SHOW":
+                returnColor = Color.parseColor("#424242");
+
+                break;
+            case "SUCCESSFUL":
+                returnColor = Color.parseColor("#78a741");
+
+                break;
+
+            default:
+                returnColor = Color.parseColor("#caad51");
+                break;
+
+        }
+
+        return  returnColor;
+    }
 
     public void clear() {
         appointment.clear();
@@ -69,9 +138,9 @@ public class PastAppointmentAdapter extends RecyclerView.Adapter<PastAppointment
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final ItemPastAppointmentBinding itemAppointmentBinding;
+        private final ItemAppointmentPastBinding itemAppointmentBinding;
 
-        public ViewHolder(ItemPastAppointmentBinding itemAppointmentBinding) {
+        public ViewHolder(ItemAppointmentPastBinding itemAppointmentBinding) {
             super(itemAppointmentBinding.getRoot());
             this.itemAppointmentBinding = itemAppointmentBinding;
         }

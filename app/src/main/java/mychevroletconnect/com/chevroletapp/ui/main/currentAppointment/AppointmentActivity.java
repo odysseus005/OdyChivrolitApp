@@ -55,6 +55,7 @@ import io.realm.RealmResults;
 import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityAppointmentCurrentBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogAddAppointmentBinding;
+import mychevroletconnect.com.chevroletapp.databinding.DialogAppointmentDetailBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogChooseDateBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogChooseDealerBinding;
 import mychevroletconnect.com.chevroletapp.model.data.Advisor;
@@ -98,10 +99,11 @@ public class AppointmentActivity
     private ScheduleAdapter scheduleListAdapter;
     private DialogAddAppointmentBinding dialogBinding;
     private DialogChooseDealerBinding dealerBinding;
+    private DialogAppointmentDetailBinding detailBinding;
     private DialogChooseDateBinding dateBinding;
-    private Dialog dialog,dialog2,dialog3;
+    private Dialog dialog,dialog2,dialog3,dialogDetail;
     private ArrayList<String> civil;
-    private String selectedDealerId="",selectedadvisorPosition="",selectedpmsPosition="",selectedScheduleId="",selectedDate="",selectedService="",selectedGarage="";
+    private String selectedDealerId="",selectedadvisorPosition="0",selectedpmsPosition="",selectedScheduleId="",selectedDate="",selectedService="",selectedGarage="";
 
     public AppointmentActivity(){
 
@@ -165,6 +167,7 @@ public class AppointmentActivity
         garageListAdapter = new GarageAdapter(getActivity(), getMvpView());
         dealerListAdapter = new DealerAdapter(getActivity(), getMvpView());
         serviceListAdapter = new ServiceAdapter(getActivity(),getMvpView());
+        presenter.loadServiceList(user.getUserId());
         presenter.loadAppointmentList(String.valueOf(user.getUserId()));
         appointmentListAdapter = new AppointmentAdapter(getActivity(), getMvpView());
         scheduleListAdapter = new ScheduleAdapter(getActivity(), getMvpView());
@@ -188,7 +191,7 @@ public class AppointmentActivity
             public void onClick(View v) {
 
                 presenter.loadGarageList(user.getUserId());
-                presenter.loadServiceList(user.getUserId());
+             //   presenter.loadServiceList(user.getUserId());
                 presenter.loadPMSList(user.getUserId());
 
             }
@@ -285,9 +288,10 @@ public class AppointmentActivity
         appointmentlmResults = realm.where(Appointment.class).findAll();
        appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
                .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
-        appointmentListAdapter.notifyDataSetChanged();
 
 
+
+        showError(appointmentListAdapter.getItemCount()+"");
         if(appointmentListAdapter.getItemCount()==0)
         {
             binding.appointmentcurrentNoRecyclerview.setVisibility(View.VISIBLE);
@@ -341,9 +345,41 @@ public class AppointmentActivity
 
 
     @Override
-    public void showAppointmentDetails(final Appointment attendee) {
+    public void showAppointmentDetails(final Appointment appointment) {
 
-        showError("Reservation Details Coming Soon..");
+
+        dialogDetail = new Dialog(getContext(),R.style.RaffleDialogTheme);
+
+        dialogDetail.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+        detailBinding = DataBindingUtil.inflate(
+                getLayoutInflater(),
+                R.layout.dialog_appointment_detail,
+                null,
+                false);
+
+
+        detailBinding.setView(getMvpView());
+        detailBinding.setAppointment(appointment);
+
+        detailBinding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogDetail.dismiss();
+            }
+        });
+
+        detailBinding.resched.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+            }
+        });
+
+        dialogDetail.setContentView(detailBinding.getRoot());
+        dialogDetail.setCancelable(true);
+        dialogDetail.show();
 
     }
 
@@ -353,9 +389,11 @@ public class AppointmentActivity
 
         dialogBinding.etDealer.setText(dealer.getDealerName());
         selectedDealerId = String.valueOf(dealer.getDealerId());
-        presenter.loadAdvisorList(dealer.getDealerId());
+      //  presenter.loadAdvisorList(dealer.getDealerId());
         dialog2.dismiss();
     }
+
+
 
     @Override
     public  void loadAdvisor()
@@ -388,7 +426,7 @@ public class AppointmentActivity
             });
 
             dialogBinding.spAdvisor.setVisibility(View.VISIBLE);
-            dialogBinding.appointmentAdvisorTitle.setVisibility(View.VISIBLE);
+            //dialogBinding.appointmentAdvisorTitle.setVisibility(View.VISIBLE); //Hide advisor
         }
         else
             showError("No Available Adviser");

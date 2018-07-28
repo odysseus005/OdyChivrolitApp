@@ -20,7 +20,7 @@
             android:text="No Past Appointment"
             android:textColor="@color/lightGray"
             android:textStyle="bold"
-            android:id="@+id/appointmentcurrent_no_recyclerview"
+            android:id="@+id/appointmentpas_no_recyclerview"
             android:visibility="gone"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
 

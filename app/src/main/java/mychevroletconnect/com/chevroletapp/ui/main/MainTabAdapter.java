@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import mychevroletconnect.com.chevroletapp.ui.main.currentAppointment.AppointmentActivity;
-import mychevroletconnect.com.chevroletapp.ui.main.pastAppointment.PastAppointmentAppointmentActivity;
+import mychevroletconnect.com.chevroletapp.ui.main.pastAppointment.PastAppointmentActivity;
 
 
 
@@ -23,7 +23,7 @@ class MainTabAdapter extends FragmentStatePagerAdapter {
             case 0:
                  return new AppointmentActivity();
             case 1:
-                return new PastAppointmentAppointmentActivity();
+                return new PastAppointmentActivity();
 
 
             default:
