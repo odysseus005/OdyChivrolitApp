@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
@@ -28,10 +29,12 @@ import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import mychevroletconnect.com.chevroletapp.R;
+import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityAppointmentPastBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogAppointmentDetailPastBinding;
-import mychevroletconnect.com.chevroletapp.model.data.Appointment;
+import mychevroletconnect.com.chevroletapp.model.data.PastAppointment;
 import mychevroletconnect.com.chevroletapp.model.data.User;
+import mychevroletconnect.com.chevroletapp.util.FunctionUtils;
 
 
 public class PastAppointmentActivity
@@ -43,7 +46,7 @@ public class PastAppointmentActivity
     private ActivityAppointmentPastBinding binding;
     private Realm realm;
     private User user;
-    private RealmResults<Appointment> appointmentlmResults;
+    private RealmResults<PastAppointment> appointmentlmResults;
     private String searchText;
     public String id;
     private PastAppointmentAdapter appointmentListAdapter;
@@ -132,8 +135,6 @@ public class PastAppointmentActivity
         });
 
 
-        presenter.loadAppointmentList(String.valueOf(user.getUserId()));
-
 
 
 
@@ -209,7 +210,7 @@ public class PastAppointmentActivity
     public void onResume() {
         super.onResume();
 
-       loadData();
+        presenter.loadAppointmentList(String.valueOf(user.getUserId()));
 
 
     }
@@ -250,25 +251,25 @@ public class PastAppointmentActivity
     }
 
 
-    public void loadData()
-    {
-        realm = Realm.getDefaultInstance();
-        User user = realm.where(User.class).findFirst();
-        appointmentlmResults = realm.where(Appointment.class).findAll();
-
-
-
-            if (appointmentlmResults.isLoaded() && appointmentlmResults.isValid()) {
-                getMvpView().setAppointmentList();
-
-            }else
-            {
-                presenter.loadAppointmentList(String.valueOf(user.getUserId()));
-
-            }
-
-
-    }
+//    public void loadData()
+//    {
+//        realm = Realm.getDefaultInstance();
+//        User user = realm.where(User.class).findFirst();
+//        appointmentlmResults = realm.where(PastAppointment.class).findAll();
+//
+//
+//
+//            if (appointmentlmResults.isLoaded() && appointmentlmResults.isValid()) {
+//                getMvpView().setAppointmentList();
+//
+//            }else
+//            {
+//                presenter.loadAppointmentList(String.valueOf(user.getUserId()));
+//
+//            }
+//
+//
+//    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -283,7 +284,7 @@ public class PastAppointmentActivity
 
 
 
-        appointmentlmResults = realm.where(Appointment.class).findAllAsync();
+        appointmentlmResults = realm.where(PastAppointment.class).findAllAsync();
         appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
 // \               .lessThan("dateMs",System.currentTimeMillis())
                 .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
@@ -293,6 +294,7 @@ public class PastAppointmentActivity
 
         if(appointmentListAdapter.getItemCount()==0)
         {
+
             binding.appointmentpasNoRecyclerview.setVisibility(View.VISIBLE);
             binding.recyclerView.setVisibility(View.GONE);
         }
@@ -318,7 +320,7 @@ public class PastAppointmentActivity
 
 
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-        loadData();
+        presenter.loadAppointmentList(String.valueOf(user.getUserId()));
     }
 
 
@@ -327,46 +329,60 @@ public class PastAppointmentActivity
 
 
     @Override
-    public void showAppointmentDetails2(Appointment appoint) {
+    public void showAppointmentDetails2(PastAppointment appoint) {
 
-      dialogDetail = new Dialog(getContext(),R.style.RaffleDialogTheme);
-        dialogDetail.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        try {
 
-        detailBinding = DataBindingUtil.inflate(
-                getLayoutInflater(),
-                R.layout.dialog_appointment_detail_past,
-                null,
-                false);
+            dialogDetail = new Dialog(getContext(), R.style.RaffleDialogTheme);
+            dialogDetail.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
-        detailBinding.setAppointment(appoint);
-        detailBinding.setView(getMvpView());
-        detailBinding.appointmentDetailsStatus.setTextColor(appointmentListAdapter.getStatusColor(appoint.getAppointStatus()));
+            detailBinding = DataBindingUtil.inflate(
+                    getLayoutInflater(),
+                    R.layout.dialog_appointment_detail_past,
+                    null,
+                    false);
 
-        String serviceFinal="Service: \n";
-        String[] items = appoint.getAppointServicesId().split(",");
-        for (String item : items)
-        {
-             serviceFinal += presenter.getService(item).getServiceName()+"\n";
-        }
-            detailBinding.appointmentDetailsService.setText(serviceFinal);
 
-        if(Integer.parseInt(appoint.getAppointPMSId())>0) {
-            detailBinding.appointmentDetailsPMS.setText("PMS Service: " + appoint.getAppointPMSMil() + "km - " + appoint.getAppointPMSMonth() + " months : " + appoint.getAppointPMSService());
-            detailBinding.appointmentDetailsPMS.setVisibility(View.VISIBLE);
-        }
+            Glide.with(getContext())
+                    .load(Endpoints.URL_IMAGE+appoint.getAppointgaragerId()+appoint.getAppointgaragerName())
+                    .centerCrop()
+                    .error(R.drawable.placeholder_garage)
+                    .into(detailBinding.appointDetailsImage);
 
-        detailBinding.cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogDetail.dismiss();
+
+
+            detailBinding.setAppointment(appoint);
+            detailBinding.setView(getMvpView());
+            detailBinding.appointmentDetailsStatus.setTextColor(appointmentListAdapter.getStatusColor(appoint.getAppointStatus()));
+
+            String serviceFinal = "Service: \n";
+            String[] items = appoint.getAppointServicesId().split(",");
+            for (String item : items) {
+                serviceFinal += presenter.getService(item).getServiceName() + "\n";
             }
-        });
+            detailBinding.appointmentDetailsService.setText(FunctionUtils.removeLastChar(serviceFinal));
+
+            if (Integer.parseInt(appoint.getAppointPMSId()) > 0) {
+                detailBinding.appointmentDetailsPMS.setText("PMS Service: " + appoint.getAppointPMSMil() + "km - " + appoint.getAppointPMSMonth() + " months : " + appoint.getAppointPMSService());
+                detailBinding.appointmentDetailsPMS.setVisibility(View.VISIBLE);
+            }
+
+            detailBinding.cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialogDetail.dismiss();
+                }
+            });
 
 
-
-        dialogDetail.setContentView(detailBinding.getRoot());
-        dialogDetail.setCancelable(true);
-        dialogDetail.show();
+            dialogDetail.setContentView(detailBinding.getRoot());
+            dialogDetail.setCancelable(true);
+            dialogDetail.show();
+        }catch (Exception e)
+        {
+            presenter.loadAppointmentList(String.valueOf(user.getUserId()));
+            showError("Can't Load Appointment Details");
+        }
 
     }
 

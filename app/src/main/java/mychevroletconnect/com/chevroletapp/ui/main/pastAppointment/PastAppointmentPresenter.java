@@ -1,13 +1,16 @@
 package mychevroletconnect.com.chevroletapp.ui.main.pastAppointment;
 
+import android.util.Log;
+
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 
 import io.realm.Realm;
 import mychevroletconnect.com.chevroletapp.app.App;
 import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.model.data.Appointment;
+import mychevroletconnect.com.chevroletapp.model.data.PastAppointment;
 import mychevroletconnect.com.chevroletapp.model.data.Service;
-import mychevroletconnect.com.chevroletapp.model.response.AppointmentListResponse;
+import mychevroletconnect.com.chevroletapp.model.response.PastAppointmentListResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,10 +29,10 @@ public class PastAppointmentPresenter extends MvpBasePresenter<PastAppointmentVi
     public void loadAppointmentList(String userID) {
 
         getView().startLoading();
-        App.getInstance().getApiInterface().getAppointmentList(Endpoints.GET_APPOINTMENT,String.valueOf(userID))
-                .enqueue(new Callback<AppointmentListResponse>() {
+        App.getInstance().getApiInterface().getAppointmentListPast(Endpoints.GET_APPOINTMENTPAST,String.valueOf(userID))
+                .enqueue(new Callback<PastAppointmentListResponse>() {
                     @Override
-                    public void onResponse(Call<AppointmentListResponse> call, final Response<AppointmentListResponse> response) {
+                    public void onResponse(Call<PastAppointmentListResponse> call, final Response<PastAppointmentListResponse> response) {
                         if (isViewAttached()) {
                             getView().stopRefresh();
                         }
@@ -39,7 +42,7 @@ public class PastAppointmentPresenter extends MvpBasePresenter<PastAppointmentVi
                             realm.executeTransactionAsync(new Realm.Transaction() {
                                 @Override
                                 public void execute(Realm realm) {
-                                    realm.delete(Appointment.class);
+                                    realm.delete(PastAppointment.class);
                                     realm.copyToRealmOrUpdate(response.body().getData());
 
                                 }
@@ -48,6 +51,7 @@ public class PastAppointmentPresenter extends MvpBasePresenter<PastAppointmentVi
                                 public void onSuccess() {
                                     realm.close();
                                     getView().setAppointmentList();
+
                                 }
                             }, new Realm.Transaction.OnError() {
                                 @Override
@@ -65,7 +69,7 @@ public class PastAppointmentPresenter extends MvpBasePresenter<PastAppointmentVi
                     }
 
                     @Override
-                    public void onFailure(Call<AppointmentListResponse> call, Throwable t) {
+                    public void onFailure(Call<PastAppointmentListResponse> call, Throwable t) {
                         t.printStackTrace();
                         getView().stopLoading();
                         if (isViewAttached()) {

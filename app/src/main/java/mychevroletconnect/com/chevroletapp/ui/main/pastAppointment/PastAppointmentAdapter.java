@@ -14,12 +14,13 @@ import java.util.List;
 
 import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.databinding.ItemAppointmentPastBinding;
-import mychevroletconnect.com.chevroletapp.model.data.Appointment;
+
+import mychevroletconnect.com.chevroletapp.model.data.PastAppointment;
 import mychevroletconnect.com.chevroletapp.util.FunctionUtils;
 
 
 public class PastAppointmentAdapter extends RecyclerView.Adapter<PastAppointmentAdapter.ViewHolder> {
-    private List<Appointment> appointment;
+    private List<PastAppointment> pastappointment;
     private final Context context;
     private final PastAppointmentView view;
     private static final int VIEW_TYPE_DEFAULT = 0;
@@ -28,7 +29,7 @@ public class PastAppointmentAdapter extends RecyclerView.Adapter<PastAppointment
     public PastAppointmentAdapter(Context context, PastAppointmentView view) {
         this.context = context;
         this.view = view;
-        appointment = new ArrayList<>();
+        pastappointment = new ArrayList<>();
     }
 
 
@@ -55,13 +56,8 @@ public class PastAppointmentAdapter extends RecyclerView.Adapter<PastAppointment
     public void onBindViewHolder(final PastAppointmentAdapter.ViewHolder holder,final int position) {
 
 
-        Appointment app = appointment.get(position);
+        PastAppointment app = pastappointment.get(position);
 
-
-       // Log.d("?????? ",appointment.get(position).getDateMs()+"     >>>>"+System.currentTimeMillis());
-
-
-//        if(appointment.get(position).getDateMs() < System.currentTimeMillis()) {
 
 
             holder.itemAppointmentBinding.setPastappointment(app);
@@ -124,17 +120,17 @@ public class PastAppointmentAdapter extends RecyclerView.Adapter<PastAppointment
     }
 
     public void clear() {
-        appointment.clear();
+        pastappointment.clear();
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return appointment.size();
+        return pastappointment.size();
     }
 
-    public void setAppointmentResult(List<Appointment> event) {
-        this.appointment = event;
+    public void setAppointmentResult(List<PastAppointment> event) {
+        this.pastappointment = event;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

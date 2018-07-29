@@ -1,10 +1,11 @@
 package mychevroletconnect.com.chevroletapp.ui.main.currentAppointment;
 
 import android.Manifest;
-import android.app.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -43,8 +44,10 @@ import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -53,6 +56,7 @@ import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import mychevroletconnect.com.chevroletapp.R;
+import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityAppointmentCurrentBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogAddAppointmentBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogAppointmentDetailBinding;
@@ -75,7 +79,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class AppointmentActivity
         extends MvpViewStateFragment<AppointmentView, AppointmentPresenter>
-        implements SwipeRefreshLayout.OnRefreshListener, AppointmentView {
+        implements SwipeRefreshLayout.OnRefreshListener, AppointmentView,DatePickerDialog.OnDateSetListener {
 
 
     private ProgressDialog progressDialog;
@@ -91,7 +95,7 @@ public class AppointmentActivity
     private List<Advisor> advisorRealmResults;
     private List<Pms> pmsRealmResults;
     private String searchText;
-    public String id;
+    public String id,appointid;
     private GarageAdapter garageListAdapter;
     private ServiceAdapter serviceListAdapter;
     private DealerAdapter dealerListAdapter;
@@ -103,6 +107,8 @@ public class AppointmentActivity
     private DialogChooseDateBinding dateBinding;
     private Dialog dialog,dialog2,dialog3,dialogDetail;
     private ArrayList<String> civil;
+    private boolean reSchedchecker= false;
+
     private String selectedDealerId="",selectedadvisorPosition="0",selectedpmsPosition="",selectedScheduleId="",selectedDate="",selectedService="",selectedGarage="";
 
     public AppointmentActivity(){
@@ -168,7 +174,7 @@ public class AppointmentActivity
         dealerListAdapter = new DealerAdapter(getActivity(), getMvpView());
         serviceListAdapter = new ServiceAdapter(getActivity(),getMvpView());
         presenter.loadServiceList(user.getUserId());
-        presenter.loadAppointmentList(String.valueOf(user.getUserId()));
+       // presenter.loadAppointmentList(String.valueOf(user.getUserId()));
         appointmentListAdapter = new AppointmentAdapter(getActivity(), getMvpView());
         scheduleListAdapter = new ScheduleAdapter(getActivity(), getMvpView());
         binding.recyclerView.setAdapter(appointmentListAdapter);
@@ -244,7 +250,7 @@ public class AppointmentActivity
     public void onResume() {
         super.onResume();
 
-        loadData();
+        presenter.loadAppointmentList(String.valueOf(user.getUserId()));
     }
 
 
@@ -263,18 +269,18 @@ public class AppointmentActivity
     }
 
 
-    public void loadData()
-    {
-        realm = Realm.getDefaultInstance();
-        User user = realm.where(User.class).findFirst();
-        appointmentlmResults = realm.where(Appointment.class).findAll();
-            if (appointmentlmResults.isLoaded() && appointmentlmResults.isValid()) {
-                getMvpView().setAppointmentList();
-            }else
-            {
-                presenter.loadAppointmentList(String.valueOf(user.getUserId()));
-            }
-    }
+//    public void loadData()
+//    {
+//        realm = Realm.getDefaultInstance();
+//        User user = realm.where(User.class).findFirst();
+//        appointmentlmResults = realm.where(Appointment.class).findAll();
+//            if (appointmentlmResults.isLoaded() && appointmentlmResults.isValid()) {
+//                getMvpView().setAppointmentList();
+//            }else
+//            {
+//                presenter.loadAppointmentList(String.valueOf(user.getUserId()));
+//            }
+//    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -289,11 +295,13 @@ public class AppointmentActivity
        appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
                .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
 
+        appointmentListAdapter.notifyDataSetChanged();
 
 
-        showError(appointmentListAdapter.getItemCount()+"");
+
         if(appointmentListAdapter.getItemCount()==0)
         {
+
             binding.appointmentcurrentNoRecyclerview.setVisibility(View.VISIBLE);
             binding.recyclerView.setVisibility(View.GONE);
         }
@@ -362,18 +370,71 @@ public class AppointmentActivity
         detailBinding.setView(getMvpView());
         detailBinding.setAppointment(appointment);
 
+
+        Glide.with(getContext())
+                .load(Endpoints.URL_IMAGE+appointment.getAppointgaragerId()+appointment.getAppointgaragerName())
+                .centerCrop()
+                .error(R.drawable.placeholder_garage)
+                .into(detailBinding.appointDetailsImage);
+
+
+        detailBinding.appointmentDetailsStatus.setTextColor(appointmentListAdapter.getStatusColor(appointment.getAppointStatus()));
+
+        String serviceFinal = "Service: \n";
+        String[] items = appointment.getAppointServicesId().split(",");
+        for (String item : items) {
+            serviceFinal += presenter.getService(item).getServiceName() + "\n";
+        }
+        detailBinding.appointmentDetailsService.setText(FunctionUtils.removeLastChar(serviceFinal));
+
+        if (Integer.parseInt(appointment.getAppointPMSId()) > 0) {
+            detailBinding.appointmentDetailsPMS.setText("PMS Service: " + appointment.getAppointPMSMil() + "km - " + appointment.getAppointPMSMonth() + " months : " + appointment.getAppointPMSService());
+            detailBinding.appointmentDetailsPMS.setVisibility(View.VISIBLE);
+        }
+
+        if(appointment.getAppointStatus().equalsIgnoreCase("CANCELLED"))
+        {
+            detailBinding.cancel.setVisibility(View.GONE);
+            detailBinding.resched.setVisibility(View.GONE);
+        }
+
         detailBinding.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogDetail.dismiss();
+
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Are you sure you want cancel your appointment?")
+                        .setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                presenter.cancelReservation(String.valueOf(appointment.getAppointId()));
+                            }
+                        })
+                        .setNegativeButton( "Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+
+                        .show();
+
             }
         });
 
         detailBinding.resched.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                reSchedchecker = true;
+                selectedDealerId = String.valueOf(appointment.getAppointdealerId());
+                appointid = String.valueOf(appointment.getAppointId());
+                chooseDateandSlot();
 
+            }
+        });
 
+        detailBinding.close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogDetail.dismiss(); reSchedchecker = false;
             }
         });
 
@@ -561,23 +622,57 @@ public class AppointmentActivity
 
     @Override
     public void setAppointmentDate() {
+
+
+        Calendar sunday,saturday;
+        List<Calendar> weekends = new ArrayList<>();
+        int weeks = 50;
+
+        for (int i = 0; i < (weeks * 7) ; i = i + 7) {
+            sunday = Calendar.getInstance();
+            sunday.add(Calendar.DAY_OF_YEAR, (Calendar.SUNDAY - sunday.get(Calendar.DAY_OF_WEEK) + 7 + i));
+             saturday = Calendar.getInstance();
+             saturday.add(Calendar.DAY_OF_YEAR, (Calendar.SATURDAY - saturday.get(Calendar.DAY_OF_WEEK) + i));
+             weekends.add(saturday);
+            weekends.add(sunday);
+        }
+        Calendar[] disabledDays = weekends.toArray(new Calendar[weekends.size()]);
+
+
         Calendar newCalendar = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                AppointmentActivity.this,
+                newCalendar.get(Calendar.YEAR),
+                newCalendar.get(Calendar.MONTH),
+                newCalendar.get(Calendar.DAY_OF_MONTH)
+        );
+        int daysallowable = 2;//get from database
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, daysallowable);
+      //  Cal dateBefore30Days = cal.getTime();
+        datePickerDialog.setMinDate(cal);
+        datePickerDialog.setDisabledDays(disabledDays);
+        datePickerDialog.show(getActivity().getFragmentManager(),"");
 
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                dateBinding.etAppointDate.setText(dateFormatter.format(newDate.getTime()));
 
-                dateBinding.chooseSlotTitle.setVisibility(View.INVISIBLE);
-                dateBinding.chooseSlotTitle2.setVisibility(View.INVISIBLE);
-                dateBinding.recyclerView.setVisibility(View.INVISIBLE);
-                presenter.loadTimeslotList(user.getUserId(),selectedDealerId,dateFormatter.format(newDate.getTime()));
-            }
 
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-        datePickerDialog.show();
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+
+        Calendar newDate = Calendar.getInstance();
+        newDate.set(year, monthOfYear, dayOfMonth);
+
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+        dateBinding.etAppointDate.setText(dateFormatter.format(newDate.getTime()));
+
+        dateBinding.chooseSlotTitle.setVisibility(View.INVISIBLE);
+        dateBinding.chooseSlotTitle2.setVisibility(View.INVISIBLE);
+        dateBinding.recyclerView.setVisibility(View.INVISIBLE);
+        presenter.loadTimeslotList(user.getUserId(),selectedDealerId,dateFormatter.format(newDate.getTime()));
+
 
     }
 
@@ -796,11 +891,14 @@ public class AppointmentActivity
             public void onClick(View v) {
 
 
-                dialogBinding.etDate.setText(dateBinding.etAppointDate.getText().toString());
-                dialogBinding.etTime.setText(FunctionUtils.hour24to12hour(scheduleListAdapter.getChoosenScheduleValue()));
-                selectedDate = dateBinding.etAppointDate.getText().toString();
-                selectedScheduleId = String.valueOf(scheduleListAdapter.getChoosenSchedule());
-                dialog3.dismiss();
+                if(!reSchedchecker) {
+                    dialogBinding.etDate.setText(dateBinding.etAppointDate.getText().toString());
+                    dialogBinding.etTime.setText(FunctionUtils.hour24to12hour(scheduleListAdapter.getChoosenScheduleValue()));
+                    selectedDate = dateBinding.etAppointDate.getText().toString();
+                    selectedScheduleId = String.valueOf(scheduleListAdapter.getChoosenSchedule());
+                    dialog3.dismiss();
+                }else
+                confirmResched(dateBinding.etAppointDate.getText().toString() ,selectedScheduleId = String.valueOf(scheduleListAdapter.getChoosenSchedule()));
             }
         });
 
@@ -809,9 +907,40 @@ public class AppointmentActivity
         dialog3.show();
     }
 
+    public void confirmResched(final String date, final String schedid)
+    {
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("Are you sure you want reschedule your appointment?")
+                .setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        presenter.reSchedReservation(appointid,schedid,date);
+                        dialog3.dismiss();
+                    }
+                })
+                .setNegativeButton( "Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        reSchedchecker = false;
+                    }
+                })
+
+                .show();
+    }
 
 
 
+    @Override
+    public void closeDialog(String message) {
+
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        onRefresh();
+
+
+        dialogDetail.dismiss();
+
+    }
 
 
 

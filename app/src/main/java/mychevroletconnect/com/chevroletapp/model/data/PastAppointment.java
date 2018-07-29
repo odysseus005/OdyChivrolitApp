@@ -8,7 +8,7 @@ import io.realm.annotations.PrimaryKey;
 import mychevroletconnect.com.chevroletapp.util.FunctionUtils;
 
 
-public class Appointment extends RealmObject {
+public class PastAppointment extends RealmObject {
 
     @PrimaryKey
     @SerializedName("reserve_id")
@@ -40,17 +40,23 @@ public class Appointment extends RealmObject {
     @Expose
     private String appointgaragerName;
 
+    public String getAppointgaragerImage() {
+        return appointgaragerImage;
+    }
 
-    @SerializedName("g_plateNum")
-    @Expose
-    private String appointgaragePlate;
-
-
+    public void setAppointgaragerImage(String appointgaragerImage) {
+        this.appointgaragerImage = appointgaragerImage;
+    }
 
     @SerializedName("g_image")
     @Expose
     private String appointgaragerImage;
 
+
+
+    @SerializedName("g_plateNum")
+    @Expose
+    private String appointgaragePlate;
 
 
     @SerializedName("schedule_id")
@@ -304,15 +310,6 @@ public class Appointment extends RealmObject {
 
     public void setAppointsAdvisorId(String appointsAdvisorId) {
         this.appointsAdvisorId = appointsAdvisorId;
-    }
-
-
-    public String getAppointgaragerImage() {
-        return appointgaragerImage;
-    }
-
-    public void setAppointgaragerImage(String appointgaragerImage) {
-        this.appointgaragerImage = appointgaragerImage;
     }
 
     public String getFullName() {

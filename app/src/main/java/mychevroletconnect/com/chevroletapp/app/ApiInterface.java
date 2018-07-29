@@ -14,6 +14,7 @@ import mychevroletconnect.com.chevroletapp.model.response.AppointmentListRespons
 import mychevroletconnect.com.chevroletapp.model.response.DealerListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.GarageListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.LoginResponse;
+import mychevroletconnect.com.chevroletapp.model.response.PastAppointmentListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.PmsListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.ResultResponse;
 import mychevroletconnect.com.chevroletapp.model.response.ScheduleListResponse;
@@ -176,4 +177,23 @@ public interface ApiInterface {
     @POST(Endpoints.SCHEDULE)
     Call<AppointmentListResponse> getAppointmentList(@Field(Constants.TAG) String tag, @Field(Constants.USER_ID) String user_id );
 
+
+
+    @FormUrlEncoded
+    @POST(Endpoints.SCHEDULE)
+    Call<PastAppointmentListResponse> getAppointmentListPast(@Field(Constants.TAG) String tag, @Field(Constants.USER_ID) String user_id );
+
+    @FormUrlEncoded
+    @POST(Endpoints.SCHEDULE)
+    Call<ResultResponse> cancelReservation(@Field(Constants.TAG) String tag,
+                                 @Field(Constants.RESERVATION_ID) String garage_name
+    );
+
+    @FormUrlEncoded
+    @POST(Endpoints.SCHEDULE)
+    Call<ResultResponse> reschedReservation(@Field(Constants.TAG) String tag,
+                                           @Field(Constants.RESERVATION_ID) String garage_name,
+                                            @Field(Constants.SCHEDULE_ID) String schedID,
+                                            @Field(Constants.RESERVE_DATE) String date
+    );
 }

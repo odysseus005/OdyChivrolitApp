@@ -105,6 +105,9 @@ public class GarageAdapter extends RecyclerView.Adapter<GarageAdapter.ViewHolder
         if(chooseGarage != position)
         {
             holder.itemGarageBinding.appointmentGarage.setCardBackgroundColor(Color.TRANSPARENT);
+        }else
+        {
+            holder.itemGarageBinding.appointmentGarage.setCardBackgroundColor(Color.parseColor("#26ffdf80"));
         }
 
 

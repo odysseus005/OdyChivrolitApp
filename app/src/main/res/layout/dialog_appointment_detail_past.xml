@@ -12,7 +12,7 @@
 
         <variable
             name="appointment"
-            type="mychevroletconnect.com.chevroletapp.model.data.Appointment" />
+            type="mychevroletconnect.com.chevroletapp.model.data.PastAppointment" />
 
 
     </data>
@@ -247,6 +247,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_marginLeft="30dp"
                         android:layout_marginRight="30dp"
+                        android:textStyle="bold"
                         android:id="@+id/appointmentDetailsService"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         />
@@ -289,7 +290,7 @@
                     <TextView
                         android:id="@+id/appointmentDetailsStatus"
                         android:layout_width="wrap_content"
-                        android:layout_height="60dp"
+                        android:layout_height="40dp"
                         android:gravity="center|right"
                         android:padding="2dp"
                         android:layout_gravity="center"
@@ -316,7 +317,7 @@
                         android:layout_margin="10dp"
                         android:paddingEnd="20dp"
                         android:paddingStart="20dp"
-                        android:text="Cancel"
+                        android:text="Close"
                         android:textAllCaps="true"
                         android:gravity="center|right"
                         android:paddingRight="25dp"

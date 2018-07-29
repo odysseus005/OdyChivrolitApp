@@ -65,6 +65,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                                 public void onSuccess() {
                                     realm.close();
                                     getView().setAppointmentList();
+
                                 }
                             }, new Realm.Transaction.OnError() {
                                 @Override
@@ -468,6 +469,95 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                     });
 
 
+    }
+
+
+    public void cancelReservation(String id) {
+
+
+            getView().startLoading();
+            App.getInstance().getApiInterface().cancelReservation(Endpoints.CANCEL_APPOINTMENT,id)
+                    .enqueue(new Callback<ResultResponse>() {
+                        @Override
+                        public void onResponse(Call<ResultResponse> call, Response<ResultResponse> response) {
+                            getView().stopLoading();
+                            if (response.isSuccessful()) {
+                                switch (response.body().getResult()) {
+                                    case Constants.SUCCESS:
+                                        getView().closeDialog("Appointment Cancelled!");
+
+                                        break;
+                                    default:
+                                        getView().showError("Can't Connect to Server");
+                                        break;
+                                }
+                            } else {
+                                try {
+                                    String errorBody = response.errorBody().string();
+                                    getView().showError(errorBody);
+                                } catch (IOException e) {
+                                    //Log.e(TAG, "onResponse: Error parsing error body as string", e);
+                                    getView().showError(response.message() != null ?
+                                            response.message() : "Unknown Exception");
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResultResponse> call, Throwable t) {
+                            //Log.e(TAG, "onFailure: Error calling register api", t);
+                            getView().stopLoading();
+                            getView().showError("Error Connecting to Server");
+                        }
+                    });
+        }
+
+
+    public void reSchedReservation(String id,String schedid,String date) {
+
+
+        getView().startLoading();
+        App.getInstance().getApiInterface().reschedReservation(Endpoints.RESCHED_APPOINTMENT,id,schedid,date)
+                .enqueue(new Callback<ResultResponse>() {
+                    @Override
+                    public void onResponse(Call<ResultResponse> call, Response<ResultResponse> response) {
+                        getView().stopLoading();
+                        if (response.isSuccessful()) {
+                            switch (response.body().getResult()) {
+                                case Constants.SUCCESS:
+                                    getView().closeDialog("Appointment Rescheduled!");
+
+                                    break;
+                                default:
+                                    getView().showError("Can't Connect to Server");
+                                    break;
+                            }
+                        } else {
+                            try {
+                                String errorBody = response.errorBody().string();
+                                getView().showError(errorBody);
+                            } catch (IOException e) {
+                                //Log.e(TAG, "onResponse: Error parsing error body as string", e);
+                                getView().showError(response.message() != null ?
+                                        response.message() : "Unknown Exception");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResultResponse> call, Throwable t) {
+                        //Log.e(TAG, "onFailure: Error calling register api", t);
+                        getView().stopLoading();
+                        getView().showError("Error Connecting to Server");
+                    }
+                });
+    }
+
+
+    Service getService(String id){
+        return realm.where(Service.class)
+                .equalTo("serviceId", id)
+                .findFirst();
     }
 
     public void onStop() {

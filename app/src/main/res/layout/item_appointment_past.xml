@@ -6,7 +6,7 @@
 
         <variable
             name="pastappointment"             
-            type="mychevroletconnect.com.chevroletapp.model.data.Appointment" />
+            type="mychevroletconnect.com.chevroletapp.model.data.PastAppointment" />
 
         <variable
             name="view"

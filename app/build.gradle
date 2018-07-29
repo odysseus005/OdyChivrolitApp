@@ -51,6 +51,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'com.joanzapata.iconify:android-iconify:2.2.2'
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
+    compile 'com.wdullaer:materialdatetimepicker:3.5.1'
     compile 'de.hdodenhof:circleimageview:2.2.0'
 
 

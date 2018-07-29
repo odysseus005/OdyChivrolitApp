@@ -41,7 +41,10 @@ public class Endpoints {
     //Schedule
     public static final String SCHEDULE = "new_schedule.php?";
     public static final String GET_APPOINTMENT = "allReservation";
+    public static final String GET_APPOINTMENTPAST = "allPastReservation";
     public static final String GET_TIMESLOT = "daySchedule";
     public static final String RESERVE_TIMESLOT = "registerReservation";
+    public static final String CANCEL_APPOINTMENT = "cancelReservation";
+    public static final String RESCHED_APPOINTMENT = "reschedReservation";
 
 }

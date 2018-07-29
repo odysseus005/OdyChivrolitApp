@@ -67,21 +67,22 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         int slot = (Integer.parseInt(schedule.get(position).getScheduleLimit()) - Integer.parseInt(schedule.get(position).getScheduleReserve()));
         if(slot<0)
             slot=0;
-        if(slot==0)
-        {
-            holder.itemScheduleBinding.timeslotReserveC.setCardBackgroundColor(Color.parseColor("#757575"));
 
-        }else {
+
+            Log.d("slot>>>",slot+"");
+
 
 
             holder.itemScheduleBinding.timeslotReserveC.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
 
-                    if(chooseSchedule != -1 && chooseSchedule != position)
-                    {
-                        view.showError("Cancel selected Timeslot first by clicking it again!");
 
+                    int slot = (Integer.parseInt(schedule.get(position).getScheduleLimit()) - Integer.parseInt(schedule.get(position).getScheduleReserve()));
+
+                    if(slot == 0)
+                    {
+                        view.showError("Selected slot is unavailable!");
                     }else {
 
                         if (chooseSchedule == position) {
@@ -90,6 +91,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                         } else {
                             chooseSchedule = position;
                             holder.itemScheduleBinding.timeslotReserveC.setCardBackgroundColor(Color.parseColor("#bb8c00"));
+                            notifyDataSetChanged();
 
                         }
                     }
@@ -98,8 +100,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             });
 
 
-        }
-
+        checkClickStatus(position,holder,slot);
 
         holder.itemScheduleBinding.timeslott.setText(FunctionUtils.hour24to12hour(schedule.get(position).getScheduleTime()));
         holder.itemScheduleBinding.timeslotRemain.setText(slot+" slot");
@@ -108,6 +109,26 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     }
 
+    public void checkClickStatus(int position,ScheduleAdapter.ViewHolder holder,int slot)
+    {
+
+
+        if(slot == 0)
+        {
+            holder.itemScheduleBinding.timeslotReserveC.setCardBackgroundColor(Color.parseColor("#70000000"));
+        }
+        else {
+            if (chooseSchedule != position) {
+                holder.itemScheduleBinding.timeslotReserveC.setCardBackgroundColor(Color.parseColor("#f3bc00"));
+
+            } else {
+                holder.itemScheduleBinding.timeslotReserveC.setCardBackgroundColor(Color.parseColor("#bb8c00"));
+            }
+
+        }
+
+
+    }
 
 
     public void clear() {
