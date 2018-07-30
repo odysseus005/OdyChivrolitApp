@@ -111,12 +111,17 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
     }
     public void onEdit() {
 
-//        presenter.updateUser(user.getUserId() + "",
-//                binding.firstName.getText().toString(),
-//                binding.lastName.getText().toString(),
-//                binding.contact.getText().toString(),
-//                binding.birthday.getText().toString(),
-//                binding.address.getText().toString(), user.getPosition());
+        presenter.updateUser(user.getUserId() + "",
+                binding.etFirstName.getText().toString(),
+                binding.etMiddleName.getText().toString(),
+                binding.etLastName.getText().toString(),
+                binding.etBirthday.getText().toString(),
+                binding.etMobileNumber.getText().toString(),
+                binding.etAddress.getText().toString(),
+                binding.etCitizenship.getText().toString(),
+                binding.etOccupation.getText().toString(),
+                binding.spGender.getSelectedItem().toString(),
+                binding.spCivil.getSelectedItem().toString());
     }
 
     @Override
@@ -148,7 +153,7 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
     @Override
     public void finishAct() {
         finish();
-        showAlert("Profile Updated");
+        showAlert("Profile Updated Sucessfully!");
     }
 
     @Override

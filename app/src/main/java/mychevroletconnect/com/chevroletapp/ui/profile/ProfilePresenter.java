@@ -22,11 +22,10 @@ public class ProfilePresenter extends MvpNullObjectBasePresenter<ProfileView> {
     User user2;
     void changePassword(String currPass, String newPass, String confirmNewPass) {
         final User user = App.getUser();
-        if (currPass.equals(user.getPassword())) {
 
              if (newPass.equals(confirmNewPass)) {
                 getView().showProgress();
-                App.getInstance().getApiInterface().changePassword(Endpoints.UPDATEPASS,user.getUserId() + "", newPass).enqueue(new Callback<ResultResponse>() {
+                App.getInstance().getApiInterface().changePassword(Endpoints.UPDATEPASS,String.valueOf(user.getUserId()),currPass, newPass).enqueue(new Callback<ResultResponse>() {
                     @Override
                     public void onResponse(Call<ResultResponse> call, final Response<ResultResponse> response) {
                         getView().stopProgress();
@@ -38,8 +37,7 @@ public class ProfilePresenter extends MvpNullObjectBasePresenter<ProfileView> {
                                 realm.executeTransactionAsync(new Realm.Transaction() {
                                     @Override
                                     public void execute(Realm realm) {
-                                        user2 = response.body().getUser();
-                                        realm.copyToRealmOrUpdate(user2);
+
 
 
                                     }
@@ -58,9 +56,10 @@ public class ProfilePresenter extends MvpNullObjectBasePresenter<ProfileView> {
                                     }
                                 });
 
-                            } else {
-                                getView().showAlert(String.valueOf(R.string.cantConnect));
-                            }
+                            } else if(response.body().getResult().equals("incorrect")) {
+                                getView().showAlert("Wrong Old Password");
+                            }else
+                                getView().showAlert("Can't Connect to the Server");
                         } else {
                             getView().showAlert(response.message() != null ? response.message()
                                     : "Unknown Error");
@@ -79,8 +78,6 @@ public class ProfilePresenter extends MvpNullObjectBasePresenter<ProfileView> {
             } else {
                 getView().showAlert("New Password Mismatch");
             }
-        } else {
-            getView().showAlert("Wrong Current Password!");
-        }
+
     }
 }

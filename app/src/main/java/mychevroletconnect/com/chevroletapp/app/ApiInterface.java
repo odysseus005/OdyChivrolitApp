@@ -72,17 +72,23 @@ public interface ApiInterface {
     @POST(Endpoints.CLIENT)
     Call<ResultResponse> changePassword(@Field(Constants.TAG) String tag,
                                         @Field(Constants.USER_ID) String user_id,
+                                        @Field(Constants.OLD_PASSWORD) String oldpassword,
                                         @Field(Constants.PASSWORD) String password);
 
     @FormUrlEncoded
     @POST(Endpoints.CLIENT)
-    Call<User> updateUser(@Field(Constants.TAG) String tag,
+    Call<LoginResponse> updateUser(@Field(Constants.TAG) String tag,
                           @Field(Constants.USER_ID) String user_id,
-                          @Field(Constants.FIRST_NAME) String first_name,
-                          @Field(Constants.LAST_NAME) String last_name,
-                          @Field(Constants.CONTACT) String contact,
+                          @Field(Constants.FIRST_NAME)String firstName,
+                          @Field(Constants.MIDDLENAME)String middleName,
+                          @Field(Constants.LAST_NAME) String lastName,
                           @Field(Constants.BIRTHDAY) String birthday,
-                          @Field(Constants.ADDRESS) String address);
+                          @Field(Constants.CONTACT) String contact,
+                          @Field(Constants.ADDRESS) String address,
+                          @Field(Constants.CITIZENSHIP)String citizenship,
+                          @Field(Constants.OCCUPATION) String occupation,
+                          @Field(Constants.GENDER) String gender,
+                          @Field(Constants.CIVIL_STATUS)String civil);
 
     @Multipart
     @POST("upload.php?")

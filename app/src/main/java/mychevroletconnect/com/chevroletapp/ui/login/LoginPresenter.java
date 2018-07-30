@@ -67,6 +67,7 @@ public class LoginPresenter extends MvpNullObjectBasePresenter<LoginView> {
                                             break;
                                         case Constants.NOT_EXIST:
                                             getView().showAlert("Email does not exist");
+                                            break;
                                         case Constants.WRONG_PASSWORD:
                                             getView().showAlert("Wrong Password or Email");
                                             break;

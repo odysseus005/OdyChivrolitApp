@@ -1,6 +1,7 @@
 package mychevroletconnect.com.chevroletapp.ui.profile.edit;
 
 import android.util.Log;
+import android.util.Patterns;
 
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
@@ -8,9 +9,12 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import java.io.File;
 
 import io.realm.Realm;
+import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.app.App;
+import mychevroletconnect.com.chevroletapp.app.Constants;
 import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.model.data.User;
+import mychevroletconnect.com.chevroletapp.model.response.LoginResponse;
 import mychevroletconnect.com.chevroletapp.model.response.ResultResponse;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -32,31 +36,82 @@ public class EditProfilePresenter extends MvpNullObjectBasePresenter<EditProfile
     }
 
 
-    public void updateUser(String userId, String firstName, String lastName, String contact, String birthday, String address,String position) {
-        if (firstName.equals("") || lastName.equals("") || birthday.equals("") || contact.equals("") || address.equals("")) {
+    public void updateUser(String userId,
+    String firstName,
+    String middleName,
+    String lastName,
+    String birthday,
+    String contact,
+    String address,
+    String citizenship,
+    String occupation,
+    String gender,
+    String civil
+                         ) {
+
+        if (firstName.equals("") || lastName.equals("") || birthday.equals("") ||
+                contact.equals("") || middleName.equals("") ||  address.equals("")) {
             getView().showAlert("Fill-up all fields");
-        } else {
+        } else if (!Patterns.PHONE.matcher(contact).matches()) { // check if mobile number is valid
+            getView().showAlert("Invalid mobile number.");
+        }
+        else {
             getView().startLoading();
-            App.getInstance().getApiInterface().updateUser(Endpoints.UPDATEUSER,userId, firstName, lastName, contact, birthday, address)
-                    .enqueue(new Callback<User>() {
+            App.getInstance().getApiInterface().updateUser(Endpoints.UPDATEUSER,userId, firstName, middleName, lastName, birthday, contact, address, citizenship, occupation, gender, civil)
+                    .enqueue(new Callback<LoginResponse>() {
                         @Override
-                        public void onResponse(Call<User> call, final Response<User> response) {
+                        public void onResponse(Call<LoginResponse> call, final Response<LoginResponse> response) {
                             getView().stopLoading();
-                            if (response.isSuccessful() && response.body().getUserId() == user.getUserId()) {
-                                realm.executeTransaction(new Realm.Transaction() {
-                                    @Override
-                                    public void execute(Realm realm) {
-                                        realm.copyToRealmOrUpdate(response.body());
-                                        getView().finishAct();
+                            if (response.isSuccessful()) {
+                                try {
+                                    switch (response.body().getResult()) {
+                                        case Constants.SUCCESS:
+                                            final Realm realm = Realm.getDefaultInstance();
+                                            realm.executeTransactionAsync(new Realm.Transaction() {
+                                                @Override
+                                                public void execute(Realm realm) {
+
+                                                    user = response.body().getUser();
+                                                    Log.e(">>>>>", "sasa"+user.getFullName());
+                                                    realm.copyToRealmOrUpdate(user);
+
+
+                                                }
+                                            }, new Realm.Transaction.OnSuccess() {
+                                                @Override
+                                                public void onSuccess() {
+                                                    realm.close();
+                                                   getView().finishAct();
+                                                }
+                                            }, new Realm.Transaction.OnError() {
+                                                @Override
+                                                public void onError(Throwable error) {
+                                                    realm.close();
+                                                    Log.e(TAG, "onError: Unable to save USER", error);
+                                                    getView().showAlert("Error Saving API Response");
+                                                }
+                                            });
+                                            break;
+                                        case "failed":
+                                            getView().showAlert("Can't Connect to the Server!");
+
+                                            break;
+                                        default:
+                                            getView().showAlert(String.valueOf(R.string.cantConnect));
+                                            break;
+
                                     }
-                                });
+                                } catch (NullPointerException e) {
+                                    e.printStackTrace();
+                                    getView().showAlert("Oops");
+                                }
                             } else {
-                                getView().showAlert("Oops something went wrong");
+                                getView().showAlert("Wrong Password or Email!");
                             }
                         }
 
                         @Override
-                        public void onFailure(Call<User> call, Throwable t) {
+                        public void onFailure(Call<LoginResponse> call, Throwable t) {
                             Log.e(TAG, "onFailure: Error calling login api", t);
                             getView().stopLoading();
                             getView().showAlert("Error Connecting to Server");

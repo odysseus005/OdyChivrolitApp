@@ -3,7 +3,7 @@ apply plugin: 'realm-android'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "mychevroletconnect.com.chevroletapp"
+        applicationId "com.mychevroletconnect.chevroletapp"
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 1

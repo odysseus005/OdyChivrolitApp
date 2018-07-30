@@ -50,25 +50,33 @@ public class ProfileActivity extends MvpViewStateActivity<ProfileView, ProfilePr
         binding.toolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
         binding.toolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
-       user = realm.where(User.class).findFirst();
-       if(user!=null) {
-           // binding.setProfile(user);
-           String imageURL = "";
-           imageURL = Endpoints.URL_IMAGE + user.getImage();
-           Log.d("TAG", imageURL);
-           Glide.with(ProfileActivity.this)
-                   .load(imageURL)
-                   .transform(new CircleTransform(ProfileActivity.this))
-                   .diskCacheStrategy(DiskCacheStrategy.ALL)
-                   .error(R.drawable.placeholder_profile)
-                   .into(binding.layoutHeader.imageView);
 
-           getSupportActionBar().setTitle(user.getFullName());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        user = realm.where(User.class).findFirst();
+        if(user!=null) {
+            // binding.setProfile(user);
+            String imageURL = "";
+            imageURL = Endpoints.URL_IMAGE + user.getImage();
+            Log.d("TAG", imageURL);
+            Glide.with(ProfileActivity.this)
+                    .load(imageURL)
+                    .transform(new CircleTransform(ProfileActivity.this))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .error(R.drawable.placeholder_profile)
+                    .into(binding.layoutHeader.imageView);
+
+            getSupportActionBar().setTitle(user.getFullName());
 
 
-           binding.setProfile(user);
-           binding.setView(getMvpView());
-       }
+            binding.setProfile(user);
+            binding.setView(getMvpView());
+        }
+
     }
 
     @Override

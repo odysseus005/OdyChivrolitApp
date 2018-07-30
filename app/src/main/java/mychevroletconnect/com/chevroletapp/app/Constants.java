@@ -11,6 +11,7 @@ public class Constants {
     public static final String TAG = "tag";
     public static final String EMAIL = "client_email_address";
     public static final String PASSWORD = "client_password";
+    public static final String OLD_PASSWORD = "client_old_password";
     public static final String DATE = "date";
     public static final String REPORT_TYPE = "reportType";
 
