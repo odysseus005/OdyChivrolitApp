@@ -130,6 +130,11 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     }
 
+    public void reset()
+    {
+        chooseSchedule = -1;
+    }
+
 
     public void clear() {
         schedule.clear();

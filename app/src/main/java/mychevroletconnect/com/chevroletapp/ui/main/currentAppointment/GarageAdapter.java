@@ -114,6 +114,10 @@ public class GarageAdapter extends RecyclerView.Adapter<GarageAdapter.ViewHolder
 
     }
 
+    public void reset()
+    {
+        chooseGarage = -1;
+    }
 
 
     public void clear() {
@@ -131,7 +135,8 @@ public class GarageAdapter extends RecyclerView.Adapter<GarageAdapter.ViewHolder
 
     public String getSelectedGarage()
     {
-
+        if(chooseGarage==-1)
+            return "";
         return String.valueOf(garage.get(chooseGarage).getGarageId());
     }
 

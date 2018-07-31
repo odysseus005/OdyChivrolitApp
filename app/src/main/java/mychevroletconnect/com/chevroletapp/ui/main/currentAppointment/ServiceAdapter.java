@@ -117,12 +117,17 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
     public String getSelectedService()
     {
         selected="";
-        for (String value : selectedList)
-        {
-            selected += value+",";
-        }
+        if(selectedList.size()>0) {
+            for (String value : selectedList) {
+                selected += value + ",";
+            }
 
-       return FunctionUtils.removeLastChar(selected);
+            return FunctionUtils.removeLastChar(selected);
+        }
+        else
+        {
+            return selected;
+        }
     }
 
 

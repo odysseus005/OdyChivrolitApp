@@ -295,6 +295,8 @@ public class AppointmentActivity
        appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
                .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
 
+
+
         appointmentListAdapter.notifyDataSetChanged();
 
 
@@ -343,6 +345,12 @@ public class AppointmentActivity
 
         presenter.loadAppointmentList(String.valueOf(user.getUserId()));
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        selectedDealerId="";
+        selectedadvisorPosition="0";selectedpmsPosition="";selectedScheduleId="";selectedDate="";selectedService="";selectedGarage="";
+        scheduleListAdapter.reset();
+        garageListAdapter.reset();
+
+
         dialog.dismiss();
 
     }
@@ -733,12 +741,18 @@ public class AppointmentActivity
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                selectedDealerId="";
+                selectedadvisorPosition="0";selectedpmsPosition="";selectedScheduleId="";selectedDate="";selectedService="";selectedGarage="";
+                scheduleListAdapter.reset();
+                garageListAdapter.reset();
             }
         });
 
         dialogBinding.send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
 
                selectedService = serviceListAdapter.getSelectedService();
               selectedGarage =  garageListAdapter.getSelectedGarage();
@@ -748,7 +762,6 @@ public class AppointmentActivity
                 {
                         showError("Please Fill up Required Fields!");
                 }else
-
                     presenter.reserveSched(String.valueOf(user.getUserId()),selectedGarage,selectedScheduleId,selectedDealerId,selectedadvisorPosition,selectedService,selectedpmsPosition,selectedDate,dialogBinding.etRemars.getText().toString());
 
 
