@@ -363,7 +363,7 @@ public class PastAppointmentActivity
             detailBinding.appointmentDetailsService.setText(FunctionUtils.removeLastChar(serviceFinal));
 
             if (Integer.parseInt(appoint.getAppointPMSId()) > 0) {
-                detailBinding.appointmentDetailsPMS.setText("PMS Service: " + appoint.getAppointPMSMil() + "km - " + appoint.getAppointPMSMonth() + " months : " + appoint.getAppointPMSService());
+                detailBinding.appointmentDetailsPMS.setText("PMS Service: " + appoint.getAppointPMSMil() + "km - " + appoint.getAppointPMSMonth() + " months  " + appoint.getAppointPMSService());
                 detailBinding.appointmentDetailsPMS.setVisibility(View.VISIBLE);
             }
 

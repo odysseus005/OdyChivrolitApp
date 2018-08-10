@@ -25,6 +25,7 @@ import mychevroletconnect.com.chevroletapp.databinding.ActivityMainBinding;
 import mychevroletconnect.com.chevroletapp.model.data.User;
 import mychevroletconnect.com.chevroletapp.ui.garage.GarageListActivity;
 import mychevroletconnect.com.chevroletapp.ui.login.LoginActivity;
+import mychevroletconnect.com.chevroletapp.ui.map.MapActivity;
 import mychevroletconnect.com.chevroletapp.ui.profile.ProfileActivity;
 import mychevroletconnect.com.chevroletapp.util.CircleTransform;
 
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_login) {
             startActivity(new Intent(this, LoginActivity.class));
         }else if (id == R.id.nav_dealer) {
-
+            startActivity(new Intent(this, MapActivity.class));
         }else if (id == R.id.nav_garage) {
             startActivity(new Intent(this, GarageListActivity.class));
         }

@@ -324,7 +324,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/edittext_selector"
-                    android:hint="Remarks"
+                    android:hint="Customer Concern/Remarks"
                     android:lines="3"
                     android:maxLength="150"
                     android:padding="12dp"

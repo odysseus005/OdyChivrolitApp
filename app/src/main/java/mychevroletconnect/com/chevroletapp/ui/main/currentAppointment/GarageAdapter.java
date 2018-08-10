@@ -68,8 +68,6 @@ public class GarageAdapter extends RecyclerView.Adapter<GarageAdapter.ViewHolder
 
 
 
-
-
         holder.itemGarageBinding.appointmentGarage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
@@ -85,8 +83,6 @@ public class GarageAdapter extends RecyclerView.Adapter<GarageAdapter.ViewHolder
                     notifyDataSetChanged();
                 }
 
-
-
             }
         });
 
@@ -97,7 +93,6 @@ public class GarageAdapter extends RecyclerView.Adapter<GarageAdapter.ViewHolder
             holder.itemGarageBinding.setView(view);
 
     }
-
 
     public void checkClickStatus(int position,GarageAdapter.ViewHolder holder)
     {

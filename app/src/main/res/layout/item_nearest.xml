@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        
+        <variable
+            name="view"
+            type="mychevroletconnect.com.chevroletapp.ui.map.MapView" />
+
+        <variable
+            name="company"
+            type="mychevroletconnect.com.chevroletapp.model.data.NearDealer" />
+
+
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/restCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="6dp"
+        android:clickable="true"
+        android:foreground="?android:selectableItemBackground"
+        android:onClick="@{()->view.OnItemClicked(company)}"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight=".8"
+                android:padding="6dp">
+
+                <TextView
+                    android:id="@+id/companyName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTint="#777777"
+                    android:text="@{company.dealerName}"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    tools:targetApi="m" />
+
+
+                <TextView
+                    android:id="@+id/companyAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@{company.dealerAddress}"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight=".2"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@color/colorPrimaryDark"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{company.distance+``}"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+
+                <TextView
+                    android:id="@+id/KM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="KM"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+</layout>

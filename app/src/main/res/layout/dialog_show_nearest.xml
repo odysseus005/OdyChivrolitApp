@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:minWidth="400dp"
+        android:background="@color/transBlack"
+        android:orientation="vertical">s
+
+        <TextView
+            android:id="@+id/dialog_close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:layout_margin="6dp"
+            android:background="@drawable/rounded_button_solid"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="X"
+            android:textColor="@color/white" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Nearest Hospital"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:textSize="24sp"
+             />
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="10dp"
+            android:id="@+id/nearestRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</layout>

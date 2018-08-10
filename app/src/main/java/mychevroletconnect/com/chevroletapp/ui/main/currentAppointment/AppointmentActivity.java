@@ -396,7 +396,7 @@ public class AppointmentActivity
         detailBinding.appointmentDetailsService.setText(FunctionUtils.removeLastChar(serviceFinal));
 
         if (Integer.parseInt(appointment.getAppointPMSId()) > 0) {
-            detailBinding.appointmentDetailsPMS.setText("PMS Service: " + appointment.getAppointPMSMil() + "km - " + appointment.getAppointPMSMonth() + " months : " + appointment.getAppointPMSService());
+            detailBinding.appointmentDetailsPMS.setText("PMS Service: " + appointment.getAppointPMSMil() + "km - " + appointment.getAppointPMSMonth() + " months  " + appointment.getAppointPMSService());
             detailBinding.appointmentDetailsPMS.setVisibility(View.VISIBLE);
         }
 

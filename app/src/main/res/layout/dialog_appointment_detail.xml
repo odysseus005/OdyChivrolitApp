@@ -270,7 +270,7 @@
                         android:layout_marginLeft="30dp"
                         android:layout_marginRight="30dp"
                         android:lines="3"
-                        android:text='@{"Remarks:  "+appointment.appointRemarks}'
+                        android:text='@{"Customer Concern/Remarks:  "+appointment.appointRemarks}'
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         />
 

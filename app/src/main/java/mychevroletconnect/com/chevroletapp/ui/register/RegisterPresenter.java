@@ -67,7 +67,7 @@ public class RegisterPresenter extends MvpNullObjectBasePresenter<RegisterView> 
                                         getView().showAlert("Email already exists");
                                         break;
                                     default:
-                                        getView().showAlert("Can't Connect to Server");
+                                        getView().showAlert("Can't Register Account");
                                         break;
                                 }
                             } else {
@@ -85,7 +85,7 @@ public class RegisterPresenter extends MvpNullObjectBasePresenter<RegisterView> 
                         public void onFailure(Call<ResultResponse> call, Throwable t) {
                             Log.e(TAG, "onFailure: Error calling register api", t);
                             getView().stopLoading();
-                            getView().showAlert("Can't Connect to Server");
+                            getView().showAlert("No Internet Connection!");
                         }
                     });
         }
