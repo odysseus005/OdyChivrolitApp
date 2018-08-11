@@ -13,11 +13,14 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.akexorcist.googledirection.DirectionCallback;
@@ -32,6 +36,7 @@ import com.akexorcist.googledirection.GoogleDirection;
 import com.akexorcist.googledirection.constant.TransportMode;
 import com.akexorcist.googledirection.model.Direction;
 import com.akexorcist.googledirection.util.DirectionConverter;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.Status;
@@ -53,18 +58,25 @@ import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 import mychevroletconnect.com.chevroletapp.R;
+import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityMapBinding;
+import mychevroletconnect.com.chevroletapp.databinding.DialogDealerDetailBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogShowNearestBinding;
 import mychevroletconnect.com.chevroletapp.model.data.Dealer;
 import mychevroletconnect.com.chevroletapp.model.data.NearDealer;
 import mychevroletconnect.com.chevroletapp.model.data.User;
 import mychevroletconnect.com.chevroletapp.ui.main.MainActivity;
 import mychevroletconnect.com.chevroletapp.util.BitmapUtils;
+import mychevroletconnect.com.chevroletapp.util.FunctionUtils;
 import mychevroletconnect.com.chevroletapp.util.FusedLocation;
+import mychevroletconnect.com.chevroletapp.util.SimpleLocation;
 
 
 public class MapActivity extends MvpActivity<MapView, MapPresenter> implements MapView, OnMapReadyCallback, GoogleMap.OnMarkerClickListener,DirectionCallback {
@@ -76,20 +88,27 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     private View markerRestIcon, markerUserIcon;
     private String TAG = MapActivity.class.getSimpleName();
     private PlaceAutocompleteFragment autocompleteFragment;
+    private RealmResults<NearDealer> nearestCompanies;
     private Marker myMarker = null;
     private ActivityMapBinding binding;
     private MapListAdapter adapter;
     private FusedLocation fusedLocation;
-   // private SimpleLocation location;
+    private SimpleLocation location;
+    private String searchText;
+    private NearDealer nearDealer;
     LocationManager locationManager;
     private User user;
+    DialogDealerDetailBinding detailBinding;
     Dialog dialog;
+    BottomSheetDialog dialogDetail;
+    static final Integer CALL = 0x2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_map);
         binding.setView(getMvpView());
+        realm = Realm.getDefaultInstance();
 
 
         user = realm.where(User.class).findFirst();
@@ -102,7 +121,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         initializeMap();
 
-       // location = new SimpleLocation(this);
+        location = new SimpleLocation(this);
 
         fusedLocation = new FusedLocation(this, new FusedLocation.Callback() {
             @Override
@@ -117,23 +136,8 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
             @Override
             public void onClick(View v) {
 
-                Log.e(TAG, "Getting Location> "+fusedLocation.isGPSEnabled());
-                if (!fusedLocation.isGPSEnabled()) {
-                    fusedLocation.showSettingsAlert();
-                } else {
-                    fusedLocation.getCurrentLocation(1);
-                    startLoading();
-                    Log.e(TAG, "Getting Location");
-                }
-//                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-//                    startLoading("Getting location...");
-//                    location = new SimpleLocation(MapActivity.this);
-//                    stopLoading();
-//                    setMyMarker(new LatLng(location.getLatitude(), location.getLongitude()));
-//                }else
-//                {
-//                    showAlert("Can't Access Location Turn on Gps");
-//                }
+                getCurrentLocation();
+
             }
         });
 
@@ -141,6 +145,18 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
     }
 
+    private void getCurrentLocation()
+    {
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            startLoading();
+            location = new SimpleLocation(MapActivity.this);
+            stopLoading();
+            setMyMarker(new LatLng(location.getLatitude(), location.getLongitude()));
+        }else
+        {
+            showAlert("Can't Access Location Turn on Gps");
+        }
+    }
     private void initializeMap() {
         if (!isGooglePlayServicesAvailable()) {
             finish();
@@ -149,7 +165,8 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        markerUserIcon = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.marker_dealer, null);
+        markerUserIcon = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.marker_user, null);
+        markerRestIcon = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.marker_dealer, null);
 
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -185,6 +202,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
             myMarker.remove();
         }
         myMarker = mMap.addMarker(new MarkerOptions().position(latLng)
+                .snippet("-1")
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapUtils.createDrawableFromView(MapActivity.this, markerUserIcon))));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
@@ -207,44 +225,69 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
 
         presenter.onStart();
-
+        getCurrentLocation();
     }
 
 
     @Override
     public void showNearest() {
         final Realm realm = Realm.getDefaultInstance();
-        //hide green button
-       // binding.fab2.setVisibility(View.GONE);
+
+
+        dialog = new Dialog(this);
+
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
         DialogShowNearestBinding dialogBinding = DataBindingUtil.inflate(
                 getLayoutInflater(),
                 R.layout.dialog_show_nearest,
                 null,
                 false);
-        dialog = new Dialog(MapActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(dialogBinding.getRoot());
-        dialogBinding.dialogClose.setOnClickListener(new View.OnClickListener() {
+
+
+        dialogBinding.setView(getMvpView());
+
+
+        //adapter
+        dialogBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new MapListAdapter(this);
+        dialogBinding.recyclerView.setAdapter(adapter);
+
+
+         nearestCompanies = realm.where(NearDealer.class).findAll().sort("distance", Sort.ASCENDING);
+         setNearestCompany(nearestCompanies);
+
+
+
+        dialogBinding.searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                searchText = query;
+                searchDealer();
+
+                return true;
+
+            }
+        });
+
+        dialogBinding.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                realm.close();
                 binding.fab2.setVisibility(View.VISIBLE);
             }
         });
 
-        //adapter
-        dialogBinding.nearestRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MapListAdapter(this);
-        dialogBinding.nearestRecyclerView.setAdapter(adapter);
-
-
-        final RealmResults<NearDealer> nearestCompanies = realm.where(NearDealer.class).findAll().sort("distance", Sort.ASCENDING);
-        setNearestCompany(nearestCompanies);
-
+        dialog.setContentView(dialogBinding.getRoot());
+        dialog.setCancelable(false);
         dialog.show();
     }
 
@@ -282,7 +325,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         MarkerOptions markerOptions = new MarkerOptions();
         if (!companies.isEmpty()) {
             for (Dealer company : companies) {
-                markerOptions.position(new LatLng(Double.parseDouble(company.getDealerLat()), Double.parseDouble(company.getDealerLocation())));
+                markerOptions.position(new LatLng(Double.parseDouble(company.getDealerLat()), Double.parseDouble(company.getDealerLong())));
                 markerOptions.title(company.getDealerName());
                 markerOptions.snippet(company.getDealerId() + "");
                 markerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapUtils.createDrawableFromView(this, markerRestIcon)));
@@ -294,6 +337,9 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
             CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
             mMap.animateCamera(cu);*/
 
+        }else
+        {
+            showAlert("Can't Load Dealers");
         }
 
         realm.close();
@@ -301,39 +347,46 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
+    public boolean onMarkerClick(final Marker marker) {
 
         try {
-        mMap.clear();
-        updateMap();
-        final Dealer company = realm.where(Dealer.class).equalTo("companyId", Integer.parseInt(marker.getSnippet())).findFirst();
-
-        setMyMarker(myMarker.getPosition());
-        binding.linearHide.setVisibility(View.VISIBLE);
+         if(!(marker.getSnippet().equalsIgnoreCase("-1"))) {
+             mMap.clear();
+             updateMap();
 
 
-        binding.hospitalName.setText(company.getDealerName());
-        binding.hospitalAddress.setText(company.getDealerAddress());
-        binding.close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.linearHide.setVisibility(View.GONE);
-                mMap.clear();
-                updateMap();
-            }
-        });
+             int nearID = Integer.parseInt(marker.getSnippet());
 
 
-        //eto yung sa anes, path teh!
-        GoogleDirection.withServerKey("AIzaSyDXowFDDowhDprQyMHQs3SmpSXaDaboRDk")
-                    .from(myMarker.getPosition())
-                    .to(marker.getPosition())
-                    .transportMode(TransportMode.DRIVING)
-                    .execute(this);
+             nearDealer= realm.where(NearDealer.class).equalTo("dealerId", nearID).findFirst();
+
+
+             if (nearDealer.isLoaded() || nearDealer.isValid())
+                 showDealerDetail(nearDealer);
+
+
+             LatLng latLng = new LatLng(Double.parseDouble(nearDealer.getDealerLat()), Double.parseDouble(nearDealer.getDealerLong()));
+
+             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+
+             setMyMarker(myMarker.getPosition());
+
+
+
+
+             GoogleDirection.withServerKey("AIzaSyCi6ViLY_YfMCyFFg5FyfjuVLACPNRNYY0")
+                     .from(myMarker.getPosition())
+                     .to(marker.getPosition())
+                     .transportMode(TransportMode.DRIVING)
+                     .execute(this);
+
+
+         }
 
         }catch (Exception e)
         {
                 showAlert("Can't Access User Location");
+                Log.e(">>>>>",e+"");
         }
 
 
@@ -356,15 +409,15 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
 
-//                location = new SimpleLocation(this);
-//                location.beginUpdates();
-                if (!fusedLocation.isGPSEnabled()) {
-                    fusedLocation.showSettingsAlert();
-                } else {
-                    fusedLocation.getCurrentLocation(1);
-                    startLoading();
-                    Log.e(TAG, "Getting Location");
-                }
+                location = new SimpleLocation(this);
+                location.beginUpdates();
+//                if (!fusedLocation.isGPSEnabled()) {
+//                    fusedLocation.showSettingsAlert();
+//                } else {
+//                    fusedLocation.getCurrentLocation(1);
+//                    startLoading();
+//                    Log.e(TAG, "Getting Location");
+//                }
             }
         }
 
@@ -458,27 +511,20 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     }
 
     @Override
-    public void OnItemClicked(NearDealer company) {
+    public void OnItemClicked(final NearDealer company) {
 
 
         dialog.dismiss();
         mMap.clear();
 
+        nearDealer = company;
+
      try {
 
+
          if (company.isLoaded() || company.isValid())
-             binding.linearHide.setVisibility(View.VISIBLE);
+             showDealerDetail(company);
 
-
-         binding.hospitalName.setText(company.getDealerName());
-         binding.close.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-                 binding.linearHide.setVisibility(View.GONE);
-                 mMap.clear();
-                 updateMap();
-             }
-         });
 
          LatLng latLng = new LatLng(Double.parseDouble(company.getDealerLat()), Double.parseDouble(company.getDealerLong()));
          updateMap();
@@ -488,19 +534,105 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
          mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
 
-         GoogleDirection.withServerKey("AIzaSyDXowFDDowhDprQyMHQs3SmpSXaDaboRDk")
+         GoogleDirection.withServerKey("AIzaSyCi6ViLY_YfMCyFFg5FyfjuVLACPNRNYY0")
                  .from(myMarker.getPosition())
                  .to(latLng)
                  .transportMode(TransportMode.DRIVING)
                  .execute(this);
+
+
+
+
+
      }catch (Exception e)
      {
-
+                    Log.e(">>>>>>",e+"");
      }
 
 
     }
 
+
+    public void showDealerDetail(final NearDealer dealer)
+    {
+
+
+       final String contact = dealer.getDealerContact();
+       final double lat = Double.parseDouble(dealer.getDealerLat());
+       final double lng = Double.parseDouble(dealer.getDealerLong());
+        binding.cardView2.setVisibility(View.VISIBLE);
+
+
+
+
+        binding.dealerName.setText(dealer.getDealerName());
+        binding.dealerAddress.setText(dealer.getDealerAddress());
+        binding.dealerContact.setText("Contact Number: "+dealer.getDealerContact());
+        binding.dealerOpening.setText("Opening: "+FunctionUtils.hour24to12hour(dealer.getDealerOpening()));
+        binding.dealerClosing.setText("Closing: "+FunctionUtils.hour24to12hour(dealer.getDealerClosing()));
+        binding.dealerDistance.setText("Total Distance: "+dealer.getDistance()+" KM");
+        binding.dealerEta.setVisibility(View.GONE);
+
+
+
+
+        binding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+              binding.cardView2.setVisibility(View.GONE);
+
+            }
+        });
+
+        binding.googlemaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String uri = String.format(Locale.ENGLISH, "geo:%f,%f", lat,lng);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(intent);
+
+            }
+        });
+
+
+
+
+        binding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                binding.cardView2.setVisibility(View.GONE);
+
+
+            }
+        });
+
+
+        binding.call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact));
+                startActivity(intent);
+
+
+
+//                Intent intent = new Intent(Intent.ACTION_DIAL);
+//                intent.setData(Uri.parse("tel:"+contact));
+//                if (ActivityCompat.checkSelfPermission(MapActivity.this,
+//                        android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+//                    ActivityCompat.requestPermissions(MapActivity.this, new String[]{android.Manifest.permission.CALL_PHONE},CALL);
+//                    return;
+//                }
+//                startActivity(intent);
+
+            }
+        });
+
+
+    }
 
 
     @Override
@@ -524,45 +656,16 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             case R.id.action_refresh:
                 mMap.clear();
                 binding.fab2.setVisibility(View.GONE);
                 presenter.loadDealerList(user.getUserId());
                 return true;
 
-          /*  case R.id.action_emergency:
-                startActivity(new Intent(this, EmergencyListActivity.class));
-                return true;
 
-            case R.id.action_message:
-                final Realm realm = Realm.getDefaultInstance();
-                User user = realm.where(User.class).findFirst();
-
-
-
-
-                List<Emergency> emergencies = realm.where(Emergency.class).findAll();
-
-                if (!emergencies.isEmpty()) {
-                    for (Emergency emergency : emergencies) {
-                    try {
-
-
-                        SmsUtil.sendLocationSMS(emergency.getContact(), myMarker.getPosition().latitude, myMarker.getPosition().latitude,user.getFirstname(),emergency.getName());
-
-
-                    }catch (Exception e)
-                    {
-                        Log.d("Error",e+"");
-                        showAlert("Can't Access Location");
-                    }
-                    }
-                    showAlert("Sending Emergency Text...");
-
-                }else
-                    showAlert("No Emergency Contact!");
-
-                return true;*/
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -577,7 +680,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
            // googleMap.addMarker(new MarkerOptions().position(destination));
 
         ArrayList<LatLng> directionPositionList = direction.getRouteList().get(0).getLegList().get(0).getDirectionPoint();
-        mMap.addPolyline(DirectionConverter.createPolyline(this, directionPositionList, 5, Color.RED));
+        mMap.addPolyline(DirectionConverter.createPolyline(this, directionPositionList, 5, Color.parseColor("#f3bc00")));
 
 
     }
@@ -588,11 +691,32 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         showAlert("Error on getting Route");
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent1 = new Intent(MapActivity.this, MainActivity.class);
-        startActivity(intent1);
-        finish();
-        super.onBackPressed();
+
+
+    private void searchDealer() {
+        adapter = new MapListAdapter(this);
+        if (nearestCompanies.isLoaded() && nearestCompanies.isValid()) {
+            if (searchText.isEmpty()) {
+
+
+                nearestCompanies = realm.where(NearDealer.class).findAll();
+                adapter.setList(realm.copyToRealmOrUpdate(nearestCompanies.where()
+                        .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
+                adapter.notifyDataSetChanged();
+
+            } else {
+
+                nearestCompanies = realm.where(NearDealer.class).findAll();
+               adapter.setList(realm.copyToRealmOrUpdate(nearestCompanies.where()
+                        .contains("dealerName",searchText, Case.INSENSITIVE)
+                        .or()
+                        .contains("dealerAddress",searchText, Case.INSENSITIVE)
+                        .or()
+                        .contains("dealerLocation",searchText, Case.INSENSITIVE)
+                        .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
+
 }

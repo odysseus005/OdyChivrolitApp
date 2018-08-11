@@ -55,6 +55,7 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
                                     @Override
                                     public void onSuccess() {
                                         realm.close();
+                                        getView().updateMap();
 
                                     }
                                 }, new Realm.Transaction.OnError() {

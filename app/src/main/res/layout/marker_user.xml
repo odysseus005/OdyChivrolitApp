@@ -5,9 +5,9 @@
 
     <ImageView
         android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_height="45dp"
         android:tint="@color/gray"
-        android:src="@drawable/ic_nav_dealer" />
+        android:src="@drawable/ic_user_location" />
 
 
 </RelativeLayout>
