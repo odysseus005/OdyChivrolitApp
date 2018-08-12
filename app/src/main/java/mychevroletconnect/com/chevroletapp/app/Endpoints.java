@@ -34,6 +34,7 @@ public class Endpoints {
     public static final String DATA = "new_alldata.php?";
     public static final String GET_DEALER = "allDealer";
     public static final String GET_SERVICE = "allService";
+    public static final String GET_CAR = "allCar";
     public static final String GET_PMS = "allPMS";
     public static final String GET_ADVISOR = "allAdvisor";
 

@@ -41,6 +41,18 @@ public class Dealer extends RealmObject {
     @Expose
     private String dealerImage;
 
+    public String getDealerEmailAddress() {
+        return dealerEmailAddress;
+    }
+
+    public void setDealerEmailAddress(String dealerEmailAddress) {
+        this.dealerEmailAddress = dealerEmailAddress;
+    }
+
+    @SerializedName("dealer_email_address")
+    @Expose
+    private String dealerEmailAddress;
+
     public int getDealerId() {
         return dealerId;
     }

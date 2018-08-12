@@ -11,6 +11,7 @@ import mychevroletconnect.com.chevroletapp.model.data.Schedule;
 import mychevroletconnect.com.chevroletapp.model.data.User;
 import mychevroletconnect.com.chevroletapp.model.response.AdvisorListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.AppointmentListResponse;
+import mychevroletconnect.com.chevroletapp.model.response.CarListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.DealerListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.GarageListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.LoginResponse;
@@ -144,6 +145,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(Endpoints.DATA)
     Call<ServiceListResponse> getServiceList(@Field(Constants.TAG) String tag, @Field(Constants.USER_ID) String dealer_id );
+
+    @FormUrlEncoded
+    @POST(Endpoints.DATA)
+    Call<CarListResponse> getCarList(@Field(Constants.TAG) String tag, @Field(Constants.USER_ID) String dealer_id );
+
 
     @FormUrlEncoded
     @POST(Endpoints.DATA)

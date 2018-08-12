@@ -43,6 +43,16 @@
             android:name=".ui.garage.GarageListActivity"
             android:windowSoftInputMode="adjustResize" />
 
+
+        <activity
+            android:name=".ui.inquiries.testdrive.TestActivity"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <activity
+            android:name=".ui.inquiries.parts.PartsActivity"
+            android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".ui.profile.ProfileActivity"
             android:windowSoftInputMode="adjustResize" />

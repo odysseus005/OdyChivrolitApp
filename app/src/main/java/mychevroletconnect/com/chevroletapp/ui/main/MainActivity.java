@@ -24,6 +24,8 @@ import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityMainBinding;
 import mychevroletconnect.com.chevroletapp.model.data.User;
 import mychevroletconnect.com.chevroletapp.ui.garage.GarageListActivity;
+import mychevroletconnect.com.chevroletapp.ui.inquiries.parts.PartsActivity;
+import mychevroletconnect.com.chevroletapp.ui.inquiries.testdrive.TestActivity;
 import mychevroletconnect.com.chevroletapp.ui.login.LoginActivity;
 import mychevroletconnect.com.chevroletapp.ui.map.MapActivity;
 import mychevroletconnect.com.chevroletapp.ui.profile.ProfileActivity;
@@ -133,8 +135,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_showroom) {
 
         } else if (id == R.id.nav_parts) {
-
+            startActivity(new Intent(this, PartsActivity.class));
         } else if (id == R.id.nav_testdrive) {
+            startActivity(new Intent(this, TestActivity.class));
 
         } else if (id == R.id.nav_roadside) {
 
