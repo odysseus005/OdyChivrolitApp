@@ -75,7 +75,7 @@
             android:background="@drawable/edittext_selector"
             android:hint="Car Nickname"
             android:layout_marginTop="10dp"
-            android:maxLength="150"
+            android:maxLength="16"
             android:padding="12dp"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
             android:textColorHint="@android:color/darker_gray" />
