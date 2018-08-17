@@ -98,6 +98,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     private NearDealer nearDealer;
     LocationManager locationManager;
     private User user;
+    private String filterMap ="";
     DialogDealerDetailBinding detailBinding;
     Dialog dialog;
     BottomSheetDialog dialogDetail;
@@ -208,7 +209,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
         binding.fab2.setVisibility(View.VISIBLE);
 
-        presenter.getNearest(myMarker.getPosition().latitude, myMarker.getPosition().longitude);
+        presenter.getNearest(myMarker.getPosition().latitude, myMarker.getPosition().longitude, filterMap);
     }
 
     @NonNull
@@ -262,18 +263,18 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         dialogBinding.searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
+            public boolean onQueryTextChange(String query) {
+                searchText = query;
+                searchDealer();
+                return true;
             }
 
 
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                searchText = query;
-                searchDealer();
 
-                return true;
+                return false;
 
             }
         });
@@ -321,6 +322,16 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         final Realm realm = Realm.getDefaultInstance();
         mMap.clear();
         List<Dealer> companies = realm.where(Dealer.class).findAll();
+
+        if(!(filterMap.equals(""))) {
+            companies = realm.where(Dealer.class)
+                    .contains("dealerLocation", filterMap, Case.INSENSITIVE)
+                    .findAll();
+
+
+        }
+
+
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         MarkerOptions markerOptions = new MarkerOptions();
         if (!companies.isEmpty()) {
@@ -461,7 +472,6 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                         .create()
                         .show();
 
-
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
@@ -546,9 +556,8 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
      }catch (Exception e)
      {
-                    Log.e(">>>>>>",e+"");
-     }
 
+     }
 
     }
 
@@ -562,9 +571,6 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
        final double lng = Double.parseDouble(dealer.getDealerLong());
         binding.cardView2.setVisibility(View.VISIBLE);
 
-
-
-
         binding.dealerName.setText(dealer.getDealerName());
         binding.dealerAddress.setText(dealer.getDealerAddress());
         binding.dealerContact.setText("Contact Number: "+dealer.getDealerContact());
@@ -572,9 +578,6 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         binding.dealerClosing.setText("Closing: "+FunctionUtils.hour24to12hour(dealer.getDealerClosing()));
         binding.dealerDistance.setText("Total Distance: "+dealer.getDistance()+" KM");
         binding.dealerEta.setVisibility(View.GONE);
-
-
-
 
         binding.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -692,10 +695,26 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     }
 
 
+    @Override
+    public void filterDealers(String message) {
+
+
+        if(message.equals(filterMap))
+            filterMap = "";
+        else
+            filterMap = message;
+
+        presenter.getNearest(myMarker.getPosition().latitude, myMarker.getPosition().longitude, filterMap);
+
+      updateMap();
+    }
+
 
     private void searchDealer() {
-        adapter = new MapListAdapter(this);
-        if (nearestCompanies.isLoaded() && nearestCompanies.isValid()) {
+
+
+
+        Log.d(">>>>",""+searchText);
             if (searchText.isEmpty()) {
 
 
@@ -716,7 +735,6 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                         .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
                 adapter.notifyDataSetChanged();
             }
-        }
     }
 
 }

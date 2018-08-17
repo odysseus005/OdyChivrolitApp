@@ -364,7 +364,7 @@ public class AppointmentActivity
     public void showAppointmentDetails(final Appointment appointment) {
 
 
-        dialogDetail = new Dialog(getContext(),R.style.RaffleDialogTheme);
+        dialogDetail = new Dialog(getContext(),R.style.FullDialogTheme);
 
         dialogDetail.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
@@ -784,7 +784,7 @@ public class AppointmentActivity
     {
 
 
-        dialog2 = new Dialog(getContext());
+        dialog2 = new Dialog(getContext(),R.style.FullDialogTheme);
 
         dialog2.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
@@ -809,18 +809,19 @@ public class AppointmentActivity
         dealerBinding.searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
+            public boolean onQueryTextChange(String query) {
+                searchText = query;
+                searchDealer();
+                return true;
             }
 
 
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                searchText = query;
-               searchDealer();
 
-                return true;
+
+                return false;
 
             }
         });
@@ -903,15 +904,18 @@ public class AppointmentActivity
             @Override
             public void onClick(View v) {
 
+                if(scheduleListAdapter.getChoosenScheduleValue().equals("false")||scheduleListAdapter.getChoosenSchedule() == 0) {
 
-                if(!reSchedchecker) {
-                    dialogBinding.etDate.setText(dateBinding.etAppointDate.getText().toString());
-                    dialogBinding.etTime.setText(FunctionUtils.hour24to12hour(scheduleListAdapter.getChoosenScheduleValue()));
-                    selectedDate = dateBinding.etAppointDate.getText().toString();
-                    selectedScheduleId = String.valueOf(scheduleListAdapter.getChoosenSchedule());
-                    dialog3.dismiss();
+                    if (!reSchedchecker) {
+                        dialogBinding.etDate.setText(dateBinding.etAppointDate.getText().toString());
+                        dialogBinding.etTime.setText(FunctionUtils.hour24to12hour(scheduleListAdapter.getChoosenScheduleValue()));
+                        selectedDate = dateBinding.etAppointDate.getText().toString();
+                        selectedScheduleId = String.valueOf(scheduleListAdapter.getChoosenSchedule());
+                        dialog3.dismiss();
+                    } else
+                        confirmResched(dateBinding.etAppointDate.getText().toString(), selectedScheduleId = String.valueOf(scheduleListAdapter.getChoosenSchedule()));
                 }else
-                confirmResched(dateBinding.etAppointDate.getText().toString() ,selectedScheduleId = String.valueOf(scheduleListAdapter.getChoosenSchedule()));
+                    showError("Please Select Date and Slot");
             }
         });
 

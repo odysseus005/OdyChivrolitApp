@@ -83,7 +83,7 @@ public class GarageListAdapter extends RecyclerView.Adapter<GarageListAdapter.Vi
             }
         });
 
-        holder.itemEventBinding.garageDop.setText(FunctionUtils.toReadable(garage.get(position).getGaragePurchase()));
+        holder.itemEventBinding.garageDop.setText("Date of Purchased: "+FunctionUtils.toReadable(garage.get(position).getGaragePurchase()));
 
         Glide.with(holder.itemView.getContext())
                 .load(Endpoints.URL_IMAGE+garage.get(position).getGarageId()+garage.get(position).getGarageName())

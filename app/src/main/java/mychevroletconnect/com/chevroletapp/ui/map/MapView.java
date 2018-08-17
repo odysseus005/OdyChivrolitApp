@@ -19,6 +19,8 @@ public interface MapView extends MvpView {
 
     void stopLoading();
 
+    void filterDealers(String filters);
+
     void showAlert(String s);
 
     void updateMap();

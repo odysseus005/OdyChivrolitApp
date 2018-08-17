@@ -6,6 +6,7 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import java.util.List;
 
+import io.realm.Case;
 import io.realm.Realm;
 
 import mychevroletconnect.com.chevroletapp.app.App;
@@ -29,7 +30,7 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
     void onStart() {
         realm = Realm.getDefaultInstance();
         user = realm.where(User.class).findFirst();
-      loadDealerList(user.getUserId());
+      loadDealerList(0);
 
 
     }
@@ -88,10 +89,17 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
     }
 
 
-    void getNearest(double latitude, double longitude) {
+    void getNearest(double latitude, double longitude, String filterMap) {
         final Realm realm = Realm.getDefaultInstance();
         getView().startLoading();
         List<Dealer> companys = realm.where(Dealer.class).findAll();
+        if(!(filterMap.equals(""))) {
+            companys = realm.where(Dealer.class)
+                    .contains("dealerLocation", filterMap, Case.INSENSITIVE)
+                    .findAll();
+
+        }
+
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override

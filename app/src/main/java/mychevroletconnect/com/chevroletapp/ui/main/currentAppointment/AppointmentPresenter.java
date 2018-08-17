@@ -388,7 +388,10 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                                 @Override
                                 public void onSuccess() {
                                     realm.close();
+                                    if(!(response.body().getData().equals(null)))
                                     getView().loadTimeslot();
+                                    else
+                                        getView().showError("Error Retrieve Schedule");
                                 }
                             }, new Realm.Transaction.OnError() {
                                 @Override

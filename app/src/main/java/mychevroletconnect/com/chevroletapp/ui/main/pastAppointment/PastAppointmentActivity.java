@@ -333,7 +333,7 @@ public class PastAppointmentActivity
 
         try {
 
-            dialogDetail = new Dialog(getContext(), R.style.RaffleDialogTheme);
+            dialogDetail = new Dialog(getContext(), R.style.FullDialogTheme);
             dialogDetail.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
             detailBinding = DataBindingUtil.inflate(

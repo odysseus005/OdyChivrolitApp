@@ -56,10 +56,12 @@ public class MapListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public void setList(List<NearDealer> list) {
-        this.list.clear();
+
         this.list = list;
         notifyDataSetChanged();
     }
+
+
 
     public void clear() {
         list.clear();

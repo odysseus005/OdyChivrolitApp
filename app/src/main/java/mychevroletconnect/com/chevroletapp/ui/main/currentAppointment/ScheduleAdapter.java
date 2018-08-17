@@ -149,14 +149,18 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     public int getChoosenSchedule()
     {
-
+        if(chooseSchedule != -1)
         return schedule.get(chooseSchedule).getScheduleId();
+        else
+            return 0;
     }
 
     public String getChoosenScheduleValue()
     {
-
+        if(chooseSchedule != -1)
         return schedule.get(chooseSchedule).getScheduleTime();
+        else
+            return "false";
     }
 
 

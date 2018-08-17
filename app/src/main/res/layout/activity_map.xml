@@ -1,6 +1,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fab="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -12,6 +13,9 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,6 +78,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </android.support.v7.widget.CardView>
+
 
 
 
@@ -335,14 +340,84 @@
 
 
 
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab2"
+        <com.github.clans.fab.FloatingActionMenu
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|start"
-            android:layout_margin="15dp"
-            android:onClick="@{() -> view.showNearest()}"
+            android:layout_margin="10dp"
+            fab:menu_colorNormal="@color/colorPrimary"
+            fab:menu_colorPressed="@color/colorPrimaryDark"
+            fab:menu_icon="@drawable/ic_nav_dealer"
+            fab:menu_labels_position="right"
+            fab:menu_fab_size="normal">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                app:fab_colorNormal="@color/colorPrimary"
+                app:fab_colorPressed="@color/colorPrimaryDark"
+                app:fab_label="Metro Manila"
+                android:onClick='@{() -> view.filterDealers("metro manila")}'
+                android:id="@+id/fabmm"
+                android:src="@drawable/ic_delear_map_search"/>
+
+
+            <com.github.clans.fab.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                app:fab_colorNormal="@color/colorPrimary"
+                app:fab_colorPressed="@color/colorPrimaryDark"
+                app:fab_label="Luzon"
+                android:id="@+id/fabl"
+                android:onClick='@{() -> view.filterDealers("luzon")}'
+                android:src="@drawable/ic_delear_map_search"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                app:fab_colorNormal="@color/colorPrimary"
+                app:fab_colorPressed="@color/colorPrimaryDark"
+                app:fab_label="Visayas"
+                android:onClick='@{() -> view.filterDealers("visayas")}'
+                android:id="@+id/fabv"
+                android:src="@drawable/ic_delear_map_search"/>
+
+
+            <com.github.clans.fab.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                app:fab_colorNormal="@color/colorPrimary"
+                app:fab_colorPressed="@color/colorPrimaryDark"
+                app:fab_label="Mindanao"
+                android:id="@+id/fabm"
+                android:onClick='@{() -> view.filterDealers("Mindanao")}'
+                android:src="@drawable/ic_delear_map_search"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                app:fab_colorNormal="@color/colorPrimary"
+                app:fab_colorPressed="@color/colorPrimaryDark"
+                app:fab_label="Nearest"
+                android:id="@+id/fab2"
+                android:onClick="@{() -> view.showNearest()}"
+                android:src="@drawable/ic_dealer_nearest"/>
+
+
+        </com.github.clans.fab.FloatingActionMenu>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="80dp"
+            android:visibility="gone"
             android:src="@drawable/ic_nav_dealer"
             android:tint="@color/white"
             app:backgroundTint="@color/colorPrimary"
