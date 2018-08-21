@@ -73,7 +73,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                                     realm.close();
                                     error.printStackTrace();
                                     if (isViewAttached())
-                                        getView().showError(error.getLocalizedMessage());
+                                        getView().showError("Loading Appointment Error");
                                 }
                             });
                         } else {
@@ -88,7 +88,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                         getView().stopLoading();
                         if (isViewAttached()) {
                             getView().stopRefresh();
-                            getView().showError(t.getLocalizedMessage());
+                            getView().showError("Can't Connect to the Internet");
                         }
                     }
                 });
@@ -126,7 +126,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                                     realm.close();
                                     error.printStackTrace();
                                     if (isViewAttached())
-                                        getView().showError(error.getLocalizedMessage());
+                                        getView().showError("Loading Garage Error");
                                 }
                             });
                         } else {
@@ -141,7 +141,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                         getView().stopLoading();
                         if (isViewAttached()) {
                             getView().stopRefresh();
-                            getView().showError(t.getLocalizedMessage());
+                            getView().showError("Can't Connect to the Internet");
                         }
                     }
                 });
@@ -180,7 +180,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                                     realm.close();
                                     error.printStackTrace();
                                     if (isViewAttached())
-                                        getView().showError(error.getLocalizedMessage());
+                                        getView().showError("Loading Dealer Error");
                                 }
                             });
                         } else {
@@ -195,7 +195,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                         getView().stopLoading();
                         if (isViewAttached()) {
                             getView().stopRefresh();
-                            getView().showError(t.getLocalizedMessage());
+                            getView().showError("Can't Connect to the Internet");
                         }
                     }
                 });
@@ -234,7 +234,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                                     realm.close();
                                     error.printStackTrace();
                                     if (isViewAttached())
-                                        getView().showError(error.getLocalizedMessage());
+                                        getView().showError("Loading Service Error");
                                 }
                             });
                         } else {
@@ -249,7 +249,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                         getView().stopLoading();
                         if (isViewAttached()) {
                             getView().stopRefresh();
-                            getView().showError(t.getLocalizedMessage());
+                            getView().showError("Can't Connect to the Internet");
                         }
                     }
                 });
@@ -287,7 +287,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                                     realm.close();
                                     error.printStackTrace();
                                     if (isViewAttached())
-                                        getView().showError(error.getLocalizedMessage());
+                                        getView().showError("Loading Services Error");
                                 }
                             });
                         } else {
@@ -302,7 +302,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                         getView().stopLoading();
                         if (isViewAttached()) {
                             getView().stopRefresh();
-                            getView().showError(t.getLocalizedMessage());
+                            getView().showError("Can't Connect to the Internet");
                         }
                     }
                 });
@@ -391,7 +391,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                                     if(!(response.body().getData().equals(null)))
                                     getView().loadTimeslot();
                                     else
-                                        getView().showError("Error Retrieve Schedule");
+                                        getView().showError("Error to Retrieve Schedule");
                                 }
                             }, new Realm.Transaction.OnError() {
                                 @Override
@@ -399,7 +399,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                                     realm.close();
                                     error.printStackTrace();
                                     if (isViewAttached())
-                                        getView().showError(error.getLocalizedMessage());
+                                        getView().showError("Loading Schedule Error");
                                 }
                             });
                         } else {
@@ -414,7 +414,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                         getView().stopLoading();
                         if (isViewAttached()) {
                             getView().stopRefresh();
-                            getView().showError(t.getLocalizedMessage());
+                            getView().showError("Can't Connect to the Internet");
                         }
                     }
                 });

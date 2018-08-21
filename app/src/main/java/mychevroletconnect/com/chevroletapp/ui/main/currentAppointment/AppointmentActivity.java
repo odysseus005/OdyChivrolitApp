@@ -757,11 +757,22 @@ public class AppointmentActivity
                selectedService = serviceListAdapter.getSelectedService();
               selectedGarage =  garageListAdapter.getSelectedGarage();
 
-                if(selectedDealerId.equals("")||selectedScheduleId.equals("")||
-                        selectedDate.equals("")||selectedService.equals("")||selectedGarage.equals(""))
+                if(selectedDealerId.equals(""))
                 {
-                        showError("Please Fill up Required Fields!");
-                }else
+                        showError("Invalid Dealer Field");
+                }else if(selectedScheduleId.equals("")||selectedDate.equals(""))
+                {
+                    showError("Invalid Date Schedule Field");
+                }
+                else if(selectedService.equals(""))
+                {
+                    showError("Invalid Service Field");
+                }
+                else if(selectedGarage.equals(""))
+                {
+                    showError("Please Select Car");
+                }
+                else
                     presenter.reserveSched(String.valueOf(user.getUserId()),selectedGarage,selectedScheduleId,selectedDealerId,selectedadvisorPosition,selectedService,selectedpmsPosition,selectedDate,dialogBinding.etRemars.getText().toString());
 
 
@@ -904,7 +915,7 @@ public class AppointmentActivity
             @Override
             public void onClick(View v) {
 
-                if(scheduleListAdapter.getChoosenScheduleValue().equals("false")||scheduleListAdapter.getChoosenSchedule() == 0) {
+                if(!(scheduleListAdapter.getChoosenScheduleValue().equals("false")||scheduleListAdapter.getChoosenSchedule() == 0)) {
 
                     if (!reSchedchecker) {
                         dialogBinding.etDate.setText(dateBinding.etAppointDate.getText().toString());
