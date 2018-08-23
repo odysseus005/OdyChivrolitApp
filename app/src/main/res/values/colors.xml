@@ -8,6 +8,8 @@
     <color name="colorChevGray">#443A41</color>
 
 
+    <color name="colorPrimaryTrans">#E6f3bc00</color>
+
     <color name="greenSuccess">#9ccc65</color>
     <color name="greenSuccessDark">#78a741</color>
     <color name="redFailedDark">#b95d5d</color>

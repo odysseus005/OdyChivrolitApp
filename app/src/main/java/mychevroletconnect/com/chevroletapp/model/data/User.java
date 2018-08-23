@@ -101,7 +101,7 @@ public class User extends RealmObject {
 
 
     public String getFullName() {
-        return firstname+" "+lastname;
+        return firstname+" "+middlename+" "+lastname;
     }
 
     public void setFullName(String fullName) {

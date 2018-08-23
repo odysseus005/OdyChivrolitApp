@@ -85,7 +85,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                 returnColor = Color.parseColor("#b95d5d");
                 break;
 
-            case "RESCHEDULE":
+            case "RESCHEDULED":
                 returnColor = Color.parseColor("#78a741");
 
                 break;

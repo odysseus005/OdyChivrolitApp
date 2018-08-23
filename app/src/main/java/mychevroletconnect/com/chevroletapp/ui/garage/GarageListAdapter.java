@@ -3,6 +3,7 @@ package mychevroletconnect.com.chevroletapp.ui.garage;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,8 +86,9 @@ public class GarageListAdapter extends RecyclerView.Adapter<GarageListAdapter.Vi
 
         holder.itemEventBinding.garageDop.setText("Date of Purchased: "+FunctionUtils.toReadable(garage.get(position).getGaragePurchase()));
 
+
         Glide.with(holder.itemView.getContext())
-                .load(Endpoints.URL_IMAGE+garage.get(position).getGarageId()+garage.get(position).getGarageName())
+                .load(Endpoints.URL_IMAGE+garage.get(position).getGarageId()+garage.get(position).getGarageName()+".jpg")
                 .centerCrop()
                 .error(R.drawable.placeholder_garage)
                 .into(holder.itemEventBinding.garageListImage);

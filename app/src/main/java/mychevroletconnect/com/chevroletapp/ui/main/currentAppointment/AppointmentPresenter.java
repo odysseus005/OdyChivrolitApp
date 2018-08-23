@@ -445,7 +445,8 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
 
                                         break;
                                     case Constants.EMAIL_EXIST:
-                                        getView().showError("Car already exists");
+                                        getView().showReturn("Car Already have an Appointment!");
+
                                         break;
                                     default:
                                         getView().showError("Can't Connect to Server");
@@ -516,11 +517,11 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
         }
 
 
-    public void reSchedReservation(String id,String schedid,String date) {
+    public void reSchedReservation(String id,String schedid,String date,String gid) {
 
 
         getView().startLoading();
-        App.getInstance().getApiInterface().reschedReservation(Endpoints.RESCHED_APPOINTMENT,id,schedid,date)
+        App.getInstance().getApiInterface().reschedReservation(Endpoints.RESCHED_APPOINTMENT,id,schedid,date,gid)
                 .enqueue(new Callback<ResultResponse>() {
                     @Override
                     public void onResponse(Call<ResultResponse> call, Response<ResultResponse> response) {
@@ -529,6 +530,10 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                             switch (response.body().getResult()) {
                                 case Constants.SUCCESS:
                                     getView().closeDialog("Appointment Rescheduled!");
+
+                                    break;
+                                case Constants.EMAIL_EXIST:
+                                    getView().showError("Car Already have an Appointment!");
 
                                     break;
                                 default:

@@ -19,7 +19,7 @@
 
 
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name=".ui.splash.Splash"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -31,6 +31,11 @@
         <activity
             android:name=".ui.register.RegisterActivity"
             android:windowSoftInputMode="adjustPan"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity

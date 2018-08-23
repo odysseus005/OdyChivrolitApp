@@ -96,7 +96,7 @@ public class PastAppointmentAdapter extends RecyclerView.Adapter<PastAppointment
                 returnColor = Color.parseColor("#b95d5d");
                 break;
 
-            case "RESCHEDULE":
+            case "RESCHEDULED":
                 returnColor = Color.parseColor("#9ccc65");
 
                 break;

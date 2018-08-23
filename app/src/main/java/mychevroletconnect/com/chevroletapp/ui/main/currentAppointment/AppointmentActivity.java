@@ -95,7 +95,7 @@ public class AppointmentActivity
     private List<Advisor> advisorRealmResults;
     private List<Pms> pmsRealmResults;
     private String searchText;
-    public String id,appointid;
+    public String id,appointid,gid;
     private GarageAdapter garageListAdapter;
     private ServiceAdapter serviceListAdapter;
     private DealerAdapter dealerListAdapter;
@@ -380,7 +380,7 @@ public class AppointmentActivity
 
 
         Glide.with(getContext())
-                .load(Endpoints.URL_IMAGE+appointment.getAppointgaragerId()+appointment.getAppointgaragerName())
+                .load(Endpoints.URL_IMAGE+appointment.getAppointgaragerId()+appointment.getAppointgaragerName()+".jpg")
                 .centerCrop()
                 .error(R.drawable.placeholder_garage)
                 .into(detailBinding.appointDetailsImage);
@@ -434,6 +434,7 @@ public class AppointmentActivity
                 reSchedchecker = true;
                 selectedDealerId = String.valueOf(appointment.getAppointdealerId());
                 appointid = String.valueOf(appointment.getAppointId());
+                gid = String.valueOf(appointment.getAppointgaragerId());
                 chooseDateandSlot();
 
             }
@@ -943,7 +944,7 @@ public class AppointmentActivity
                 .setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        presenter.reSchedReservation(appointid,schedid,date);
+                        presenter.reSchedReservation(appointid,schedid,date,gid);
                         dialog3.dismiss();
                     }
                 })

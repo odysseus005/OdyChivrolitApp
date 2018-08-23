@@ -206,6 +206,7 @@ public interface ApiInterface {
     Call<ResultResponse> reschedReservation(@Field(Constants.TAG) String tag,
                                            @Field(Constants.RESERVATION_ID) String garage_name,
                                             @Field(Constants.SCHEDULE_ID) String schedID,
-                                            @Field(Constants.RESERVE_DATE) String date
+                                            @Field(Constants.RESERVE_DATE) String date,
+                                             @Field(Constants.GARAGE_ID) String garID
     );
 }

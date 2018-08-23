@@ -69,7 +69,7 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.appBarLogin.setView(getMvpView());
         setSupportActionBar(binding.appBarLogin.toolbar);
-        getSupportActionBar().setTitle("Chevrolet App");
+        getSupportActionBar().setTitle("");
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout,
                 binding.appBarLogin.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

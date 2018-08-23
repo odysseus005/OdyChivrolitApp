@@ -344,7 +344,7 @@ public class PastAppointmentActivity
 
 
             Glide.with(getContext())
-                    .load(Endpoints.URL_IMAGE+appoint.getAppointgaragerId()+appoint.getAppointgaragerName())
+                    .load(Endpoints.URL_IMAGE+appoint.getAppointgaragerId()+appoint.getAppointgaragerName()+".jpg")
                     .centerCrop()
                     .error(R.drawable.placeholder_garage)
                     .into(detailBinding.appointDetailsImage);

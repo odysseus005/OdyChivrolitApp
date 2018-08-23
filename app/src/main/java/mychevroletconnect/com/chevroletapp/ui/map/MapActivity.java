@@ -35,6 +35,9 @@ import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
 import com.akexorcist.googledirection.constant.TransportMode;
 import com.akexorcist.googledirection.model.Direction;
+import com.akexorcist.googledirection.model.Info;
+import com.akexorcist.googledirection.model.Leg;
+import com.akexorcist.googledirection.model.Route;
 import com.akexorcist.googledirection.util.DirectionConverter;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.common.ConnectionResult;
@@ -98,7 +101,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     private NearDealer nearDealer;
     LocationManager locationManager;
     private User user;
-    private String filterMap ="";
+    private String filterMap ="",distance="",eta="";
     DialogDealerDetailBinding detailBinding;
     Dialog dialog;
     BottomSheetDialog dialogDetail;
@@ -684,7 +687,15 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
         ArrayList<LatLng> directionPositionList = direction.getRouteList().get(0).getLegList().get(0).getDirectionPoint();
         mMap.addPolyline(DirectionConverter.createPolyline(this, directionPositionList, 5, Color.parseColor("#f3bc00")));
+            Route route = direction.getRouteList().get(0);
+            Leg leg = route.getLegList().get(0);
+            Info distanceInfo = leg.getDistance();
+            Info durationInfo = leg.getDuration();
+            distance = distanceInfo.getText();
+            eta = durationInfo.getText();
 
+            binding.dealerDistance.setText("Total Distance: "+distance);
+            binding.dealerEta.setText("Esimated Travel Time: "+eta);
 
     }
     }

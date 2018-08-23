@@ -164,6 +164,28 @@
                         android:layout_marginLeft="30dp"
                         android:layout_marginRight="30dp"
                         android:layout_gravity="center"
+                        android:text="Contact Number"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:text="@{profile.contact}"
+                        android:layout_gravity="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_gravity="center"
                         android:text="Birthday"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         />
