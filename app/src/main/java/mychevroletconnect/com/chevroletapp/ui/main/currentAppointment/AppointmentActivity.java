@@ -597,7 +597,7 @@ public class AppointmentActivity
            List<String> pms = new ArrayList<>();
            for(Pms value : pmsRealmResults)
            {
-              pms.add(value.getPmsMileage()+"km - "+value.getPmsMonth()+" months : "+value.getPmsName());
+              pms.add(value.getPmsMileage()+"km - "+value.getPmsMonth()+" months  "+value.getPmsName());
            }
 
            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_custom_item, pms);
