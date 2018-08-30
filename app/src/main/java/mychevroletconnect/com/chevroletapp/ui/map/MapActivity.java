@@ -369,6 +369,8 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
              updateMap();
 
 
+
+             binding.fab2.setVisibility(View.GONE);
              int nearID = Integer.parseInt(marker.getSnippet());
 
 
