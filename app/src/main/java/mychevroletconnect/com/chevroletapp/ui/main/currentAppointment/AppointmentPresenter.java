@@ -533,7 +533,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
 
                                     break;
                                 case Constants.EMAIL_EXIST:
-                                    getView().showError("Car Already have an Appointment!");
+                                    getView().appointmentExist("");
 
                                     break;
                                 default:

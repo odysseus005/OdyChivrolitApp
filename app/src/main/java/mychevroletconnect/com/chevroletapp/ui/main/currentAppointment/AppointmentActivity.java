@@ -338,6 +338,24 @@ public class AppointmentActivity
     public void showError(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
+    @Override
+    public void appointmentExist(String message) {
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("Reschedule Appointment")
+                .setMessage("You already have an appointment on the selected date. Reschedule your existing appointment.")
+                .setCancelable(false)
+                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .show();
+
+
+
+    }
 
 
     @Override

@@ -21,5 +21,8 @@ public interface EditProfileView extends MvpView{
 
     void finish();
 
+    void startupLoading();
+
+    void stopupLoading();
 
 }

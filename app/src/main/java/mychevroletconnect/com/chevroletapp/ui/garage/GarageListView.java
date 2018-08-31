@@ -14,6 +14,10 @@ public interface GarageListView extends MvpView {
 
     void stopLoading();
 
+    void startupLoading();
+
+    void stopupLoading();
+
     void setDeleteGarageList(Garage garage);
 
     void onBirthdayClicked();

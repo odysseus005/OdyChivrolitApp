@@ -127,12 +127,12 @@ public class EditProfilePresenter extends MvpNullObjectBasePresenter<EditProfile
         // MultipartBody.Part is used to send also the actual file name
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", fname, requestFile);
        RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), fname);
-            getView().startLoading();
+            getView().startupLoading();
        App.getInstance().getApiInterface().uploadFile(body,filename)
                 .enqueue(new Callback<ResultResponse>() {
                     @Override
                     public void onResponse(Call<ResultResponse> call, final Response<ResultResponse> response) {
-                        getView().stopLoading();
+                        getView().stopupLoading();
                         if (response.isSuccessful()) {
                             if (response.body().getResult().equals("success")) {
                                 final Realm realm = Realm.getDefaultInstance();
@@ -166,7 +166,7 @@ public class EditProfilePresenter extends MvpNullObjectBasePresenter<EditProfile
 
                     @Override
                     public void onFailure(Call<ResultResponse> call, Throwable t) {
-                        getView().stopLoading();
+                        getView().stopupLoading();
                         t.printStackTrace();
                         getView().showAlert("Error Server Connection");
                     }

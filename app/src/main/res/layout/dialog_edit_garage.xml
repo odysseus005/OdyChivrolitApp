@@ -165,6 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Plate Number"
+            android:visibility="gone"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
 
         <EditText
@@ -176,6 +177,7 @@
             android:layout_marginTop="4dp"
             android:text='@{garage.garagePlate}'
             android:maxLength="11"
+            android:visibility="gone"
             android:padding="12dp"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
             android:textColorHint="@android:color/darker_gray" />

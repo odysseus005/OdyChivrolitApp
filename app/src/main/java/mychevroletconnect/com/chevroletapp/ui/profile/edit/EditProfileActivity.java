@@ -66,7 +66,7 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
 
 
         EasyImage.configuration(this)
-                .setImagesFolderName("psc")
+                .setImagesFolderName("chevapp")
                 .saveInRootPicturesDirectory();
         setContentView(R.layout.activity_edit_profile);
         //setRetainInstance(true);
@@ -147,7 +147,22 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
         }
     }
 
+    @Override
+    public void startupLoading() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Uploading...");
+            progressDialog.setCancelable(false);
+        }
+        progressDialog.show();
+    }
 
+    @Override
+    public void stopupLoading() {
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
 
 
     @Override

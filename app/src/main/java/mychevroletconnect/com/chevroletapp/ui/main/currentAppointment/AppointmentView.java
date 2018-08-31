@@ -43,6 +43,8 @@ public interface AppointmentView extends MvpView {
 
     void stopLoading();
 
+    void appointmentExist(String message);
+
 
     void closeDialog(String message);
 
