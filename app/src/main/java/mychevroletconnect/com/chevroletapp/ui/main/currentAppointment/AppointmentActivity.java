@@ -291,14 +291,11 @@ public class AppointmentActivity
     @Override
     public void setAppointmentList(){
 
+
         appointmentlmResults = realm.where(Appointment.class).findAll();
-       appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
-               .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
-
-
+       appointmentListAdapter.setAppointmentResult(appointmentlmResults);//Sorted("eventDateFrom", Sort.ASCENDING)));
 
         appointmentListAdapter.notifyDataSetChanged();
-
 
 
         if(appointmentListAdapter.getItemCount()==0)
@@ -306,6 +303,10 @@ public class AppointmentActivity
 
             binding.appointmentcurrentNoRecyclerview.setVisibility(View.VISIBLE);
             binding.recyclerView.setVisibility(View.GONE);
+        }else
+        {
+            binding.appointmentcurrentNoRecyclerview.setVisibility(View.GONE);
+            binding.recyclerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -342,7 +343,7 @@ public class AppointmentActivity
     public void appointmentExist(String message) {
 
         new AlertDialog.Builder(getContext())
-                .setTitle("Reschedule Appointment")
+                .setTitle("Schedule Appointment Error")
                 .setMessage("You already have an appointment on the selected date. Reschedule your existing appointment.")
                 .setCancelable(false)
                 .setPositiveButton("Close", new DialogInterface.OnClickListener() {
@@ -367,6 +368,7 @@ public class AppointmentActivity
         selectedadvisorPosition="0";selectedpmsPosition="";selectedScheduleId="";selectedDate="";selectedService="";selectedGarage="";
         scheduleListAdapter.reset();
         garageListAdapter.reset();
+        serviceListAdapter.reset();
 
 
         dialog.dismiss();
@@ -764,6 +766,7 @@ public class AppointmentActivity
                 selectedadvisorPosition="0";selectedpmsPosition="";selectedScheduleId="";selectedDate="";selectedService="";selectedGarage="";
                 scheduleListAdapter.reset();
                 garageListAdapter.reset();
+                serviceListAdapter.reset();
             }
         });
 
@@ -983,6 +986,12 @@ public class AppointmentActivity
 
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         onRefresh();
+
+        selectedDealerId="";
+        selectedadvisorPosition="0";selectedpmsPosition="";selectedScheduleId="";selectedDate="";selectedService="";selectedGarage="";
+        scheduleListAdapter.reset();
+        garageListAdapter.reset();
+        serviceListAdapter.reset();
 
 
         dialogDetail.dismiss();

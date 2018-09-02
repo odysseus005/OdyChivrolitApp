@@ -5,14 +5,21 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -36,6 +43,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
@@ -43,6 +51,7 @@ import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -267,6 +276,10 @@ public class GarageListActivity
         {
             binding.garageNoRecyclerview.setVisibility(View.VISIBLE);
             binding.recyclerView.setVisibility(View.GONE);
+        }else
+        {
+            binding.garageNoRecyclerview.setVisibility(View.GONE);
+            binding.recyclerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -472,18 +485,47 @@ public class GarageListActivity
         ImageView imageView = (ImageView) view.findViewById(R.id.image_user);
 
         Bitmap bitmap = null;
+        Bitmap adjustedBitmap=null;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         try {
             bitmap = BitmapFactory.decodeStream(new FileInputStream(imageFile), null, options);
+
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        imageView.setImageBitmap(bitmap);
+       // Uri photoUri = Uri.fromFile( new File( imageFile.get));
+        Uri photoUri = Uri.fromFile(imageFile);
+
+
+        try {
+            ExifInterface exif = new ExifInterface(photoUri.getPath());
+            int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            int rotationInDegrees = exifToDegrees(rotation);
+            Matrix matrix = new Matrix();
+            if (rotation != 0f) {matrix.preRotate(rotationInDegrees);}
+
+          //  Bitmap.createBitmap(Bitmap source, int x, int y, int width, int height, Matrix m, boolean filter);
+             adjustedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+//        //   imageView.setImageURI(photoUri);
+//        Glide.with(this)
+//                .load(photoUri)
+//                .error(R.drawable.ic_nav_appointment)
+//                .into(imageView);
+
+
+                imageView.setImageBitmap(adjustedBitmap);
 
         new AlertDialog.Builder(this)
-                .setTitle("Upload Profile Picture")
+                .setTitle("Upload Car Picture")
                 .setView(view)
                 .setPositiveButton("UPLOAD", new DialogInterface.OnClickListener() {
                     @Override
@@ -496,6 +538,14 @@ public class GarageListActivity
                 .setCancelable(false)
                 .show();
     }
+
+    private static int exifToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
+        return 0;
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

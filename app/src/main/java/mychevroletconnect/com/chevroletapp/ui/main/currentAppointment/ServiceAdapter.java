@@ -113,6 +113,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
         return service.size();
     }
 
+    public void reset()
+    {
+        selectedList.clear();
+    }
 
     public String getSelectedService()
     {

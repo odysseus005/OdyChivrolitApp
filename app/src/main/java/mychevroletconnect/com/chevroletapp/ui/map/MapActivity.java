@@ -225,7 +225,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(14.599512, 120.984222), 15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(11.5901671, 121.8723559), 5));
 
 
         presenter.onStart();
@@ -720,6 +720,36 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         presenter.getNearest(myMarker.getPosition().latitude, myMarker.getPosition().longitude, filterMap);
 
       updateMap();
+      filtermapCamera();
+    }
+
+
+    public void filtermapCamera()
+    {
+        switch (filterMap)
+        {
+            case "metro manila":
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(14.5512569, 121.0027576), 11));
+                break;
+
+            case "luzon":
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(16.1773236, 120.1267363), 7));
+                break;
+
+            case "visayas":
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(10.6638238, 122.8906592), 9));
+                break;
+
+            case "Mindanao":
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(7.5312811, 125.0450663), 8));
+                break;
+
+            default:
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(11.5901671, 121.8723559), 5));
+
+
+                break;
+        }
     }
 
 

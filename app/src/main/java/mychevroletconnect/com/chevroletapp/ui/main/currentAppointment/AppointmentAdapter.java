@@ -114,10 +114,12 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         notifyDataSetChanged();
     }
 
-    @Override
+
     public int getItemCount() {
         return appointment.size();
     }
+
+
 
     public void setAppointmentResult(List<Appointment> event) {
         this.appointment = event;

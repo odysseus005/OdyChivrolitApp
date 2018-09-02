@@ -297,6 +297,10 @@ public class PastAppointmentActivity
 
             binding.appointmentpasNoRecyclerview.setVisibility(View.VISIBLE);
             binding.recyclerView.setVisibility(View.GONE);
+        }else
+        {
+            binding.appointmentpasNoRecyclerview.setVisibility(View.GONE);
+            binding.recyclerView.setVisibility(View.VISIBLE);
         }
     }
 
