@@ -209,4 +209,45 @@ public interface ApiInterface {
                                             @Field(Constants.RESERVE_DATE) String date,
                                              @Field(Constants.GARAGE_ID) String garID
     );
+
+
+    //Contact
+
+    @FormUrlEncoded
+    @POST(Endpoints.CONTACT_US)
+    Call<ResultResponse> contactUs(@Field(Constants.TAG) String tag,
+                                   @Field(Constants.CONTACT_METHOD) String contact_method,
+                                   @Field(Constants.FIRST_NAME)String firstName,
+                                   @Field(Constants.LAST_NAME)String lname,
+                                   @Field(Constants.EMAIL) String email,
+                                   @Field(Constants.CONTACT) String contact,
+                                   @Field(Constants.CONCERN) String concern);
+
+    @FormUrlEncoded
+    @POST(Endpoints.CONTACT_US)
+    Call<ResultResponse> testDrive(@Field(Constants.TAG) String tag,
+                                   @Field(Constants.CONTACT_METHOD) String contact_method,
+                                   @Field(Constants.CAR_MODEL)String car_model,
+                                   @Field(Constants.DEALER_NAME)String dealername,
+                                   @Field(Constants.FIRST_NAME)String firstName,
+                                   @Field(Constants.LAST_NAME)String lname,
+                                   @Field(Constants.EMAIL) String email,
+                                   @Field(Constants.CONTACT) String contact,
+                                   @Field(Constants.CONCERN) String concern);
+
+    @FormUrlEncoded
+    @POST(Endpoints.CONTACT_US)
+    Call<ResultResponse> partsInquire(@Field(Constants.TAG) String tag,
+                                   @Field(Constants.CONTACT_METHOD) String contact_method,
+                                   @Field(Constants.CAR_MODEL)String car_model,
+                                      @Field(Constants.YEAR_MODEL)String year_model,
+                                      @Field(Constants.PLATE_NUM)String plate_num,
+                                      @Field(Constants.CHASSIS_NUM)String chassis_num,
+                                   @Field(Constants.DEALER_NAME)String dealer_name,
+                                   @Field(Constants.FIRST_NAME)String firstName,
+                                   @Field(Constants.LAST_NAME)String lname,
+                                   @Field(Constants.EMAIL) String email,
+                                   @Field(Constants.CONTACT) String contact,
+                                   @Field(Constants.CONCERN) String concern);
+
 }

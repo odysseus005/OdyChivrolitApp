@@ -57,4 +57,14 @@ public class Constants {
     public static final String RESERVE_DATE = "reserve_date";
     public static final String RESERVE_REMARK = "reserve_remarks";
 
+
+    //CONTACT
+    public static final String CONTACT_METHOD = "contact_method";
+    public static final String CONCERN = "remarks";
+    public static final String CAR_MODEL = "car_model";
+    public static final String DEALER_NAME = "dealer_name";
+    public static final String YEAR_MODEL = "year_model";
+    public static final String PLATE_NUM = "plate_num";
+    public static final String CHASSIS_NUM = "chassis";
+
 }

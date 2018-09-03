@@ -297,6 +297,7 @@
                     android:hint="Concern/Remarks"
                     android:lines="3"
                     android:maxLength="150"
+                    android:gravity="start"
                     android:padding="12dp"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
                     android:textColorHint="@android:color/darker_gray" />

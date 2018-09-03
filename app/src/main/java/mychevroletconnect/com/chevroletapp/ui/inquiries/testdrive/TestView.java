@@ -13,6 +13,7 @@ public interface TestView extends MvpView {
 
     void showAlert(String message);
 
+    void showReturn(String message);
 
     void startLoading();
 

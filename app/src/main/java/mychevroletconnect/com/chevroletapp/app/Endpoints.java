@@ -48,4 +48,9 @@ public class Endpoints {
     public static final String CANCEL_APPOINTMENT = "cancelReservation";
     public static final String RESCHED_APPOINTMENT = "reschedReservation";
 
+    //Contact
+    public static final String CONTACT_US = "contact.php?";
+    public static final String PARTS = "parts";
+    public static final String Testdrive = "testdrive";
+    public static final String CONTACT = "contactus";
 }

@@ -4,11 +4,13 @@ import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 
 import io.realm.Realm;
 import mychevroletconnect.com.chevroletapp.app.App;
+import mychevroletconnect.com.chevroletapp.app.Constants;
 import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.model.data.Dealer;
 import mychevroletconnect.com.chevroletapp.model.data.Service;
 import mychevroletconnect.com.chevroletapp.model.response.CarListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.DealerListResponse;
+import mychevroletconnect.com.chevroletapp.model.response.ResultResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -109,6 +111,49 @@ public class TestPresenter extends MvpNullObjectBasePresenter<TestView> {
                     }
                 });
     }
+
+
+    public void sendTest(
+                          String contact_method,
+                        String car_model,
+                        String dealername,
+                        String firstName,
+                        String lname,
+                         String email,
+                         String contact,
+                          String concern) {
+
+
+        getView().startLoading();
+        App.getInstance().getApiInterface().testDrive(Endpoints.Testdrive,contact_method,car_model,dealername,firstName,lname,email,contact,concern)
+                .enqueue(new Callback<ResultResponse>() {
+                    @Override
+                    public void onResponse(Call<ResultResponse> call, Response<ResultResponse> response) {
+                        getView().stopLoading();
+                        if (response.isSuccessful()) {
+                            switch (response.body().getResult()) {
+                                case Constants.SUCCESS:
+                                    getView().showReturn("");
+                                    break;
+                                default:
+                                    getView().showAlert("Error Sending Test Drive Request");
+                                    break;
+                            }
+                        } else {
+                            getView().showAlert("Error Sending Test Drive Request");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResultResponse> call, Throwable t) {
+                        //Log.e(TAG, "onFailure: Error calling register api", t);
+                        getView().stopLoading();
+                        getView().showAlert("Error Connecting to Server");
+                    }
+                });
+
+    }
+
 
 
 }

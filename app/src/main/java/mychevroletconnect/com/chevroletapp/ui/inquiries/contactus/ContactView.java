@@ -1,15 +1,11 @@
-package mychevroletconnect.com.chevroletapp.ui.inquiries.parts;
+package mychevroletconnect.com.chevroletapp.ui.inquiries.contactus;
 
 import com.hannesdorfmann.mosby.mvp.MvpView;
 
 
-public interface PartsView extends MvpView {
+public interface ContactView extends MvpView {
 
     void onSubmit();
-
-    void loadDealer();
-
-    void loadCar();
 
     void showAlert(String message);
     void showReturn(String message);

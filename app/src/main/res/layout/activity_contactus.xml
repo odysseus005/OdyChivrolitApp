@@ -6,7 +6,7 @@
 
         <variable
             name="view"
-            type="mychevroletconnect.com.chevroletapp.ui.inquiries.testdrive.TestView" />
+            type="mychevroletconnect.com.chevroletapp.ui.inquiries.contactus.ContactView" />
 
     </data>
 
@@ -43,23 +43,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginTop="5dp"
             android:padding="5dp"
             android:orientation="horizontal">
 
 
             <ImageView
-                android:layout_width="65dp"
-                android:layout_height="65dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:tint="@color/colorPrimary"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_nav_test"
+                android:src="@drawable/ic_feedback"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="Test Drive"
+                android:text="Contact Us"
                 android:layout_marginLeft="3dp"
                 android:textColor="@color/colorPrimary"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
@@ -74,88 +75,6 @@
                 android:padding="8dp"
                 android:visibility="visible">
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:orientation="horizontal"
-                    android:padding="5dp">
-
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_nav_dealer"
-                        android:tint="@color/colorPrimary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="3dp"
-                        android:text="Car and Dealear Details"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                        android:textColor="@color/gray" />
-
-                </LinearLayout>
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Choose Vehicle"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
-
-                <Spinner
-                    android:id="@+id/sp_car"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/bg_spinner"
-                    android:fontFamily="sans-serif"
-                    android:padding="12dp"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:textColorHint="@android:color/darker_gray" />
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Choose Dealership"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
-
-                <Spinner
-                    android:id="@+id/sp_dealer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/bg_spinner"
-                    android:fontFamily="sans-serif"
-                    android:padding="12dp"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:textColorHint="@android:color/darker_gray" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Preferred Contact Method"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
-
-
-                <Spinner
-                    android:id="@+id/sp_contact"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/bg_spinner"
-                    android:fontFamily="sans-serif"
-                    android:padding="12dp"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:textColorHint="@android:color/darker_gray" />
 
 
                 <LinearLayout
@@ -181,6 +100,28 @@
                         android:textColor="@color/gray" />
 
                 </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Preferred Contact Method"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+
+                <Spinner
+                    android:id="@+id/sp_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/bg_spinner"
+                    android:fontFamily="sans-serif"
+                    android:padding="12dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:textColorHint="@android:color/darker_gray" />
+
+
 
 
                 <!-- first name -->
@@ -250,10 +191,10 @@
                     android:layout_marginTop="8dp"
                     android:background="@drawable/edittext_selector"
                     android:hint="Concern/Remarks"
-                    android:lines="3"
+                    android:lines="6"
+                    android:gravity="start"
                     android:maxLength="150"
                     android:padding="12dp"
-                    android:gravity="start"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
                     android:textColorHint="@android:color/darker_gray" />
 
@@ -285,7 +226,6 @@
 
 
             </LinearLayout>
-
 
 
 
