@@ -9,8 +9,8 @@
             type="mychevroletconnect.com.chevroletapp.ui.map.MapView" />
 
         <variable
-            name="company"
-            type="mychevroletconnect.com.chevroletapp.model.data.NearDealer" />
+            name="dealer"
+            type="mychevroletconnect.com.chevroletapp.model.data.DealerContacts" />
 
 
     </data>
@@ -22,7 +22,6 @@
 
     <android.support.v7.widget.CardView
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/restCard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginEnd="6dp"
@@ -31,7 +30,7 @@
         app:cardCornerRadius="5dp"
         android:clickable="true"
         android:foreground="?android:selectableItemBackground"
-        android:onClick="@{()->view.OnItemClicked(company)}"
+        android:onClick="@{()->view.OnItemCalled(dealer)}"
         android:orientation="vertical">
 
         <LinearLayout
@@ -49,28 +48,25 @@
                 android:padding="6dp">
 
                 <TextView
-                    android:id="@+id/companyName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableTint="#777777"
-                    android:text="@{company.dealerName}"
-                    android:textSize="16sp"
+                    android:text='@{dealer.contactRole}'
+                    android:textAllCaps="true"
                     android:textStyle="bold"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                      />
 
 
                 <TextView
-                    android:id="@+id/companyAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:drawableLeft="@drawable/ic_location_on"
                     android:drawablePadding="1dp"
                     android:maxLines="2"
-                    android:text="@{company.dealerAddress}"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                    android:textSize="12sp" />
+                    android:text='@{"Contact"+dealer.contactNumber}'
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                     />
 
 
             </LinearLayout>
@@ -87,18 +83,10 @@
                     android:id="@+id/distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{company.distance+``}"
+                    android:text="Call"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
 
-
-                <TextView
-                    android:id="@+id/KM"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:text="KM"
-                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
 

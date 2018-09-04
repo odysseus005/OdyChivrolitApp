@@ -95,34 +95,31 @@ public class ContactActivity extends MvpViewStateActivity<ContactView, ContactPr
 
 
 
-//        String emailbody = "Name: "+ binding.etFirstName.getText().toString()+", "+binding.etLastName.getText().toString()+"\n"
-//                +"Requested Car Model: "+ carSelect.getCarModel()+"\n\n"
-//                +"Preferred Contact Method: "+ binding.spContact.getSelectedItem().toString()+"\n\n"
-//                + "Email: "+binding.etEmail.getText().toString() +"\n"
-//                + "Contact: "+binding.etMobileNumber.getText().toString()+"\n\n"
-//                + "Message:\n"+binding.etRemars.getText().toString()+"\n";
-//
-//        //   dealer.getSelectedItem().toString();
-//
-//
-//        final Intent emailIntent = new Intent(Intent.ACTION_SEND);
-//        emailIntent.setType("text/plain");
-//        emailIntent.putExtra(Intent.EXTRA_EMAIL,new String[]{dealerSelect.getDealerEmailAddress()});
-//        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Concerns and Feedback");
-//        emailIntent.putExtra(Intent.EXTRA_TEXT, emailbody);
-//
-//
-//        emailIntent.setType("message/rfc822");
-//
-//        try {
-//            startActivity(Intent.createChooser(emailIntent,
-//                    "Send email using..."));
-//        } catch (android.content.ActivityNotFoundException ex) {
-//            Toast.makeText(this,
-//                    "No email clients installed.",
-//                    Toast.LENGTH_SHORT).show();
-//        }
+        if(binding.etFirstName.getText().toString().equals("")||binding.etLastName.getText().toString().equals("")
+                ||binding.spContact.getSelectedItem().toString().equals("")||binding.etEmail.getText().toString().equals("")||binding.etMobileNumber.getText().toString().equals("")
+                ||binding.etRemars.getText().toString().equals(""))
+        {
+            showAlert("Please Fill up All Fields");
+        }
+        else
+            presenter.sendContactis(binding.spContact.getSelectedItem().toString(),
+                    binding.etFirstName.getText().toString(),binding.etLastName.getText().toString(),binding.etEmail.getText().toString(),binding.etMobileNumber.getText().toString(),
+                    binding.etRemars.getText().toString());
 
+
+
+
+    }
+
+    @Override
+    public void showReturn(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        binding.spContact.setSelection(0);
+        binding.etFirstName.setText("");
+        binding.etLastName.setText("");
+        binding.etEmail.setText("");
+        binding.etMobileNumber.setText("");
+        binding.etRemars.setText("");
 
     }
 

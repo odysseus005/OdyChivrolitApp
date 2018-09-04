@@ -36,7 +36,6 @@ public class PartsActivity extends MvpViewStateActivity<PartsView, PartsPresente
     private RealmResults<Dealer> dealerRealmResults;
     private RealmResults<Car> carRealmResults;
     private Realm realm;
-    private Car carSelect;
     private Dealer dealerSelect;
     private User user;
 
@@ -50,7 +49,7 @@ public class PartsActivity extends MvpViewStateActivity<PartsView, PartsPresente
 
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Contact Us");
+        getSupportActionBar().setTitle("Parts Inquiry");
 
         realm = Realm.getDefaultInstance();
         user = realm.where(User.class).findFirst();
@@ -102,36 +101,39 @@ public class PartsActivity extends MvpViewStateActivity<PartsView, PartsPresente
 
 
 
-//        String emailbody = "Name: "+ binding.etFirstName.getText().toString()+", "+binding.etLastName.getText().toString()+"\n"
-//                +"Requested Car Model: "+ carSelect.getCarModel()+"\n\n"
-//                +"Preferred Contact Method: "+ binding.spContact.getSelectedItem().toString()+"\n\n"
-//                + "Email: "+binding.etEmail.getText().toString() +"\n"
-//                + "Contact: "+binding.etMobileNumber.getText().toString()+"\n\n"
-//                + "Message:\n"+binding.etRemars.getText().toString()+"\n";
-//
-//        //   dealer.getSelectedItem().toString();
-//
-//
-//        final Intent emailIntent = new Intent(Intent.ACTION_SEND);
-//        emailIntent.setType("text/plain");
-//        emailIntent.putExtra(Intent.EXTRA_EMAIL,new String[]{dealerSelect.getDealerEmailAddress()});
-//        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Concerns and Feedback");
-//        emailIntent.putExtra(Intent.EXTRA_TEXT, emailbody);
-//
-//
-//        emailIntent.setType("message/rfc822");
-//
-//        try {
-//            startActivity(Intent.createChooser(emailIntent,
-//                    "Send email using..."));
-//        } catch (android.content.ActivityNotFoundException ex) {
-//            Toast.makeText(this,
-//                    "No email clients installed.",
-//                    Toast.LENGTH_SHORT).show();
-//        }
+        if(binding.etFirstName.getText().toString().equals("")||binding.etLastName.getText().toString().equals("")||binding.etCarModel.getText().toString().equals("")||binding.etCarYearModel.getText().toString().equals("")
+                ||binding.spContact.getSelectedItem().toString().equals("")||binding.etEmail.getText().toString().equals("")||binding.etMobileNumber.getText().toString().equals("")
+                ||binding.etRemars.getText().toString().equals("")||binding.spDealer.getSelectedItem().toString().equals("")
+                ||binding.etCarPlate.getText().toString().equals(""))
+
+        {
+            showAlert("Please Fill up All Fields");
+        }
+        else
+            presenter.sendParts(String.valueOf(dealerSelect.getDealerId()),binding.spContact.getSelectedItem().toString(),binding.etCarModel.getText().toString(),binding.etCarYearModel.getText().toString(),
+                    binding.etCarPlate.getText().toString(),binding.etCarChassis.getText().toString(),binding.spDealer.getSelectedItem().toString(),
+                    binding.etFirstName.getText().toString(),binding.etLastName.getText().toString(),binding.etEmail.getText().toString(),binding.etMobileNumber.getText().toString(),
+                    binding.etRemars.getText().toString());
+
 
 
     }
+    @Override
+    public void showReturn(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        binding.spContact.setSelection(0);
+        binding.spDealer.setSelection(0);
+        binding.etFirstName.setText("");
+        binding.etLastName.setText("");
+        binding.etEmail.setText("");
+        binding.etMobileNumber.setText("");
+        binding.etRemars.setText("");
+        binding.etCarChassis.setText("");
+        binding.etCarPlate.setText("");
+        binding.etCarYearModel.setText("");
+        binding.etCarModel.setText("");
+    }
+
 
     @Override
     public void showAlert(String message) {
@@ -178,7 +180,7 @@ public class PartsActivity extends MvpViewStateActivity<PartsView, PartsPresente
 
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_custom_item, dealer);
            binding.spDealer.setAdapter(arrayAdapter);
-
+            dealerSelect = dealerRealmResults.get(0);
             binding.spContact.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

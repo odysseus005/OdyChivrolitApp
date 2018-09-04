@@ -37,6 +37,7 @@ public class Endpoints {
     public static final String GET_CAR = "allCar";
     public static final String GET_PMS = "allPMS";
     public static final String GET_ADVISOR = "allAdvisor";
+    public static final String GET_DEALER_CONTACTS = "allDealerContacts";
 
 
     //Schedule
@@ -49,7 +50,7 @@ public class Endpoints {
     public static final String RESCHED_APPOINTMENT = "reschedReservation";
 
     //Contact
-    public static final String CONTACT_US = "contact.php?";
+    public static final String CONTACT_US = "new_contact.php?";
     public static final String PARTS = "parts";
     public static final String Testdrive = "testdrive";
     public static final String CONTACT = "contactus";

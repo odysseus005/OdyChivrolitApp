@@ -38,10 +38,10 @@ public class ContactPresenter extends MvpNullObjectBasePresenter<ContactView> {
                         if (response.isSuccessful()) {
                             switch (response.body().getResult()) {
                                 case Constants.SUCCESS:
-                                    getView().showReturn("");
+                                    getView().showReturn("Message Sent Successfully!");
                                     break;
                                 default:
-                                    getView().showAlert("Error Sending Parts Inquiries");
+                                    getView().showAlert("Error Sending Inquiries");
                                     break;
                             }
                         } else {

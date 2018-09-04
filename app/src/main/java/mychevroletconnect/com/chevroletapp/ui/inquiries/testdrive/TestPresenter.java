@@ -113,7 +113,7 @@ public class TestPresenter extends MvpNullObjectBasePresenter<TestView> {
     }
 
 
-    public void sendTest(
+    public void sendTest(String dealerid,
                           String contact_method,
                         String car_model,
                         String dealername,
@@ -125,7 +125,7 @@ public class TestPresenter extends MvpNullObjectBasePresenter<TestView> {
 
 
         getView().startLoading();
-        App.getInstance().getApiInterface().testDrive(Endpoints.Testdrive,contact_method,car_model,dealername,firstName,lname,email,contact,concern)
+        App.getInstance().getApiInterface().testDrive(Endpoints.Testdrive,dealerid,contact_method,car_model,dealername,firstName,lname,email,contact,concern)
                 .enqueue(new Callback<ResultResponse>() {
                     @Override
                     public void onResponse(Call<ResultResponse> call, Response<ResultResponse> response) {
@@ -133,10 +133,10 @@ public class TestPresenter extends MvpNullObjectBasePresenter<TestView> {
                         if (response.isSuccessful()) {
                             switch (response.body().getResult()) {
                                 case Constants.SUCCESS:
-                                    getView().showReturn("");
+                                    getView().showReturn("Test Drive Inquiry Successful!");
                                     break;
                                 default:
-                                    getView().showAlert("Error Sending Test Drive Request");
+                                    getView().showAlert("Error Sending Test Drive Inquiries");
                                     break;
                             }
                         } else {

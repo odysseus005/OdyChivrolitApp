@@ -70,9 +70,11 @@ import io.realm.Sort;
 import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityMapBinding;
+import mychevroletconnect.com.chevroletapp.databinding.DialogContactBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogDealerDetailBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogShowNearestBinding;
 import mychevroletconnect.com.chevroletapp.model.data.Dealer;
+import mychevroletconnect.com.chevroletapp.model.data.DealerContacts;
 import mychevroletconnect.com.chevroletapp.model.data.NearDealer;
 import mychevroletconnect.com.chevroletapp.model.data.User;
 import mychevroletconnect.com.chevroletapp.ui.main.MainActivity;
@@ -92,9 +94,11 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     private String TAG = MapActivity.class.getSimpleName();
     private PlaceAutocompleteFragment autocompleteFragment;
     private RealmResults<NearDealer> nearestCompanies;
+    private RealmResults<DealerContacts> dealerContacts;
     private Marker myMarker = null;
     private ActivityMapBinding binding;
     private MapListAdapter adapter;
+    private ContactListAdapter cadapater;
     private FusedLocation fusedLocation;
     private SimpleLocation location;
     private String searchText;
@@ -103,7 +107,8 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     private User user;
     private String filterMap ="",distance="",eta="";
     DialogDealerDetailBinding detailBinding;
-    Dialog dialog;
+    DialogContactBinding contactBinding;
+    Dialog dialog,dialog2;
     BottomSheetDialog dialogDetail;
     static final Integer CALL = 0x2;
 
@@ -526,6 +531,15 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     }
 
     @Override
+    public void OnItemCalled(final DealerContacts dc) {
+
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + dc.getContactNumber()));
+        startActivity(intent);
+
+
+    }
+
+    @Override
     public void OnItemClicked(final NearDealer company) {
 
 
@@ -571,7 +585,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     {
 
 
-       final String contact = dealer.getDealerContact();
+       final int id = dealer.getDealerId();
        final double lat = Double.parseDouble(dealer.getDealerLat());
        final double lng = Double.parseDouble(dealer.getDealerLong());
         binding.cardView2.setVisibility(View.VISIBLE);
@@ -622,19 +636,9 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + contact));
-                startActivity(intent);
 
+                presenter.loadContactList(id);
 
-
-//                Intent intent = new Intent(Intent.ACTION_DIAL);
-//                intent.setData(Uri.parse("tel:"+contact));
-//                if (ActivityCompat.checkSelfPermission(MapActivity.this,
-//                        android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-//                    ActivityCompat.requestPermissions(MapActivity.this, new String[]{android.Manifest.permission.CALL_PHONE},CALL);
-//                    return;
-//                }
-//                startActivity(intent);
 
             }
         });
@@ -707,6 +711,48 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         showAlert("Error on getting Route");
     }
 
+    @Override
+    public void loadContacts() {
+
+        dialog2 = new Dialog(this);
+
+        dialog2.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+        DialogContactBinding dialogBinding = DataBindingUtil.inflate(
+                getLayoutInflater(),
+                R.layout.dialog_contact,
+                null,
+                false);
+
+
+        dialogBinding.setView(getMvpView());
+
+
+        //adapter
+        dialogBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        cadapater = new ContactListAdapter(this);
+        dialogBinding.recyclerView.setAdapter(cadapater);
+
+
+        dealerContacts = realm.where(DealerContacts.class).findAll();
+        cadapater.setList(dealerContacts);
+
+
+
+
+        dialogBinding.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog2.dismiss();
+
+            }
+        });
+
+        dialog2.setContentView(dialogBinding.getRoot());
+        dialog2.setCancelable(false);
+        dialog2.show();
+
+    }
 
     @Override
     public void filterDealers(String message) {

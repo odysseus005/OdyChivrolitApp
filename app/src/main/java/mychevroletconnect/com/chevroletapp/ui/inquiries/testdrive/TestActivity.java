@@ -49,7 +49,7 @@ public class TestActivity extends MvpViewStateActivity<TestView, TestPresenter> 
 
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Contact Us");
+        getSupportActionBar().setTitle("Test Drive Inquiry");
 
         realm = Realm.getDefaultInstance();
         user = realm.where(User.class).findFirst();
@@ -100,35 +100,48 @@ public class TestActivity extends MvpViewStateActivity<TestView, TestPresenter> 
     public void onSubmit() {
 
 
-        try{
-
-        String emailbody = "Name: "+ binding.etFirstName.getText().toString()+" "+binding.etLastName.getText().toString()+"\n"
-                +"Requested Car Model: "+ carSelect.getCarModel()+"\n\n"
-                +"Preferred Contact Method: "+ binding.spContact.getSelectedItem().toString()+"\n\n"
-                + "Email: "+binding.etEmail.getText().toString() +"\n"
-                + "Contact: "+binding.etMobileNumber.getText().toString()+"\n\n"
-                + "Message:\n"+binding.etRemars.getText().toString()+"\n";
-
-        //   dealer.getSelectedItem().toString();
-
-
-        final Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.setType("text/plain");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL,new String[]{"sample@email.com"});
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Concerns and Feedback");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, emailbody);
-
-
-        emailIntent.setType("message/rfc822");
-
-
-            startActivity(Intent.createChooser(emailIntent,
-                    "Send email using..."));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(this,
-                    "No email clients installed.",
-                    Toast.LENGTH_SHORT).show();
+           if(binding.etFirstName.getText().toString().equals("")||binding.etLastName.getText().toString().equals("")||carSelect.getCarModel().equals("")
+           ||binding.spContact.getSelectedItem().toString().equals("")||binding.etEmail.getText().toString().equals("")||binding.etMobileNumber.getText().toString().equals("")
+           ||binding.etRemars.getText().toString().equals("")||binding.spDealer.getSelectedItem().toString().equals(""))
+        {
+            showAlert("Please Fill up All Fields");
         }
+        else
+            presenter.sendTest(String.valueOf(dealerSelect.getDealerId()),binding.spContact.getSelectedItem().toString(),carSelect.getCarModel(),binding.spDealer.getSelectedItem().toString(),
+                    binding.etFirstName.getText().toString(),binding.etLastName.getText().toString(),binding.etEmail.getText().toString(),binding.etMobileNumber.getText().toString(),
+                    binding.etRemars.getText().toString());
+
+
+
+//        try{
+//
+//        String emailbody = "Name: "+ binding.etFirstName.getText().toString()+" "+binding.etLastName.getText().toString()+"\n"
+//                +"Requested Car Model: "+ carSelect.getCarModel()+"\n\n"
+//                +"Preferred Contact Method: "+ binding.spContact.getSelectedItem().toString()+"\n\n"
+//                + "Email: "+binding.etEmail.getText().toString() +"\n"
+//                + "Contact: "+binding.etMobileNumber.getText().toString()+"\n\n"
+//                + "Message:\n"+binding.etRemars.getText().toString()+"\n";
+//
+//        //   dealer.getSelectedItem().toString();
+//
+//
+//        final Intent emailIntent = new Intent(Intent.ACTION_SEND);
+//        emailIntent.setType("text/plain");
+//        emailIntent.putExtra(Intent.EXTRA_EMAIL,new String[]{"sample@email.com"});
+//        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Concerns and Feedback");
+//        emailIntent.putExtra(Intent.EXTRA_TEXT, emailbody);
+//
+//
+//        emailIntent.setType("message/rfc822");
+//
+//
+//            startActivity(Intent.createChooser(emailIntent,
+//                    "Send email using..."));
+//        } catch (android.content.ActivityNotFoundException ex) {
+//            Toast.makeText(this,
+//                    "No email clients installed.",
+//                    Toast.LENGTH_SHORT).show();
+//        }
 
 
 
@@ -138,6 +151,20 @@ public class TestActivity extends MvpViewStateActivity<TestView, TestPresenter> 
     public void showAlert(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+    @Override
+    public void showReturn(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        binding.spContact.setSelection(0);
+        binding.spCar.setSelection(0);
+        binding.spDealer.setSelection(0);
+        binding.etFirstName.setText("");
+        binding.etLastName.setText("");
+        binding.etEmail.setText("");
+        binding.etMobileNumber.setText("");
+        binding.etRemars.setText("");
+
+    }
+
 
 
     @Override
@@ -209,6 +236,7 @@ public class TestActivity extends MvpViewStateActivity<TestView, TestPresenter> 
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_custom_item, dealer);
            binding.spDealer.setAdapter(arrayAdapter);
 
+            dealerSelect = dealerRealmResults.get(0);
             binding.spContact.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

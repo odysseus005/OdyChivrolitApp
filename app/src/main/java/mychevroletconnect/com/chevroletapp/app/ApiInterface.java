@@ -12,6 +12,7 @@ import mychevroletconnect.com.chevroletapp.model.data.User;
 import mychevroletconnect.com.chevroletapp.model.response.AdvisorListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.AppointmentListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.CarListResponse;
+import mychevroletconnect.com.chevroletapp.model.response.DealerContactListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.DealerListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.GarageListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.LoginResponse;
@@ -160,6 +161,9 @@ public interface ApiInterface {
     @POST(Endpoints.DATA)
     Call<AdvisorListResponse> getAdvisorList(@Field(Constants.TAG) String tag, @Field(Constants.DEALER_ID) String advisor_id );
 
+    @FormUrlEncoded
+    @POST(Endpoints.DATA)
+    Call<DealerContactListResponse> getDealerContactList(@Field(Constants.TAG) String tag, @Field(Constants.DEALER_ID) String advisor_id );
 
 
     //Schedule
@@ -226,6 +230,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(Endpoints.CONTACT_US)
     Call<ResultResponse> testDrive(@Field(Constants.TAG) String tag,
+                                   @Field(Constants.DEALER_ID) String did,
                                    @Field(Constants.CONTACT_METHOD) String contact_method,
                                    @Field(Constants.CAR_MODEL)String car_model,
                                    @Field(Constants.DEALER_NAME)String dealername,
@@ -238,6 +243,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(Endpoints.CONTACT_US)
     Call<ResultResponse> partsInquire(@Field(Constants.TAG) String tag,
+                                   @Field(Constants.DEALER_ID) String did,
                                    @Field(Constants.CONTACT_METHOD) String contact_method,
                                    @Field(Constants.CAR_MODEL)String car_model,
                                       @Field(Constants.YEAR_MODEL)String year_model,

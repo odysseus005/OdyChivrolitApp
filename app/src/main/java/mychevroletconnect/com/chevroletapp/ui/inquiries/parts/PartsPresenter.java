@@ -113,7 +113,7 @@ public class PartsPresenter extends MvpNullObjectBasePresenter<PartsView> {
     }
 
 
-    public void sendParts(
+    public void sendParts(String did,
                           String contact_method,
                         String car_model,
                         String year_model,
@@ -128,7 +128,7 @@ public class PartsPresenter extends MvpNullObjectBasePresenter<PartsView> {
 
 
         getView().startLoading();
-        App.getInstance().getApiInterface().partsInquire(Endpoints.PARTS, contact_method, car_model, year_model, plate_num, chassis_num, dealer_name, firstName, lname, email, contact, concern)
+        App.getInstance().getApiInterface().partsInquire(Endpoints.PARTS,did, contact_method, car_model, year_model, plate_num, chassis_num, dealer_name, firstName, lname, email, contact, concern)
                 .enqueue(new Callback<ResultResponse>() {
                     @Override
                     public void onResponse(Call<ResultResponse> call, Response<ResultResponse> response) {
@@ -136,7 +136,7 @@ public class PartsPresenter extends MvpNullObjectBasePresenter<PartsView> {
                         if (response.isSuccessful()) {
                             switch (response.body().getResult()) {
                                 case Constants.SUCCESS:
-                                    getView().showReturn("");
+                                    getView().showReturn("Parts Inquiry Successfully!!");
                                     break;
                                 default:
                                     getView().showAlert("Error Sending Parts Inquiries");

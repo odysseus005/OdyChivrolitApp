@@ -12,8 +12,10 @@ import io.realm.Realm;
 import mychevroletconnect.com.chevroletapp.app.App;
 import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.model.data.Dealer;
+import mychevroletconnect.com.chevroletapp.model.data.DealerContacts;
 import mychevroletconnect.com.chevroletapp.model.data.NearDealer;
 import mychevroletconnect.com.chevroletapp.model.data.User;
+import mychevroletconnect.com.chevroletapp.model.response.DealerContactListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.DealerListResponse;
 import mychevroletconnect.com.chevroletapp.util.DistanceUtil;
 import retrofit2.Call;
@@ -77,12 +79,63 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
                         public void onFailure(Call<DealerListResponse> call, Throwable t) {
                             t.printStackTrace();
                             getView().stopLoading();
-                            getView().stopLoading();
                             getView().showAlert("Error Connecting to Server");
                         }
                     });
         }
 
+
+    public void loadContactList(int dealerID) {
+
+        getView().startLoading();
+        App.getInstance().getApiInterface().getDealerContactList(Endpoints.GET_DEALER_CONTACTS,String.valueOf(dealerID))
+                .enqueue(new Callback<DealerContactListResponse>() {
+                    @Override
+                    public void onResponse(Call<DealerContactListResponse> call, final Response<DealerContactListResponse> response) {
+
+
+                        getView().stopLoading();
+                        if (response.isSuccessful()) {
+                            final Realm realm = Realm.getDefaultInstance();
+                            realm.executeTransactionAsync(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    realm.delete(DealerContacts.class);
+                                    realm.copyToRealmOrUpdate(response.body().getData());
+
+                                }
+                            }, new Realm.Transaction.OnSuccess() {
+                                @Override
+                                public void onSuccess() {
+                                    realm.close();
+                                    getView().loadContacts();
+                                }
+                            }, new Realm.Transaction.OnError() {
+                                @Override
+                                public void onError(Throwable error) {
+                                    realm.close();
+                                    error.printStackTrace();
+
+                                        getView().showAlert("Error to Retrieve Dealer Contacts");
+                                }
+                            });
+                        } else {
+
+                                getView().showAlert("Error to Retrieve Dealer Contacts");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<DealerContactListResponse> call, Throwable t) {
+                        t.printStackTrace();
+                        getView().stopLoading();
+
+                            getView().stopLoading();
+                            getView().showAlert("Can't Connect to the Internet");
+
+                    }
+                });
+    }
 
     public void onStop() {
         realm.close();
