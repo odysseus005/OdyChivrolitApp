@@ -180,6 +180,7 @@ public interface ApiInterface {
                                      @Field(Constants.USER_ID) String userID,
                                      @Field(Constants.GARAGE_ID) String garID,
                                      @Field(Constants.SCHEDULE_ID) String schedID,
+                                             @Field(Constants.HOLIDAY_ID) String specialID,
                                      @Field(Constants.DEALER_ID) String dealerID,
                                      @Field(Constants.ADVISOR_ID) String advisorID,
                                      @Field(Constants.SERVICE_ID) String serviceID,
@@ -208,8 +209,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(Endpoints.SCHEDULE)
     Call<ResultResponse> reschedReservation(@Field(Constants.TAG) String tag,
-                                           @Field(Constants.RESERVATION_ID) String garage_name,
+                                           @Field(Constants.RESERVATION_ID) String res_id,
                                             @Field(Constants.SCHEDULE_ID) String schedID,
+                                            @Field(Constants.HOLIDAY_ID) String specialID,
                                             @Field(Constants.RESERVE_DATE) String date,
                                              @Field(Constants.GARAGE_ID) String garID
     );

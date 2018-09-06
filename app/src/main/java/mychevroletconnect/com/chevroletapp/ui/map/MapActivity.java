@@ -736,7 +736,10 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
         dealerContacts = realm.where(DealerContacts.class).findAll();
         cadapater.setList(dealerContacts);
-
+        if(cadapater.getItemCount()==0)
+        {
+            showAlert("No Available Contacts");
+        }
 
 
 
@@ -749,7 +752,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         });
 
         dialog2.setContentView(dialogBinding.getRoot());
-        dialog2.setCancelable(false);
+        dialog2.setCancelable(true);
         dialog2.show();
 
     }

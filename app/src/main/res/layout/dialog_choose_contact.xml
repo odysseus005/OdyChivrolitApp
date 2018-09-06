@@ -61,11 +61,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:weightSum="1"
-            android:minHeight="500dp"
             android:orientation="vertical">
 
 
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:padding="30dp"
+                android:gravity="center"
+                android:text="No Available Contacts"
+                android:textColor="@color/lightGray"
+                android:textStyle="bold"
+                android:id="@+id/contact_no_recyclerview"
+                android:visibility="gone"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
 
 
 
@@ -75,6 +85,7 @@
             android:background="@color/dialog"
             android:layout_marginTop="10dp"
             android:padding="10dp"
+            android:minHeight="500dp"
             android:layout_weight=".8"
             android:layout_height="0dp" />
 

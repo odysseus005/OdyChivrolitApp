@@ -57,14 +57,13 @@
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                      />
 
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:drawablePadding="1dp"
                     android:maxLines="2"
-                    android:text='@{"Contact"+dealer.contactNumber}'
+                    android:text='@{"Contact Number : "+dealer.contactNumber}'
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                      />
 

@@ -51,6 +51,7 @@ public class Constants {
     //Reservation
     public static final String RESERVATION_ID = "reserve_id";
     public static final String SCHEDULE_ID = "schedule_id";
+    public static final String HOLIDAY_ID = "special_id";
     public static final String ADVISOR_ID = "advisor_id";
     public static final String SERVICE_ID = "service_id";
     public static final String PMS_SERVICE_ID = "pms_service_id";

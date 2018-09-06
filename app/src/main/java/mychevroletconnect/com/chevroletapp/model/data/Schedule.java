@@ -29,8 +29,18 @@ public class Schedule extends RealmObject {
     private String scheduleReserve;
 
 
+    @SerializedName("schedule_status")
+    @Expose
+    private String scheduleStatus;
 
 
+    public String getScheduleStatus() {
+        return scheduleStatus;
+    }
+
+    public void setScheduleStatus(String scheduleStatus) {
+        this.scheduleStatus = scheduleStatus;
+    }
 
     public int getScheduleId() {
         return scheduleId;

@@ -29,6 +29,8 @@ public interface AppointmentView extends MvpView {
 
     void loadTimeslot();
 
+    void loadTimeslot2();
+
     void selectDealer(Dealer dealer);
 
     void showAppointmentDetails(Appointment appoint);

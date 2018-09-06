@@ -14,6 +14,7 @@ import mychevroletconnect.com.chevroletapp.model.data.Advisor;
 import mychevroletconnect.com.chevroletapp.model.data.Appointment;
 import mychevroletconnect.com.chevroletapp.model.data.Dealer;
 import mychevroletconnect.com.chevroletapp.model.data.Garage;
+import mychevroletconnect.com.chevroletapp.model.data.Holiday;
 import mychevroletconnect.com.chevroletapp.model.data.Pms;
 import mychevroletconnect.com.chevroletapp.model.data.Schedule;
 import mychevroletconnect.com.chevroletapp.model.data.Service;
@@ -380,18 +381,36 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                             realm.executeTransactionAsync(new Realm.Transaction() {
                                 @Override
                                 public void execute(Realm realm) {
-                                    realm.delete(Schedule.class);
-                                    realm.copyToRealmOrUpdate(response.body().getData());
-
+                                    Log.d(">>>>>>",response.body().getChecker());
+                                    if(response.body().getChecker().equals("2")) {
+                                        realm.delete(Schedule.class);
+                                        realm.copyToRealmOrUpdate(response.body().getData());
+                                    }else
+                                    {
+                                        realm.delete(Holiday.class);
+                                        realm.copyToRealmOrUpdate(response.body().getData2());
+                                    }
                                 }
                             }, new Realm.Transaction.OnSuccess() {
                                 @Override
                                 public void onSuccess() {
                                     realm.close();
-                                    if(!(response.body().getData().equals(null)))
-                                    getView().loadTimeslot();
-                                    else
-                                        getView().showError("Error to Retrieve Schedule");
+                                    if(response.body().getChecker().equals("2")){
+                                        if(!(response.body().getData().equals(null)))
+                                        getView().loadTimeslot();
+                                         else
+                                            getView().showError("Error to Retrieve Schedule");
+                                    }else
+                                    {
+                                        if(!(response.body().getData2().equals(null)))
+                                            getView().loadTimeslot2();
+                                        else
+                                            getView().showError("Error to Retrieve Schedule");
+                                    }
+
+
+
+
                                 }
                             }, new Realm.Transaction.OnError() {
                                 @Override
@@ -424,6 +443,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                              String userID,
                             String garID,
                              String schedID,
+                             String specialid,
                              String dealerID,
                              String advisorID,
                              String serviceID,
@@ -433,7 +453,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
 
 
             getView().startLoading();
-            App.getInstance().getApiInterface().registerReservation(Endpoints.RESERVE_TIMESLOT,userID,garID,schedID,dealerID,advisorID,serviceID,pmsID,date,remark)
+            App.getInstance().getApiInterface().registerReservation(Endpoints.RESERVE_TIMESLOT,userID,garID,schedID,specialid,dealerID,advisorID,serviceID,pmsID,date,remark)
                     .enqueue(new Callback<ResultResponse>() {
                         @Override
                         public void onResponse(Call<ResultResponse> call, Response<ResultResponse> response) {
@@ -517,11 +537,11 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
         }
 
 
-    public void reSchedReservation(String id,String schedid,String date,String gid) {
+    public void reSchedReservation(String id,String schedid,String specialid,String date,String gid) {
 
 
         getView().startLoading();
-        App.getInstance().getApiInterface().reschedReservation(Endpoints.RESCHED_APPOINTMENT,id,schedid,date,gid)
+        App.getInstance().getApiInterface().reschedReservation(Endpoints.RESCHED_APPOINTMENT,id,schedid,specialid,date,gid)
                 .enqueue(new Callback<ResultResponse>() {
                     @Override
                     public void onResponse(Call<ResultResponse> call, Response<ResultResponse> response) {

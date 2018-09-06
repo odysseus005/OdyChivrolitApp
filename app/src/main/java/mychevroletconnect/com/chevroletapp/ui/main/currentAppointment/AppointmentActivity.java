@@ -66,6 +66,7 @@ import mychevroletconnect.com.chevroletapp.model.data.Advisor;
 import mychevroletconnect.com.chevroletapp.model.data.Appointment;
 import mychevroletconnect.com.chevroletapp.model.data.Dealer;
 import mychevroletconnect.com.chevroletapp.model.data.Garage;
+import mychevroletconnect.com.chevroletapp.model.data.Holiday;
 import mychevroletconnect.com.chevroletapp.model.data.Pms;
 import mychevroletconnect.com.chevroletapp.model.data.Schedule;
 import mychevroletconnect.com.chevroletapp.model.data.Service;
@@ -92,6 +93,7 @@ public class AppointmentActivity
     private RealmResults<Dealer> dealerRealmResults;
     private RealmResults<Service> servicesRealmResults;
     private RealmResults<Schedule> scheduleRealmResults;
+    private RealmResults<Holiday> holidayRealmResults;
     private List<Advisor> advisorRealmResults;
     private List<Pms> pmsRealmResults;
     private String searchText;
@@ -101,12 +103,14 @@ public class AppointmentActivity
     private DealerAdapter dealerListAdapter;
     private AppointmentAdapter appointmentListAdapter;
     private ScheduleAdapter scheduleListAdapter;
+    private HolidayAdapter holidayListAdapter;
     private DialogAddAppointmentBinding dialogBinding;
     private DialogChooseDealerBinding dealerBinding;
     private DialogAppointmentDetailBinding detailBinding;
     private DialogChooseDateBinding dateBinding;
     private Dialog dialog,dialog2,dialog3,dialogDetail;
     private ArrayList<String> civil;
+    private String SchedChecker="";
     private boolean reSchedchecker= false;
 
     private String selectedDealerId="",selectedadvisorPosition="0",selectedpmsPosition="",selectedScheduleId="",selectedDate="",selectedService="",selectedGarage="";
@@ -177,6 +181,7 @@ public class AppointmentActivity
        // presenter.loadAppointmentList(String.valueOf(user.getUserId()));
         appointmentListAdapter = new AppointmentAdapter(getActivity(), getMvpView());
         scheduleListAdapter = new ScheduleAdapter(getActivity(), getMvpView());
+        holidayListAdapter = new HolidayAdapter(getActivity(),getMvpView());
         binding.recyclerView.setAdapter(appointmentListAdapter);
         binding.swipeRefreshLayout.setOnRefreshListener(this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -367,6 +372,7 @@ public class AppointmentActivity
         selectedDealerId="";
         selectedadvisorPosition="0";selectedpmsPosition="";selectedScheduleId="";selectedDate="";selectedService="";selectedGarage="";
         scheduleListAdapter.reset();
+        holidayListAdapter.reset();
         garageListAdapter.reset();
         serviceListAdapter.reset();
 
@@ -572,6 +578,7 @@ public class AppointmentActivity
        servicesRealmResults = realm.where(Service.class).findAll();
         serviceListAdapter.setServiceResult(realm.copyToRealmOrUpdate(servicesRealmResults.where()
                 .findAll()));
+
         serviceListAdapter.notifyDataSetChanged();
         if(serviceListAdapter.getItemCount()==0)
         {
@@ -585,11 +592,39 @@ public class AppointmentActivity
     @Override
     public void loadTimeslot()
     {
+
+        dateBinding.recyclerView.setAdapter(scheduleListAdapter);
+        SchedChecker = "1";
         scheduleRealmResults = realm.where(Schedule.class).findAll();
         scheduleListAdapter.setScheduleResult(realm.copyToRealmOrUpdate(scheduleRealmResults.where()
+                .contains("scheduleStatus","OPEN")
                 .findAll()));
         scheduleListAdapter.notifyDataSetChanged();
         if(scheduleListAdapter.getItemCount()==0)
+        {
+            showError("No Available Schedule Yet");
+        }
+        else
+        {
+
+            dateBinding.chooseSlotTitle.setVisibility(View.VISIBLE);
+            dateBinding.chooseSlotTitle2.setVisibility(View.VISIBLE);
+            dateBinding.recyclerView.setVisibility(View.VISIBLE);
+        }
+
+
+    }
+
+    @Override
+    public void loadTimeslot2()
+    {
+        dateBinding.recyclerView.setAdapter(holidayListAdapter);
+        SchedChecker = "2";
+        holidayRealmResults = realm.where(Holiday.class).findAll();
+        holidayListAdapter.setHolidayResult(realm.copyToRealmOrUpdate(holidayRealmResults.where()
+                .findAll()));
+        holidayListAdapter.notifyDataSetChanged();
+        if(holidayListAdapter.getItemCount()==0)
         {
             showError("No Available Schedule Yet");
         }
@@ -599,7 +634,6 @@ public class AppointmentActivity
             dateBinding.chooseSlotTitle2.setVisibility(View.VISIBLE);
             dateBinding.recyclerView.setVisibility(View.VISIBLE);
         }
-
 
     }
 
@@ -765,6 +799,7 @@ public class AppointmentActivity
                 selectedDealerId="";
                 selectedadvisorPosition="0";selectedpmsPosition="";selectedScheduleId="";selectedDate="";selectedService="";selectedGarage="";
                 scheduleListAdapter.reset();
+                holidayListAdapter.reset();
                 garageListAdapter.reset();
                 serviceListAdapter.reset();
             }
@@ -794,9 +829,13 @@ public class AppointmentActivity
                 {
                     showError("Please Select Car");
                 }
-                else
-                    presenter.reserveSched(String.valueOf(user.getUserId()),selectedGarage,selectedScheduleId,selectedDealerId,selectedadvisorPosition,selectedService,selectedpmsPosition,selectedDate,dialogBinding.etRemars.getText().toString());
+                else {
+                    if(SchedChecker.equals("1"))
+                    presenter.reserveSched(String.valueOf(user.getUserId()), selectedGarage, selectedScheduleId, "0", selectedDealerId, selectedadvisorPosition, selectedService, selectedpmsPosition, selectedDate, dialogBinding.etRemars.getText().toString());
+                    else
+                        presenter.reserveSched(String.valueOf(user.getUserId()), selectedGarage,"0" , selectedScheduleId, selectedDealerId, selectedadvisorPosition, selectedService, selectedpmsPosition, selectedDate, dialogBinding.etRemars.getText().toString());
 
+                }
 
 
 
@@ -916,7 +955,6 @@ public class AppointmentActivity
         dateBinding.setView(getMvpView());
 
 
-        dateBinding.recyclerView.setAdapter(scheduleListAdapter);
 
 
         dateBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -937,18 +975,34 @@ public class AppointmentActivity
             @Override
             public void onClick(View v) {
 
-                if(!(scheduleListAdapter.getChoosenScheduleValue().equals("false")||scheduleListAdapter.getChoosenSchedule() == 0)) {
+                if(SchedChecker.equals("1")) {
+                    if (!(scheduleListAdapter.getChoosenScheduleValue().equals("false") || scheduleListAdapter.getChoosenSchedule() == 0)) {
 
-                    if (!reSchedchecker) {
-                        dialogBinding.etDate.setText(dateBinding.etAppointDate.getText().toString());
-                        dialogBinding.etTime.setText(FunctionUtils.hour24to12hour(scheduleListAdapter.getChoosenScheduleValue()));
-                        selectedDate = dateBinding.etAppointDate.getText().toString();
-                        selectedScheduleId = String.valueOf(scheduleListAdapter.getChoosenSchedule());
-                        dialog3.dismiss();
+                        if (!reSchedchecker) {
+                            dialogBinding.etDate.setText(dateBinding.etAppointDate.getText().toString());
+                            dialogBinding.etTime.setText(FunctionUtils.hour24to12hour(scheduleListAdapter.getChoosenScheduleValue()));
+                            selectedDate = dateBinding.etAppointDate.getText().toString();
+                            selectedScheduleId = String.valueOf(scheduleListAdapter.getChoosenSchedule());
+                            dialog3.dismiss();
+                        } else
+                            confirmResched(dateBinding.etAppointDate.getText().toString(), selectedScheduleId = String.valueOf(scheduleListAdapter.getChoosenSchedule()));
                     } else
-                        confirmResched(dateBinding.etAppointDate.getText().toString(), selectedScheduleId = String.valueOf(scheduleListAdapter.getChoosenSchedule()));
-                }else
-                    showError("Please Select Date and Slot");
+                        showError("Please Select Date and Slot");
+                }  else{
+
+                    if (!(holidayListAdapter.getChoosenScheduleValue().equals("false") || holidayListAdapter.getChoosenSchedule() == 0)) {
+
+                        if (!reSchedchecker) {
+                            dialogBinding.etDate.setText(dateBinding.etAppointDate.getText().toString());
+                            dialogBinding.etTime.setText(FunctionUtils.hour24to12hour(holidayListAdapter.getChoosenScheduleValue()));
+                            selectedDate = dateBinding.etAppointDate.getText().toString();
+                            selectedScheduleId = String.valueOf(holidayListAdapter.getChoosenSchedule());
+                            dialog3.dismiss();
+                        } else
+                            confirmResched(dateBinding.etAppointDate.getText().toString(), selectedScheduleId = String.valueOf(holidayListAdapter.getChoosenSchedule()));
+                    } else
+                        showError("Please Select Date and Slot");
+                }
             }
         });
 
@@ -964,8 +1018,11 @@ public class AppointmentActivity
                 .setTitle("Are you sure you want reschedule your appointment?")
                 .setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        if(SchedChecker.equals("1"))
+                            presenter.reSchedReservation(appointid,schedid,"0",date,gid);
+                        else
+                            presenter.reSchedReservation(appointid,"0",schedid,date,gid);
 
-                        presenter.reSchedReservation(appointid,schedid,date,gid);
                         dialog3.dismiss();
                     }
                 })
@@ -990,6 +1047,7 @@ public class AppointmentActivity
         selectedDealerId="";
         selectedadvisorPosition="0";selectedpmsPosition="";selectedScheduleId="";selectedDate="";selectedService="";selectedGarage="";
         scheduleListAdapter.reset();
+        holidayListAdapter.reset();
         garageListAdapter.reset();
         serviceListAdapter.reset();
 
