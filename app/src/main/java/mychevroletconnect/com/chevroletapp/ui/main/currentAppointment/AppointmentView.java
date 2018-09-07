@@ -27,6 +27,8 @@ public interface AppointmentView extends MvpView {
 
     void loadAdvisor();
 
+    void loadHolidays();
+
     void loadTimeslot();
 
     void loadTimeslot2();

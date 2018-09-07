@@ -38,6 +38,7 @@ public class Endpoints {
     public static final String GET_PMS = "allPMS";
     public static final String GET_ADVISOR = "allAdvisor";
     public static final String GET_DEALER_CONTACTS = "allDealerContacts";
+    public static final String GET_HOLIDAYS = "allHolidays";
 
 
     //Schedule

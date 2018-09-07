@@ -3,6 +3,7 @@ package mychevroletconnect.com.chevroletapp.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -35,6 +36,12 @@ public class FunctionUtils {
 
 
         return date;
+    }
+
+    public static Calendar dateToCalendar(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
     }
 
     public static String appointListTimestampYear(String date) {

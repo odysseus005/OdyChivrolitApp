@@ -20,6 +20,7 @@ import mychevroletconnect.com.chevroletapp.model.response.PastAppointmentListRes
 import mychevroletconnect.com.chevroletapp.model.response.PmsListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.ResultResponse;
 import mychevroletconnect.com.chevroletapp.model.response.ScheduleListResponse;
+import mychevroletconnect.com.chevroletapp.model.response.ScheduleListResponse2;
 import mychevroletconnect.com.chevroletapp.model.response.ServiceListResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -164,6 +165,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(Endpoints.DATA)
     Call<DealerContactListResponse> getDealerContactList(@Field(Constants.TAG) String tag, @Field(Constants.DEALER_ID) String advisor_id );
+
+    @FormUrlEncoded
+    @POST(Endpoints.DATA)
+    Call<ScheduleListResponse2> getHoliday(@Field(Constants.TAG) String tag, @Field(Constants.DEALER_ID) String dealer_id );
 
 
     //Schedule

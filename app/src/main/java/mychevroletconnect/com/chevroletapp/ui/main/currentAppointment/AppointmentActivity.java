@@ -43,6 +43,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -67,6 +68,7 @@ import mychevroletconnect.com.chevroletapp.model.data.Appointment;
 import mychevroletconnect.com.chevroletapp.model.data.Dealer;
 import mychevroletconnect.com.chevroletapp.model.data.Garage;
 import mychevroletconnect.com.chevroletapp.model.data.Holiday;
+import mychevroletconnect.com.chevroletapp.model.data.Holiday2;
 import mychevroletconnect.com.chevroletapp.model.data.Pms;
 import mychevroletconnect.com.chevroletapp.model.data.Schedule;
 import mychevroletconnect.com.chevroletapp.model.data.Service;
@@ -94,6 +96,7 @@ public class AppointmentActivity
     private RealmResults<Service> servicesRealmResults;
     private RealmResults<Schedule> scheduleRealmResults;
     private RealmResults<Holiday> holidayRealmResults;
+    private RealmResults<Holiday2> specialRealmResults;
     private List<Advisor> advisorRealmResults;
     private List<Pms> pmsRealmResults;
     private String searchText;
@@ -486,6 +489,7 @@ public class AppointmentActivity
         dialogBinding.etDealer.setText(dealer.getDealerName());
         selectedDealerId = String.valueOf(dealer.getDealerId());
       //  presenter.loadAdvisorList(dealer.getDealerId());
+        presenter.loadHolidaysList(dealer.getDealerId());
         dialog2.dismiss();
     }
 
@@ -616,6 +620,15 @@ public class AppointmentActivity
     }
 
     @Override
+    public void loadHolidays()
+    {
+
+        specialRealmResults = realm.where(Holiday2.class).findAll();
+        Log.d(">>>>>",specialRealmResults+"");
+
+    }
+
+    @Override
     public void loadTimeslot2()
     {
         dateBinding.recyclerView.setAdapter(holidayListAdapter);
@@ -690,6 +703,23 @@ public class AppointmentActivity
         Calendar sunday,saturday;
         List<Calendar> weekends = new ArrayList<>();
         int weeks = 50;
+        Calendar calendar = Calendar.getInstance();
+
+        if(specialRealmResults.size()>0) {
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = null;
+            for (int cnt = 0; cnt < specialRealmResults.size(); cnt++) {
+                try {
+                    date = sdf.parse(specialRealmResults.get(cnt).getSpecialDate());
+                    calendar = FunctionUtils.dateToCalendar(date);
+                    weekends.add(calendar);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
 
         for (int i = 0; i < (weeks * 7) ; i = i + 7) {
             sunday = Calendar.getInstance();

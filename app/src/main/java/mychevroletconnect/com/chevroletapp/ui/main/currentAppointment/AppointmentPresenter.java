@@ -15,6 +15,7 @@ import mychevroletconnect.com.chevroletapp.model.data.Appointment;
 import mychevroletconnect.com.chevroletapp.model.data.Dealer;
 import mychevroletconnect.com.chevroletapp.model.data.Garage;
 import mychevroletconnect.com.chevroletapp.model.data.Holiday;
+import mychevroletconnect.com.chevroletapp.model.data.Holiday2;
 import mychevroletconnect.com.chevroletapp.model.data.Pms;
 import mychevroletconnect.com.chevroletapp.model.data.Schedule;
 import mychevroletconnect.com.chevroletapp.model.data.Service;
@@ -25,6 +26,7 @@ import mychevroletconnect.com.chevroletapp.model.response.GarageListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.PmsListResponse;
 import mychevroletconnect.com.chevroletapp.model.response.ResultResponse;
 import mychevroletconnect.com.chevroletapp.model.response.ScheduleListResponse;
+import mychevroletconnect.com.chevroletapp.model.response.ScheduleListResponse2;
 import mychevroletconnect.com.chevroletapp.model.response.ServiceListResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -310,6 +312,58 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
     }
 
 
+    public void loadHolidaysList(int dealerID) {
+
+        getView().startLoading();
+        App.getInstance().getApiInterface().getHoliday(Endpoints.GET_HOLIDAYS,String.valueOf(dealerID))
+                .enqueue(new Callback<ScheduleListResponse2>() {
+                    @Override
+                    public void onResponse(Call<ScheduleListResponse2> call, final Response<ScheduleListResponse2> response) {
+                        if (isViewAttached()) {
+                            getView().stopRefresh();
+                        }
+                        getView().stopLoading();
+                        if (response.isSuccessful()) {
+                            final Realm realm = Realm.getDefaultInstance();
+                            realm.executeTransactionAsync(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    realm.delete(Holiday2.class);
+                                    realm.copyToRealmOrUpdate(response.body().getData2());
+
+                                }
+                            }, new Realm.Transaction.OnSuccess() {
+                                @Override
+                                public void onSuccess() {
+                                    realm.close();
+                                    getView().loadHolidays();
+                                }
+                            }, new Realm.Transaction.OnError() {
+                                @Override
+                                public void onError(Throwable error) {
+                                    realm.close();
+                                    error.printStackTrace();
+                                    if (isViewAttached())
+                                        getView().showError(error.getLocalizedMessage());
+                                }
+                            });
+                        } else {
+                            if (isViewAttached())
+                                getView().showError(response.errorBody().toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ScheduleListResponse2> call, Throwable t) {
+                        t.printStackTrace();
+                        getView().stopLoading();
+                        if (isViewAttached()) {
+                            getView().stopRefresh();
+                            getView().showError(t.getLocalizedMessage());
+                        }
+                    }
+                });
+    }
 
     public void loadAdvisorList(int dealerID) {
 
