@@ -12,7 +12,7 @@ public class Holiday2 extends RealmObject {
 
 
     @PrimaryKey
-    @SerializedName("special_id")
+    @SerializedName("holiday_id")
     @Expose
     private int specialId;
 

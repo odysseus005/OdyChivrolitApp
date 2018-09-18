@@ -12,20 +12,16 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="480dp"
-            android:scaleType="centerCrop"
-            android:background="#000"
-            tools:ignore="ContentDescription" />
+
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="480dp"
-            android:background="@color/colorPrimary"
+            android:visibility="gone"
             android:scaleType="centerCrop"
             tools:ignore="ContentDescription" />
 
@@ -56,6 +52,7 @@
                 android:gravity="center"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:text="@{user.fullName}"
+                android:autoSizeTextType="uniform"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
             <TextView
@@ -64,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
+                android:autoSizeTextType="uniform"
                 android:text="@{user.email}"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead" />
 

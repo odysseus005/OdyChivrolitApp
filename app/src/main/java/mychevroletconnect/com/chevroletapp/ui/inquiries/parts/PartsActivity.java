@@ -104,7 +104,7 @@ public class PartsActivity extends MvpViewStateActivity<PartsView, PartsPresente
         if(binding.etFirstName.getText().toString().equals("")||binding.etLastName.getText().toString().equals("")||binding.etCarModel.getText().toString().equals("")||binding.etCarYearModel.getText().toString().equals("")
                 ||binding.spContact.getSelectedItem().toString().equals("")||binding.etEmail.getText().toString().equals("")||binding.etMobileNumber.getText().toString().equals("")
                 ||binding.etRemars.getText().toString().equals("")||binding.spDealer.getSelectedItem().toString().equals("")
-                ||binding.etCarPlate.getText().toString().equals(""))
+                ||binding.etCarPlate.getText().toString().equals("")||binding.etCarChassis.equals(""))
 
         {
             showAlert("Please Fill up All Fields");

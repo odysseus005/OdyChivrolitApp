@@ -38,7 +38,7 @@ public class RegisterPresenter extends MvpNullObjectBasePresenter<RegisterView> 
 
         if (email.equals("") || password.equals("") || confirmPassword.equals("") || firstName.equals("") || lastName.equals("") || birthday.equals("") ||
                 contact.equals("") || middleName.equals("") ||  address.equals("")) {
-            getView().showAlert("Fill-up all fields");
+            getView().showAlert("Please Fill up All Account Information Fields");
         }else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) { //check if email is valid
             getView().showAlert("Invalid email address.");
         } else if (!Patterns.PHONE.matcher(contact).matches()) { // check if mobile number is valid

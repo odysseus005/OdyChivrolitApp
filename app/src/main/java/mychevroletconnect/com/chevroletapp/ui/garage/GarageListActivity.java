@@ -172,20 +172,20 @@ public class GarageListActivity
         getMenuInflater().inflate(R.menu.main, menu);
 
 
-        SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                searchText = newText;
-                //prepareList();
-                return true;
-            }
-        });
+//        SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+//        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                searchText = newText;
+//                //prepareList();
+//                return true;
+//            }
+//        });
         return super.onCreateOptionsMenu(menu);
     }
 

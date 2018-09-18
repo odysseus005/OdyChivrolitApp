@@ -168,7 +168,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     }
     private void initializeMap() {
         if (!isGooglePlayServicesAvailable()) {
-            finish();
+            //finish();
         }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -449,7 +449,11 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         if (ConnectionResult.SUCCESS == status) {
             return true;
         } else {
-            GooglePlayServicesUtil.getErrorDialog(status, this, 0).show();
+           // GooglePlayServicesUtil.getErrorDialog(status, this, 0).show();
+            Dialog dialog =  GooglePlayServicesUtil.getErrorDialog(status, this, 0);
+            dialog.setCancelable(false);
+
+            dialog.show();
             return false;
         }
     }
@@ -611,9 +615,21 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
             @Override
             public void onClick(View v) {
 
-                String uri = String.format(Locale.ENGLISH, "geo:%f,%f", lat,lng);
+
+
+                try {
+
+                    Uri gmmIntentUri = Uri.parse("google.navigation:q=" + lat + "," + lng);
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+                }catch (Exception e)
+                {
+                    String uri = String.format(Locale.ENGLISH, "geo:%f,%f", lat,lng);
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 startActivity(intent);
+                }
+
 
             }
         });
