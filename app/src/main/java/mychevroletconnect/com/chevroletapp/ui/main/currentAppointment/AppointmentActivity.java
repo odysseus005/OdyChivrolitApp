@@ -225,7 +225,8 @@ public class AppointmentActivity
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.main_search, menu);
+
         SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -236,14 +237,51 @@ public class AppointmentActivity
             @Override
             public boolean onQueryTextChange(String newText) {
                 searchText = newText;
-                //prepareList();
+                prepareList();
                 return true;
             }
         });
 
     }
 
-    @Override
+
+    private void prepareList() {
+
+
+        if (appointmentlmResults.isLoaded() && appointmentlmResults.isValid()) {
+            if (searchText.isEmpty()) {
+
+
+                appointmentlmResults = realm.where(Appointment.class).findAllAsync();
+                appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
+                        .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
+                appointmentListAdapter.notifyDataSetChanged();
+
+            } else {
+
+                appointmentlmResults = realm.where(Appointment.class).findAllAsync();
+                appointmentListAdapter.setAppointmentResult(realm.copyToRealmOrUpdate(appointmentlmResults.where()
+                        .contains("appointdealerName",searchText, Case.INSENSITIVE)
+                        .or()
+                        .contains("appointdealerLocation",searchText, Case.INSENSITIVE)
+                        .or()
+                        .contains("appointgaragerName",searchText, Case.INSENSITIVE)
+                        .or()
+                        .contains("appointgaragePlate",searchText, Case.INSENSITIVE)
+                        .or()
+                        .contains("appointStatus",searchText, Case.INSENSITIVE)
+                        .or()
+                        .contains("appointschedTime",searchText, Case.INSENSITIVE)
+                        .or()
+                        .contains("appointDate",searchText, Case.INSENSITIVE)
+                        .findAll()));//Sorted("eventDateFrom", Sort.ASCENDING)));
+                appointmentListAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+
+        @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -464,6 +502,7 @@ public class AppointmentActivity
                 selectedDealerId = String.valueOf(appointment.getAppointdealerId());
                 appointid = String.valueOf(appointment.getAppointId());
                 gid = String.valueOf(appointment.getAppointgaragerId());
+                presenter.loadHolidaysList(appointment.getAppointdealerId());
                 chooseDateandSlot();
 
             }
