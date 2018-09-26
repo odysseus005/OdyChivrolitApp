@@ -782,6 +782,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         else
             filterMap = message;
 
+        if(myMarker!=null)
         presenter.getNearest(myMarker.getPosition().latitude, myMarker.getPosition().longitude, filterMap);
 
       updateMap();
