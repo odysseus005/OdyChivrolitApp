@@ -208,7 +208,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(Endpoints.SCHEDULE)
     Call<ResultResponse> cancelReservation(@Field(Constants.TAG) String tag,
-                                 @Field(Constants.RESERVATION_ID) String garage_name
+                                        @Field(Constants.RESERVATION_ID) String garage_name,
+                                           @Field(Constants.RESERVE_REMARK) String remarks
     );
 
     @FormUrlEncoded

@@ -35,6 +35,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 
@@ -61,6 +62,7 @@ import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityAppointmentCurrentBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogAddAppointmentBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogAppointmentDetailBinding;
+import mychevroletconnect.com.chevroletapp.databinding.DialogCancelAppointBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogChooseDateBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogChooseDealerBinding;
 import mychevroletconnect.com.chevroletapp.model.data.Advisor;
@@ -111,7 +113,8 @@ public class AppointmentActivity
     private DialogChooseDealerBinding dealerBinding;
     private DialogAppointmentDetailBinding detailBinding;
     private DialogChooseDateBinding dateBinding;
-    private Dialog dialog,dialog2,dialog3,dialogDetail;
+    private Dialog dialog,dialog2,dialog3,dialogDetail,cancelDialog;
+    private DialogCancelAppointBinding dialogCancel;
     private ArrayList<String> civil;
     private String SchedChecker="";
     private boolean reSchedchecker= false;
@@ -476,21 +479,51 @@ public class AppointmentActivity
         detailBinding.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                final EditText input = new EditText(getContext());
+//                new AlertDialog.Builder(getContext())
+//
+//                        .setTitle("Are you sure you want cancel your appointment?")
+//                        .setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                presenter.cancelReservation(String.valueOf(appointment.getAppointId()),input.getText().toString());
+//                            }
+//                        })
+//                        .setNegativeButton( "Cancel", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        })
+//                        .show();
 
-                new AlertDialog.Builder(getContext())
-                        .setTitle("Are you sure you want cancel your appointment?")
-                        .setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                presenter.cancelReservation(String.valueOf(appointment.getAppointId()));
-                            }
-                        })
-                        .setNegativeButton( "Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
 
-                        .show();
+
+                cancelDialog = new Dialog(getContext(),R.style.FullDialogTheme);
+
+                cancelDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+
+                dialogCancel = DataBindingUtil.inflate(
+                        getLayoutInflater(),
+                        R.layout.dialog_cancel_appoint,
+                        null,
+                        false);
+
+                dialogCancel.cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cancelDialog.dismiss();
+                    }
+                });
+
+                dialogCancel.send.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        presenter.cancelReservation(String.valueOf(appointment.getAppointId()),dialogCancel.etFeedback.getText().toString());
+                    }
+                });
+                cancelDialog.setContentView(dialogCancel.getRoot());
+                cancelDialog.setCancelable(true);
+                cancelDialog.show();
+
 
             }
         });
@@ -1105,6 +1138,14 @@ public class AppointmentActivity
                 .show();
     }
 
+    @Override
+    public void closeCancel(String message) {
+
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        onRefresh();
+        cancelDialog.dismiss();
+        dialogDetail.dismiss();
+    }
 
 
     @Override
@@ -1119,6 +1160,7 @@ public class AppointmentActivity
         holidayListAdapter.reset();
         garageListAdapter.reset();
         serviceListAdapter.reset();
+
 
 
         dialogDetail.dismiss();

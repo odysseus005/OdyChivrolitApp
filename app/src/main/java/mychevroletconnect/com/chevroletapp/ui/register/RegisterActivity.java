@@ -5,12 +5,15 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -46,6 +49,14 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
         binding.setView(getMvpView());
 
         populateGenderAndCivil();
+
+        binding.terms.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://chevrolet.com.ph/about")));
+
+            }
+        });
     }
 
     @Override
@@ -109,7 +120,7 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
 
 
 
-
+    if(binding.condition.isChecked()) {
         presenter.registerUser(
                 binding.etEmail.getText().toString(),
                 binding.etPassword.getText().toString(),
@@ -124,8 +135,9 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
                 binding.etOccupation.getText().toString(),
                 binding.spGender.getSelectedItem().toString(),
                 binding.spCivil.getSelectedItem().toString()
-               );
-
+        );
+    }else
+        showAlert("Please Check and Read terms and condition.");
 
     }
 

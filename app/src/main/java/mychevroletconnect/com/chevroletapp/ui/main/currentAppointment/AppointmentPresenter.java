@@ -550,11 +550,11 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
     }
 
 
-    public void cancelReservation(String id) {
+    public void cancelReservation(String id,String remarks) {
 
 
             getView().startLoading();
-            App.getInstance().getApiInterface().cancelReservation(Endpoints.CANCEL_APPOINTMENT,id)
+            App.getInstance().getApiInterface().cancelReservation(Endpoints.CANCEL_APPOINTMENT,id,remarks)
                     .enqueue(new Callback<ResultResponse>() {
                         @Override
                         public void onResponse(Call<ResultResponse> call, Response<ResultResponse> response) {
@@ -562,7 +562,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                             if (response.isSuccessful()) {
                                 switch (response.body().getResult()) {
                                     case Constants.SUCCESS:
-                                        getView().closeDialog("Appointment Cancelled!");
+                                        getView().closeCancel("Appointment Cancelled!");
 
                                         break;
                                     default:
