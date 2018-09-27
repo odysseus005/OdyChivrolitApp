@@ -321,6 +321,7 @@
                     android:id="@+id/terms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/hyperlink"
                     android:text="I agree with all the terms and conditions"
                     android:clickable="true" />
 
