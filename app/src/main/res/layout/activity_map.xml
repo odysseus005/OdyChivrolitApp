@@ -360,7 +360,7 @@
                 app:fab_label="Metro Manila"
                 android:onClick='@{() -> view.filterDealers("metro manila")}'
                 android:id="@+id/fabmm"
-                android:src="@drawable/ic_delear_map_search"/>
+                android:src="@drawable/ic_map_mm"/>
 
 
             <com.github.clans.fab.FloatingActionButton
@@ -372,7 +372,7 @@
                 app:fab_label="Luzon"
                 android:id="@+id/fabl"
                 android:onClick='@{() -> view.filterDealers("luzon")}'
-                android:src="@drawable/ic_delear_map_search"/>
+                android:src="@drawable/ic_map_l"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:layout_width="wrap_content"
@@ -383,7 +383,7 @@
                 app:fab_label="Visayas"
                 android:onClick='@{() -> view.filterDealers("visayas")}'
                 android:id="@+id/fabv"
-                android:src="@drawable/ic_delear_map_search"/>
+                android:src="@drawable/ic_map_v"/>
 
 
             <com.github.clans.fab.FloatingActionButton
@@ -395,7 +395,7 @@
                 app:fab_label="Mindanao"
                 android:id="@+id/fabm"
                 android:onClick='@{() -> view.filterDealers("Mindanao")}'
-                android:src="@drawable/ic_delear_map_search"/>
+                android:src="@drawable/ic_map_m"/>
 
             <com.github.clans.fab.FloatingActionButton
                 android:layout_width="wrap_content"

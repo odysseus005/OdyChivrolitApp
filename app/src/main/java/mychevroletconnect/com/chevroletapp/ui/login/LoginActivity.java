@@ -215,6 +215,15 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
                 }
             });
 
+            dialogBinding.resend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                presenter.resendLogin(String.valueOf(user.getUserId()),user.getEmail());
+
+            }
+        });
+
             dialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
                 @Override
                 public void onCancel(DialogInterface dialog)
@@ -258,6 +267,11 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
         }
 
     }
+
+
+
+
+
 
     @Override
     public void onBackPressed() {

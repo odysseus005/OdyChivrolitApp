@@ -65,6 +65,11 @@ public interface ApiInterface {
     Call<LoginResponse> updateUserCode(@Field(Constants.TAG) String tag,
                                        @Field(Constants.USER_ID) String user_id);
 
+    @FormUrlEncoded
+    @POST(Endpoints.CLIENT)
+    Call<LoginResponse> resendUserCode(@Field(Constants.TAG) String tag,
+                                       @Field(Constants.EMAIL) String email,
+                                       @Field(Constants.USER_ID) String user_id);
 
 
     @FormUrlEncoded

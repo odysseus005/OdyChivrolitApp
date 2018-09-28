@@ -49,13 +49,25 @@
                         android:textStyle="bold"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:hint="A code has been sent to your email account. "
+                        android:hint="A code has been sent to your email account. If you do not receive the confirmation code within a few minutes of signing up , please check your spam or junk folders.  "
                         android:textColor="@color/gray"
 
                         />
                         <!--android:hint="A code has been sent to your email account"-->
 
+                    <TextView
+                        android:id="@+id/resend"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="Resend Code"
+                        android:textColor="@color/hyperlink"
 
+                        />
                     <!-- email address -->
                     <EditText
                         android:id="@+id/et_code"
@@ -92,7 +104,7 @@
                         android:padding="8dp"
                         android:paddingEnd="20dp"
                         android:paddingStart="20dp"
-                        android:text="SEND"
+                        android:text="SUBMIT"
                         android:layout_marginRight="@dimen/activity_half_margin"
                         android:textAllCaps="true"
                         android:layout_gravity="center"
@@ -101,6 +113,9 @@
                         android:textColor="@color/white"
                         android:textSize="14sp"
                         android:layout_below="@+id/LinearMoTo" />
+
+
+                
 
 
 

@@ -19,6 +19,7 @@ public class Endpoints {
     public static final String UPDATEPASS = "editPassword";
     public static final String FORGOTPASS = "forgotPass";
     public static final String FIRSTLOGIN = "firstLogin";
+    public static final String RESENDCODE = "resendCode";
 
 
 
