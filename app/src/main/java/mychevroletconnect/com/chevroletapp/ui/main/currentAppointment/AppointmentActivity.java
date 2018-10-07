@@ -454,6 +454,15 @@ public class AppointmentActivity
                 .centerCrop()
                 .error(R.drawable.placeholder_garage)
                 .into(detailBinding.appointDetailsImage);
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.DATE, 2);
+        now.getTimeInMillis();
+
+        Log.d(appointment.getAppointDate(),now.getTimeInMillis()+" <<<<<< "+appointment.getDateMs());
+
+        if(appointment.getDateMs() < now.getTimeInMillis())
+           detailBinding.resched.setVisibility(View.GONE);
+
 
 
         detailBinding.appointmentDetailsStatus.setTextColor(appointmentListAdapter.getStatusColor(appointment.getAppointStatus()));
