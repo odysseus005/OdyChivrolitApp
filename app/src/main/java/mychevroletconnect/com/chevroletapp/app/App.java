@@ -1,12 +1,15 @@
 package mychevroletconnect.com.chevroletapp.app;
 
 import android.app.Application;
+import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
+import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -34,7 +37,15 @@ public class App extends Application {
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(realmConfig);
+
+        Fabric.with(this, new Crashlytics());
+
+
+
     }
+
+
+
 
     public synchronized static App getInstance() {
         return sInstance;

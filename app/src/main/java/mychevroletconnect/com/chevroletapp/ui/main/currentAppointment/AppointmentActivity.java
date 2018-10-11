@@ -1,6 +1,8 @@
 package mychevroletconnect.com.chevroletapp.ui.main.currentAppointment;
 
 import android.Manifest;
+
+import com.crashlytics.android.Crashlytics;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -176,6 +178,12 @@ public class AppointmentActivity
             Log.d(TAG, "No User found");
             //  finish();
         }
+        Crashlytics.setUserEmail(user.getEmail());
+
+
+
+
+
 
         presenter.onStart();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Appointment");
@@ -207,6 +215,8 @@ public class AppointmentActivity
         binding.attendeeScan.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+
+
                 presenter.loadGarageList(user.getUserId());
              //   presenter.loadServiceList(user.getUserId());
                 presenter.loadPMSList(user.getUserId());
@@ -216,6 +226,8 @@ public class AppointmentActivity
 
 
     }
+
+
 
     @NonNull
     @Override
