@@ -30,7 +30,7 @@ public class ProfilePresenter extends MvpNullObjectBasePresenter<ProfileView> {
                     public void onResponse(Call<ResultResponse> call, final Response<ResultResponse> response) {
                         getView().stopProgress();
                         if (response.isSuccessful()) {
-                            if (response.body().getResult().equals(Constants.SUCCESS)) {
+                            if (response.body().getResult().equals("true")) {
 
 
                                 final Realm realm = Realm.getDefaultInstance();

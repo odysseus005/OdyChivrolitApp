@@ -163,7 +163,7 @@ public class LoginPresenter extends MvpNullObjectBasePresenter<LoginView> {
             public void onResponse(Call<LoginResponse> call, final Response<LoginResponse> response) {
                 getView().stopLoading();
                 if (response.isSuccessful()) {
-                    if (response.body().getResult().equals(Constants.SUCCESS)) {
+                    if (response.body().getResult().equals("emailSent")) {
 
                         final Realm realm = Realm.getDefaultInstance();
                         realm.executeTransactionAsync(new Realm.Transaction() {

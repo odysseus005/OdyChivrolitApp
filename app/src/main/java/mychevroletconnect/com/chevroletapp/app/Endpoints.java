@@ -6,7 +6,7 @@ public class Endpoints {
 
     public static final String _ID = "{id}/";
    // public static final String BASE_URL = "http://api.mychevroletconnect.webstarterz.com";
-    public static final String BASE_URL = "http://mychevroletconnect.com/api/v1";
+    public static final String BASE_URL = "http://mychevroletconnect.com";
     public static final String URL_IMAGE = BASE_URL+ "/images/";
     public static final String API_URL = BASE_URL+ "/api/v1/";
     public static final String IMAGE_UPLOAD = BASE_URL + "/src/v1/";
@@ -25,7 +25,7 @@ public class Endpoints {
 
 
     //Garage
-    public static final String GARAGE = "new_car.php?";
+    public static final String GARAGE = "garageData";
     public static final String GET_GARAGE = "allGarage";
     public static final String ADD_GARAGE = "registerGarageCar";
     public static final String UPDATE_GARAGE = "editGarage";
@@ -33,7 +33,7 @@ public class Endpoints {
 
 
     //Data
-    public static final String DATA = "new_alldata.php?";
+    public static final String DATA = "allData";
     public static final String GET_DEALER = "allDealer";
     public static final String GET_SERVICE = "allService";
     public static final String GET_CAR = "allCar";
@@ -44,7 +44,7 @@ public class Endpoints {
 
 
     //Schedule
-    public static final String SCHEDULE = "new_schedule.php?";
+    public static final String SCHEDULE = "scheduleData";
     public static final String GET_APPOINTMENT = "allReservation";
     public static final String GET_APPOINTMENTPAST = "allPastReservation";
     public static final String GET_TIMESLOT = "daySchedule";
@@ -53,7 +53,7 @@ public class Endpoints {
     public static final String RESCHED_APPOINTMENT = "reschedReservation";
 
     //Contact
-    public static final String CONTACT_US = "new_contact.php?";
+    public static final String CONTACT_US = "contactData";
     public static final String PARTS = "parts";
     public static final String Testdrive = "testdrive";
     public static final String CONTACT = "contactus";
