@@ -135,7 +135,8 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST(Endpoints.GARAGE)
-    Call<ResultResponse> deleteCar(@Field(Constants.TAG) String tag, @Field(Constants.GARAGE_ID) String garage_id,@Field(Constants.USER_ID) String user_id );
+    Call<ResultResponse> deleteCar(@Field(Constants.TAG) String tag, @Field(Constants.GARAGE_ID) String garage_id,@Field(Constants.USER_ID) String user_id
+                                   );
 
 
 

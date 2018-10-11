@@ -119,7 +119,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/edittext_selector"
-                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!1234567890"
                     android:text='@{user.firstname}'
                     android:inputType="textPersonName|textCapWords"
                     android:maxLength="100"
@@ -141,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/edittext_selector"
-                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!1234567890"
                     android:text='@{user.middlename}'
                     android:inputType="textPersonName|textCapWords"
                     android:maxLength="100"
@@ -162,7 +162,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/edittext_selector"
-                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!1234567890"
                     android:text='@{user.lastname}'
                     android:inputType="textPersonName|textCapWords"
                     android:maxLength="100"
@@ -187,6 +187,7 @@
                     android:inputType="textPostalAddress"
                     android:maxLength="255"
                     android:padding="12dp"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!1234567890"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
                     android:textColorHint="@android:color/darker_gray" />
                 <TextView
@@ -260,7 +261,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/edittext_selector"
-                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!1234567890"
                     android:text='@{user.citizenship}'
                     android:inputType="textPersonName|textCapWords"
                     android:maxLength="100"
@@ -282,7 +283,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/edittext_selector"
-                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!1234567890"
                     android:text='@{user.occupation}'
                     android:inputType="textPersonName|textCapWords"
                     android:maxLength="100"
