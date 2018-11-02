@@ -15,6 +15,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
@@ -29,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.akexorcist.googledirection.DirectionCallback;
@@ -137,10 +139,10 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
             public void onLocationResult(Location location) {
                 Log.e(TAG, "Location Triggered\n" + location.getLongitude() + "," + location.getLatitude());
                 stopLoading();
-                setMyMarker(new LatLng(location.getLatitude(), location.getLongitude()));
+                setMyMarker(new LatLng(location.getLatitude(), location.getLongitude()),true);
             }
         });
-        ;
+
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,6 +154,8 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
         binding.fab2.setVisibility(View.GONE);
 
+
+
     }
 
     private void getCurrentLocation()
@@ -160,10 +164,12 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
             startLoading();
             location = new SimpleLocation(MapActivity.this);
             stopLoading();
-            setMyMarker(new LatLng(location.getLatitude(), location.getLongitude()));
+            setMyMarker(new LatLng(location.getLatitude(), location.getLongitude()),true);
         }else
         {
-            showAlert("Can't Access Location Turn on Gps");
+            showAlert("Please Turn on Location");
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
         }
     }
     private void initializeMap() {
@@ -193,7 +199,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName());//get place details here
                 //my marker
-                setMyMarker(place.getLatLng());
+                setMyMarker(place.getLatLng(),true);
                 Log.i(TAG, "Place Coordinates: " + place.getLatLng());//get place details here
             }
 
@@ -206,7 +212,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
     }
 
-    private void setMyMarker(LatLng latLng) {
+    private void setMyMarker(LatLng latLng, boolean showNearest) {
         if (myMarker != null) {
             myMarker.remove();
         }
@@ -215,7 +221,13 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
                 .icon(BitmapDescriptorFactory.fromBitmap(BitmapUtils.createDrawableFromView(MapActivity.this, markerUserIcon))));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
-        binding.fab2.setVisibility(View.VISIBLE);
+        if(showNearest) {
+
+            if(binding.fab2.getVisibility()==View.GONE&&binding.fabMenu.isOpened())
+            binding.fab2.setVisibility(View.VISIBLE);
+            else if(binding.fab2.getVisibility()==View.GONE)
+                binding.fab2.setVisibility(View.INVISIBLE);
+        }
 
         presenter.getNearest(myMarker.getPosition().latitude, myMarker.getPosition().longitude, filterMap);
     }
@@ -241,6 +253,8 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
     @Override
     public void showNearest() {
         final Realm realm = Realm.getDefaultInstance();
+
+
 
 
         dialog = new Dialog(this);
@@ -295,6 +309,9 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
             }
         });
 
+
+        dialogBinding.searchView.clearFocus();
+
         dialog.setContentView(dialogBinding.getRoot());
         dialog.setCancelable(false);
         dialog.show();
@@ -322,7 +339,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
     @Override
     public void showAlert(String s) {
-        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -375,7 +392,10 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
 
 
-             binding.fab2.setVisibility(View.GONE);
+
+            if(binding.fabMenu.isOpened())
+             binding.fabMenu.toggle(true);
+
              int nearID = Integer.parseInt(marker.getSnippet());
 
 
@@ -390,7 +410,8 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
              mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
-             setMyMarker(myMarker.getPosition());
+             setMyMarker(myMarker.getPosition(),false);
+
 
 
 
@@ -406,8 +427,8 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
         }catch (Exception e)
         {
-                showAlert("Can't Access User Location");
-                Log.e(">>>>>",e+"");
+                showAlert("Location Updating...");
+                getCurrentLocation();
         }
 
 
@@ -554,6 +575,8 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
      try {
 
+         if(binding.fabMenu.isOpened())
+             binding.fabMenu.toggle(true);
 
          if (company.isLoaded() || company.isValid())
              showDealerDetail(company);
@@ -561,7 +584,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
          LatLng latLng = new LatLng(Double.parseDouble(company.getDealerLat()), Double.parseDouble(company.getDealerLong()));
          updateMap();
-         setMyMarker(myMarker.getPosition());
+         setMyMarker(myMarker.getPosition(),false);
 
 
          mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
@@ -599,6 +622,7 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         binding.dealerContact.setText("Contact Number: "+dealer.getDealerContact());
         binding.dealerOpening.setText("Opening: "+FunctionUtils.hour24to12hour(dealer.getDealerOpening()));
         binding.dealerClosing.setText("Closing: "+FunctionUtils.hour24to12hour(dealer.getDealerClosing()));
+        if(myMarker!=null)
         binding.dealerDistance.setText("Total Distance: "+dealer.getDistance()+" KM");
         binding.dealerEta.setVisibility(View.GONE);
 
@@ -690,6 +714,9 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
             case R.id.action_refresh:
                 mMap.clear();
                 binding.fab2.setVisibility(View.GONE);
+                if(user==null)
+                    presenter.loadDealerList(1);
+                else
                 presenter.loadDealerList(user.getUserId());
                 return true;
 

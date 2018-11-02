@@ -71,6 +71,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_searchview"
                 android:iconifiedByDefault="false"
+                android:focusableInTouchMode="true"
                 android:queryBackground="@android:color/transparent"
                 app:queryBackground="@android:color/transparent"
                 android:queryHint="Search Dealer"

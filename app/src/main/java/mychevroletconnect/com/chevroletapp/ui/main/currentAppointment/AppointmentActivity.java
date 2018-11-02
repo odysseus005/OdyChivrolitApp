@@ -486,9 +486,14 @@ public class AppointmentActivity
         }
         detailBinding.appointmentDetailsService.setText(FunctionUtils.removeLastChar(serviceFinal));
 
-        if (Integer.parseInt(appointment.getAppointPMSId()) > 0) {
-            detailBinding.appointmentDetailsPMS.setText("PMS Service: " + appointment.getAppointPMSMil() + "km - " + appointment.getAppointPMSMonth() + " months  " + appointment.getAppointPMSService());
-            detailBinding.appointmentDetailsPMS.setVisibility(View.VISIBLE);
+        try {
+            if (Integer.parseInt(appointment.getAppointPMSId()) > 0) {
+                detailBinding.appointmentDetailsPMS.setText("PMS Service: " + appointment.getAppointPMSMil() + "km - " + appointment.getAppointPMSMonth() + " months  " + appointment.getAppointPMSService());
+                detailBinding.appointmentDetailsPMS.setVisibility(View.VISIBLE);
+            }
+        }
+        catch (Exception e){
+
         }
 
         if(appointment.getAppointStatus().equalsIgnoreCase("CANCELLED"))
@@ -538,6 +543,9 @@ public class AppointmentActivity
                 dialogCancel.send.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if(dialogCancel.etFeedback.getText().toString().equalsIgnoreCase(""))
+                            showError("Please Input your reason");
+                        else
                         presenter.cancelReservation(String.valueOf(appointment.getAppointId()),dialogCancel.etFeedback.getText().toString());
                     }
                 });

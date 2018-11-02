@@ -1,5 +1,7 @@
 package mychevroletconnect.com.chevroletapp.util;
 
+import android.location.Location;
+
 public class DistanceUtil {
 
     public static double distanceBetween(double lat1, double lon1, double lat2, double lon2) {
@@ -23,5 +25,12 @@ public class DistanceUtil {
 
     public static double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
+    }
+
+
+    public static float getDistance(double lat1, double lon1, double lat2, double lon2) {
+        float[] distance = new float[2];
+        Location.distanceBetween(lat1, lon1, lat2, lon2, distance);
+        return distance[0]/1000;
     }
 }

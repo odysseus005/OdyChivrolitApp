@@ -152,6 +152,10 @@ public class GarageListPresenter extends MvpBasePresenter<GarageListView> {
                                         getView().closeDialog("Update Successful!");
 
                                         break;
+                                    case "no_change":
+                                        getView().closeDialog("No Changes Made!");
+
+                                        break;
                                     default:
                                         getView().showError("Can't Connect to Server");
                                         break;
@@ -231,7 +235,7 @@ public class GarageListPresenter extends MvpBasePresenter<GarageListView> {
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", fname, requestFile);
         RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), fname);
         getView().startupLoading();
-        App.getInstance().getApiInterface().uploadFile(body,filename)
+        App.getInstance().uploadImage().uploadFile(body,filename)
                 .enqueue(new Callback<ResultResponse>() {
                     @Override
                     public void onResponse(Call<ResultResponse> call, final Response<ResultResponse> response) {

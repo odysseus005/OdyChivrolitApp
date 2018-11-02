@@ -102,6 +102,10 @@ public class RegisterPresenter extends MvpNullObjectBasePresenter<RegisterView> 
         if (model.equals("")  || plate.equals("") || year.equals("")||dop.equals("")||carname.equals("")) {
             getView().showAlert("Fill-up all fields");
         }else {
+
+            if(chasis.equalsIgnoreCase(""))
+                chasis = " ";
+
             getView().startLoading();
             App.getInstance().getApiInterface().registerCar(Endpoints.ADD_GARAGE,chasis,model,year,plate,dop,cid,carname)
                     .enqueue(new Callback<ResultResponse>() {

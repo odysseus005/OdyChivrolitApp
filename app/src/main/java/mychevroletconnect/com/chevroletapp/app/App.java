@@ -24,8 +24,8 @@ public class App extends Application {
 
     private static App sInstance;
     private OkHttpClient.Builder httpClient;
-    private Retrofit retrofit;
-    private ApiInterface apiInterface;
+    private Retrofit retrofit,upload;
+    private ApiInterface apiInterface,apiInterfaceupload;
     private Retrofit retrofitMedia;
     @Override
     public void onCreate() {
@@ -123,27 +123,27 @@ public class App extends Application {
         return httpClient;
     }
 
-    private Retrofit getClientUploadImage() {
-        if (retrofit == null) {
+    public Retrofit getClientUploadImage() {
+        if (upload == null) {
 
             Gson gson = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd HH:mm:ss")
                     .create();
 
             String url = Endpoints.IMAGE_UPLOAD;
-            retrofit = new Retrofit.Builder()
+            upload  = new Retrofit.Builder()
                     .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(getOkHttpClientImage().build())
                     .build();
         }
-        return retrofit;
+        return upload ;
     }
     public ApiInterface uploadImage() {
-        if (apiInterface == null) {
-            apiInterface = getClientUploadImage().create(ApiInterface.class);
+        if (apiInterfaceupload == null) {
+            apiInterfaceupload = getClientUploadImage().create(ApiInterface.class);
         }
-        return apiInterface;
+        return apiInterfaceupload;
     }
 
 

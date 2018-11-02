@@ -128,7 +128,7 @@ public class EditProfilePresenter extends MvpNullObjectBasePresenter<EditProfile
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", fname, requestFile);
        RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), fname);
             getView().startupLoading();
-       App.getInstance().getApiInterface().uploadFile(body,filename)
+       App.getInstance().uploadImage().uploadFile(body,filename)
                 .enqueue(new Callback<ResultResponse>() {
                     @Override
                     public void onResponse(Call<ResultResponse> call, final Response<ResultResponse> response) {

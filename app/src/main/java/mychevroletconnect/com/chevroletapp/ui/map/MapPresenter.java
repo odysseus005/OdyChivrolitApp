@@ -162,7 +162,7 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
             }
         });
         for (Dealer company : companys) {
-            Double distance = DistanceUtil.distanceBetween(latitude, longitude,Double.parseDouble(company.getDealerLat()), Double.parseDouble(company.getDealerLong()));
+            float distance = DistanceUtil.getDistance(latitude, longitude,Double.parseDouble(company.getDealerLat()), Double.parseDouble(company.getDealerLong()));
             final NearDealer nearest = new NearDealer();
             nearest.setDealerId(company.getDealerId());
             nearest.setDealerName(company.getDealerName());
@@ -174,7 +174,8 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
             nearest.setDealerLong(company.getDealerLong());
             nearest.setDealerContact(company.getDealerContact());
             nearest.setDealerImage(company.getDealerImage());
-            nearest.setDistance(distance);
+            Double distanceKm = Double.parseDouble(String.format("%.2f", distance));
+            nearest.setDistance(distanceKm);
 
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
