@@ -23,8 +23,11 @@ public class ForgotPresenter extends MvpNullObjectBasePresenter<ForgotView> {
                 getView().stopLoading();
                 if (response.body().getResult().equals("success")) {
                     getView().onEmailExist();
-                } else {
+                } else if(response.body().getResult().equalsIgnoreCase("doesNotExist")) {
                     getView().showAlert("Email does not exists");
+                }else
+                {
+                    getView().showAlert("Failed to Reset Password");
                 }
             }
 

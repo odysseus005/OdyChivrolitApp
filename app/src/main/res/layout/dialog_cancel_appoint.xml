@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:lines="4"
-            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!1234567890"
+            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!?1234567890"
             android:background="@drawable/edittext_selector"
             android:hint="Please write your reason here..."
             android:gravity="start"

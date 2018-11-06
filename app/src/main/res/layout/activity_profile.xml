@@ -152,7 +152,7 @@
                         android:layout_marginTop="14dp"
                         android:layout_marginLeft="30dp"
                         android:layout_marginRight="30dp"
-                        android:text="@{profile.contact}"
+                        android:text='@{"+63"+profile.contact}'
                         android:layout_gravity="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         />

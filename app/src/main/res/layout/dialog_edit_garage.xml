@@ -107,10 +107,10 @@
             android:id="@+id/et_car_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!1234567890"
+            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!?1234567890"
             android:background="@drawable/edittext_selector"
             android:hint="Car Nickname"
-            android:maxLength="150"
+            android:maxLength="16"
             android:layout_marginTop="4dp"
             android:text='@{garage.garageName}'
             android:padding="12dp"
@@ -129,12 +129,12 @@
             android:id="@+id/et_car_model"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!1234567890"
+            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!?1234567890"
             android:background="@drawable/edittext_selector"
             android:hint="Model"
             android:layout_marginTop="4dp"
             android:text='@{garage.garageModel}'
-            android:maxLength="150"
+            android:maxLength="60"
             android:padding="12dp"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
             android:textColorHint="@android:color/darker_gray" />
@@ -176,7 +176,7 @@
             android:hint="Plate Number"
             android:layout_marginTop="4dp"
             android:text='@{garage.garagePlate}'
-            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!1234567890"
+            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!?1234567890"
 
             android:maxLength="11"
             android:visibility="gone"
@@ -199,9 +199,9 @@
             android:hint="Chassis Number"
             android:layout_marginTop="4dp"
             android:text='@{garage.garageChassis}'
-            android:maxLength="350"
+            android:maxLength="17"
             android:lines="2"
-            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!1234567890"
+            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!?1234567890"
             android:padding="12dp"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
             android:textColorHint="@android:color/darker_gray" />

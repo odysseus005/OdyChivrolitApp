@@ -72,7 +72,7 @@
                         android:layout_marginTop="15dp"
                         android:background="@drawable/edittext_selector"
                         android:ems="20"
-                        android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!1234567890"
+                        android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ,.-_@#$%^*()/\!?1234567890"
                         android:gravity="center"
                         android:hint="Account Email"
                         android:inputType="textEmailAddress"
