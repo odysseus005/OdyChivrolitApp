@@ -361,12 +361,17 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
         MarkerOptions markerOptions = new MarkerOptions();
         if (!companies.isEmpty()) {
             for (Dealer company : companies) {
-                markerOptions.position(new LatLng(Double.parseDouble(company.getDealerLat()), Double.parseDouble(company.getDealerLong())));
-                markerOptions.title(company.getDealerName());
-                markerOptions.snippet(company.getDealerId() + "");
-                markerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapUtils.createDrawableFromView(this, markerRestIcon)));
-                builder.include(markerOptions.getPosition());
-                mMap.addMarker(markerOptions);
+                try {
+                    markerOptions.position(new LatLng(Double.parseDouble(company.getDealerLat()), Double.parseDouble(company.getDealerLong())));
+                    markerOptions.title(company.getDealerName());
+                    markerOptions.snippet(company.getDealerId() + "");
+                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapUtils.createDrawableFromView(this, markerRestIcon)));
+                    builder.include(markerOptions.getPosition());
+                    mMap.addMarker(markerOptions);
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
 
             }
           /*  bounds = builder.build();

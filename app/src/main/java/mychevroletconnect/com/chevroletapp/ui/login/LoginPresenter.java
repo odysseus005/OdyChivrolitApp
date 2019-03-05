@@ -178,7 +178,7 @@ public class LoginPresenter extends MvpNullObjectBasePresenter<LoginView> {
                                 realm.close();
 
                                 getView().showAlert("Code Successfully Sent!");
-                                getView().onLoginSuccess(user);
+                               // getView().onLoginSuccess(user);
 
                             }
                         }, new Realm.Transaction.OnError() {

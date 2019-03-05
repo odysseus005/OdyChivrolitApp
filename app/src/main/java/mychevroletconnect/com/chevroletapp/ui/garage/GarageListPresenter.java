@@ -51,7 +51,15 @@ public class GarageListPresenter extends MvpBasePresenter<GarageListView> {
                                 @Override
                                 public void onSuccess() {
                                     realm.close();
-                                    getView().setGarageList();
+                                    try {
+                                        if (isViewAttached()) {
+                                            getView().setGarageList();
+                                        }
+                                    }catch (Exception e)
+                                    {
+                                        if (isViewAttached())
+                                        getView().showError("Can't Connect to Server");
+                                    }
                                 }
                             }, new Realm.Transaction.OnError() {
                                 @Override

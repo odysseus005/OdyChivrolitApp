@@ -162,7 +162,13 @@ public class MapPresenter extends MvpNullObjectBasePresenter<MapView> {
             }
         });
         for (Dealer company : companys) {
-            float distance = DistanceUtil.getDistance(latitude, longitude,Double.parseDouble(company.getDealerLat()), Double.parseDouble(company.getDealerLong()));
+            float distance;
+            try {
+                 distance = DistanceUtil.getDistance(latitude, longitude, Double.parseDouble(company.getDealerLat()), Double.parseDouble(company.getDealerLong()));
+            }catch (Exception e)
+            {
+               distance =  0.0f;
+            }
             final NearDealer nearest = new NearDealer();
             nearest.setDealerId(company.getDealerId());
             nearest.setDealerName(company.getDealerName());

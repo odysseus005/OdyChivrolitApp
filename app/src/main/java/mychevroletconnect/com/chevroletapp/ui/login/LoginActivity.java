@@ -193,77 +193,78 @@ public class LoginActivity extends MvpViewStateActivity<LoginView, LoginPresente
     @Override
     public void onLoginSuccess(final User user) {
 
+        try {
+            if (!(user.getFirstlogin().equalsIgnoreCase("APPROVED"))) {
 
-        if(!(user.getFirstlogin().equalsIgnoreCase("APPROVED")))
-        {
+                dialog = new Dialog(LoginActivity.this);
+                final DialogVerificationBinding dialogBinding = DataBindingUtil.inflate(
+                        getLayoutInflater(),
+                        R.layout.dialog_verification,
+                        null,
+                        false);
 
-            dialog = new Dialog(LoginActivity.this);
-            final DialogVerificationBinding dialogBinding = DataBindingUtil.inflate(
-                    getLayoutInflater(),
-                    R.layout.dialog_verification,
-                    null,
-                    false);
+                dialogBinding.send.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (dialogBinding.etCode.getText().toString().equalsIgnoreCase(user.getCode()))
+                            presenter.firstLogin(String.valueOf(user.getUserId()));
+                        else
+                            showAlert("Invalid Code");
 
-            dialogBinding.send.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(dialogBinding.etCode.getText().toString().equalsIgnoreCase(user.getCode()))
-                        presenter.firstLogin(String.valueOf(user.getUserId()));
-                    else
-                        showAlert("Invalid Code");
+                    }
+                });
 
-                }
-            });
+                dialogBinding.resend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-            dialogBinding.resend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                        presenter.resendLogin(String.valueOf(user.getUserId()), user.getEmail());
 
-                presenter.resendLogin(String.valueOf(user.getUserId()),user.getEmail());
+                    }
+                });
 
+                dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+
+                        final Realm realm = Realm.getDefaultInstance();
+                        realm.executeTransactionAsync(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                realm.deleteAll();
+                            }
+                        }, new Realm.Transaction.OnSuccess() {
+                            @Override
+                            public void onSuccess() {
+                                realm.close();
+
+                            }
+                        }, new Realm.Transaction.OnError() {
+                            @Override
+                            public void onError(Throwable error) {
+                                error.printStackTrace();
+                                realm.close();
+                                Toast.makeText(LoginActivity.this, "Realm Error", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                });
+
+                dialog.setContentView(dialogBinding.getRoot());
+                dialog.setCancelable(true);
+                dialog.show();
+
+
+            } else {
+
+
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
             }
-        });
-
-            dialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
-                @Override
-                public void onCancel(DialogInterface dialog)
-                {
-
-                    final Realm realm = Realm.getDefaultInstance();
-                    realm.executeTransactionAsync(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            realm.deleteAll();
-                        }
-                    }, new Realm.Transaction.OnSuccess() {
-                        @Override
-                        public void onSuccess() {
-                            realm.close();
-
-                        }
-                    }, new Realm.Transaction.OnError() {
-                        @Override
-                        public void onError(Throwable error) {
-                            error.printStackTrace();
-                            realm.close();
-                            Toast.makeText(LoginActivity.this, "Realm Error", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                }
-            });
-
-            dialog.setContentView(dialogBinding.getRoot());
-            dialog.setCancelable(true);
-            dialog.show();
-
-
-
-        }else {
-
-
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
+        }catch (Exception e)
+        {
+           showAlert("Can't Connect to the Server!");
         }
 
     }

@@ -228,7 +228,7 @@ public class PastAppointmentActivity
     @Override
     public void onDestroy() {
         presenter.onStop();
-        appointmentlmResults.removeChangeListeners();
+        //appointmentlmResults.removeChangeListeners();
         realm.close();
         super.onDestroy();
     }
@@ -254,8 +254,13 @@ public class PastAppointmentActivity
 
     @Override
     public void stopLoading() {
-        if (progressDialog.isShowing()) {
-            progressDialog.dismiss();
+        try {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        }catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 
