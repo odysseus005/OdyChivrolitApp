@@ -130,7 +130,7 @@ public class App extends Application {
                     .setDateFormat("yyyy-MM-dd HH:mm:ss")
                     .create();
 
-            String url = Endpoints.IMAGE_UPLOAD;
+            String url = Endpoints.API_URL;
             upload  = new Retrofit.Builder()
                     .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create(gson))

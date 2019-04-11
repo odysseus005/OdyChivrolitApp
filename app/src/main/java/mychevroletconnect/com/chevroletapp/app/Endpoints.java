@@ -1,15 +1,16 @@
 package mychevroletconnect.com.chevroletapp.app;
 
 
-
 public class Endpoints {
 
     public static final String _ID = "{id}/";
-
+    //public static final String BASE_URL = "https://dev.mychevroletconnect.com";
     public static final String BASE_URL = "https://mychevroletconnect.com";
-    public static final String API_URL = BASE_URL+ "/api/v1/";
-    public static final String IMAGE_UPLOAD = "https://api.mychevroletconnect.webstarterz.com";
-    public static final String URL_IMAGE = IMAGE_UPLOAD+ "/images/";
+    public static final String API_URL = BASE_URL + "/api/v1/";
+    public static final String IMAGE_UPLOAD = BASE_URL + "/storage/images/chev/";
+    public static final String URL_IMAGE = IMAGE_UPLOAD + "profile/";
+    public static final String URL_GARAGE = IMAGE_UPLOAD + "garage/";
+    //public static final String URL_IMAGE = IMAGE_UPLOAD+ "/images/";
 
 
 // public static final String BASE_URL = "http://api.mychevroletconnect.webstarterz.com";
@@ -18,7 +19,7 @@ public class Endpoints {
 // public static final String IMAGE_UPLOAD = BASE_URL + "/src/v1/";
 
 
- //User
+    //User
     public static final String CLIENT = "clientData";
     public static final String LOGIN = "loginClient";
     public static final String REGISTER = "registerClient";
@@ -27,7 +28,8 @@ public class Endpoints {
     public static final String FORGOTPASS = "forgotPass";
     public static final String FIRSTLOGIN = "firstLogin";
     public static final String RESENDCODE = "resendCode";
-
+    public static final String UPLOAD = "upload";
+    public static final String UPLOAD_CAR = "uploadCarImage";
 
 
     //Garage

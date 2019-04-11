@@ -53,7 +53,7 @@ public class RegisterActivity extends MvpViewStateActivity<RegisterView, Registe
         binding.terms.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.mychevroletconnect.com/files/EULA.pdf")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.mymgconnect.com/files/EULA.pdf")));
 
             }
         });

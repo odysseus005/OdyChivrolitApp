@@ -136,7 +136,7 @@ public class PartsPresenter extends MvpNullObjectBasePresenter<PartsView> {
                         if (response.isSuccessful()) {
                             switch (response.body().getResult()) {
                                 case Constants.SUCCESS:
-                                    getView().showReturn("Parts Inquiry Successfully!!");
+                                    getView().showReturn("Parts Inquiry Successful!!");
                                     break;
                                 default:
                                     getView().showAlert("Error Sending Parts Inquiries");

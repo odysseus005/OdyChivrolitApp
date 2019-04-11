@@ -134,7 +134,7 @@ public class EditProfilePresenter extends MvpNullObjectBasePresenter<EditProfile
                     public void onResponse(Call<ResultResponse> call, final Response<ResultResponse> response) {
                         getView().stopupLoading();
                         if (response.isSuccessful()) {
-                            if (response.body().getResult().equals("success")) {
+                            if (response.body().getResult().equals("true")) {
                                 final Realm realm = Realm.getDefaultInstance();
                                 realm.executeTransactionAsync(new Realm.Transaction() {
                                     @Override
@@ -147,6 +147,7 @@ public class EditProfilePresenter extends MvpNullObjectBasePresenter<EditProfile
                                     public void onSuccess() {
                                         getView().showAlert("Uploading Success");
                                         realm.close();
+                                        //getView().finishAct();
                                     }
                                 }, new Realm.Transaction.OnError() {
                                     @Override

@@ -237,7 +237,7 @@ public class TestActivity extends MvpViewStateActivity<TestView, TestPresenter> 
            binding.spDealer.setAdapter(arrayAdapter);
 
             dealerSelect = dealerRealmResults.get(0);
-            binding.spContact.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            binding.spDealer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 

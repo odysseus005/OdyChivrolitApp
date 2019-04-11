@@ -33,6 +33,7 @@ public class Constants {
     public static final String GENDER = "client_gender";
     public static final String OCCUPATION = "client_occupation";
     public static final String CIVIL_STATUS = "client_civil_status";
+    public static final String PROFILE_SIGNATURE = "client_signature";
 
 
     //Garage

@@ -14,6 +14,7 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.StringSignature;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateActivity;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
@@ -25,6 +26,7 @@ import mychevroletconnect.com.chevroletapp.databinding.ActivityProfileBinding;
 import mychevroletconnect.com.chevroletapp.databinding.DialogChangePasswordBinding;
 import mychevroletconnect.com.chevroletapp.model.data.User;
 import mychevroletconnect.com.chevroletapp.ui.profile.edit.EditProfileActivity;
+import mychevroletconnect.com.chevroletapp.util.AppSettings;
 import mychevroletconnect.com.chevroletapp.util.CircleTransform;
 
 
@@ -63,10 +65,12 @@ public class ProfileActivity extends MvpViewStateActivity<ProfileView, ProfilePr
             String imageURL = "";
             imageURL = Endpoints.URL_IMAGE + user.getImage();
             Log.d("TAG", imageURL);
+
+            AppSettings appSettings = AppSettings.getAppSettingsFromSharedPreference(this);
             Glide.with(ProfileActivity.this)
                     .load(imageURL)
                     .transform(new CircleTransform(ProfileActivity.this))
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .signature(new StringSignature(appSettings.getProfile()))
                     .error(R.drawable.placeholder_profile)
                     .into(binding.layoutHeader.imageView);
 

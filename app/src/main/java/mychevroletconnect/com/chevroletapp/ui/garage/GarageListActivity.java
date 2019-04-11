@@ -56,6 +56,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import id.zelory.compressor.Compressor;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import mychevroletconnect.com.chevroletapp.R;
@@ -89,6 +90,7 @@ public class GarageListActivity
     private static final int PERMISSION_WRITE_EXTERNAL_STORAGE = 125;
     private static final int PERMISSION_CAMERA = 126;
     private Dialog dialog;
+    private File compressedImageFile = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -490,9 +492,9 @@ public class GarageListActivity
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         try {
             bitmap = BitmapFactory.decodeStream(new FileInputStream(imageFile), null, options);
-
-
-        } catch (FileNotFoundException e) {
+            compressedImageFile = new Compressor(this).compressToFile(imageFile);
+        }  catch (Exception e) {
+            showError("Error Image Compression");
             e.printStackTrace();
         }
 
@@ -530,8 +532,10 @@ public class GarageListActivity
                 .setPositiveButton("UPLOAD", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if(!uploadCarImage.equalsIgnoreCase(""))
-                        presenter.upload(uploadCarImage+".jpg",imageFile);
+                        if(compressedImageFile != null && !uploadCarImage.equalsIgnoreCase(""))
+                            presenter.upload(uploadCarImage/*+".jpg"*/,compressedImageFile);
+                        else if(!uploadCarImage.equalsIgnoreCase(""))
+                            presenter.upload(uploadCarImage/*+".jpg"*/,imageFile);
                     }
                 })
                 .setNegativeButton("CANCEL", null)

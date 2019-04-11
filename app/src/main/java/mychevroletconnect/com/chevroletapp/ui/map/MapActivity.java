@@ -409,7 +409,8 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
              if (nearDealer.isLoaded() || nearDealer.isValid())
                  showDealerDetail(nearDealer);
-
+             else
+                 showAlert("Error getting dealer details please refresh");
 
              LatLng latLng = new LatLng(Double.parseDouble(nearDealer.getDealerLat()), Double.parseDouble(nearDealer.getDealerLong()));
 
@@ -430,18 +431,28 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
          }
 
-        }catch (Exception e)
-        {
-                showAlert("Location Updating...");
-                getCurrentLocation();
+        }catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Error Getting Location... Please Try to Refresh");
+            getCurrentLocation();
+            onReloadNearest();
         }
 
 
 
-        return true;
+            return true;
     }
 
+    private void onReloadNearest()
+    {
 
+        try{
+          // recreate();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 
 
@@ -585,6 +596,8 @@ public class MapActivity extends MvpActivity<MapView, MapPresenter> implements M
 
          if (company.isLoaded() || company.isValid())
              showDealerDetail(company);
+         else
+             showAlert("Error getting dealer details please refresh");
 
 
          LatLng latLng = new LatLng(Double.parseDouble(company.getDealerLat()), Double.parseDouble(company.getDealerLong()));

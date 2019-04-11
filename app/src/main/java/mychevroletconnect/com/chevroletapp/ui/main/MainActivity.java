@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.StringSignature;
 
 import io.realm.Realm;
 import mychevroletconnect.com.chevroletapp.R;
@@ -30,6 +31,7 @@ import mychevroletconnect.com.chevroletapp.ui.inquiries.testdrive.TestActivity;
 import mychevroletconnect.com.chevroletapp.ui.login.LoginActivity;
 import mychevroletconnect.com.chevroletapp.ui.map.MapActivity;
 import mychevroletconnect.com.chevroletapp.ui.profile.ProfileActivity;
+import mychevroletconnect.com.chevroletapp.util.AppSettings;
 import mychevroletconnect.com.chevroletapp.util.CircleTransform;
 
 
@@ -75,8 +77,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+    }
+
+    @Override
+    public void  onResume()
+    {
+        super.onResume();
         if(user != null)
-                    updateUI();
+            updateUI();
 
     }
 
@@ -91,12 +99,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             imageURL = Endpoints.URL_IMAGE + (user.getImage());
         }
 
+        AppSettings appSettings = AppSettings.getAppSettingsFromSharedPreference(this);
+
         Log.d(">>>>>>>>>>", "imageUrl: " + imageURL);
         Glide.with(this)
                 .load(imageURL)
                 .transform(new CircleTransform(this))
+                .signature(new StringSignature(appSettings.getProfile()))
                 .error(R.drawable.placeholder_profile)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfile);
 
     }

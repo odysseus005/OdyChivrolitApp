@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,8 +89,10 @@ public class GarageListAdapter extends RecyclerView.Adapter<GarageListAdapter.Vi
 
 
         Glide.with(holder.itemView.getContext())
-                .load(Endpoints.URL_IMAGE+garage.get(position).getGarageId()+garage.get(position).getGarageName()+".jpg")
+                .load(Endpoints.URL_GARAGE+garage.get(position).getGarageId()+garage.get(position).getGarageName()+".jpg")
                 .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .error(R.drawable.placeholder_garage)
                 .into(holder.itemEventBinding.garageListImage);
 

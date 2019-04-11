@@ -243,13 +243,13 @@ public class GarageListPresenter extends MvpBasePresenter<GarageListView> {
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", fname, requestFile);
         RequestBody filename = RequestBody.create(MediaType.parse("text/plain"), fname);
         getView().startupLoading();
-        App.getInstance().uploadImage().uploadFile(body,filename)
+        App.getInstance().uploadImage().uploadCar(body,filename)
                 .enqueue(new Callback<ResultResponse>() {
                     @Override
                     public void onResponse(Call<ResultResponse> call, final Response<ResultResponse> response) {
                         getView().stopupLoading();
                         if (response.isSuccessful()) {
-                            if (response.body().getResult().equals("success")) {
+                            if (response.body().getResult().equals("true")) {
                                 final Realm realm = Realm.getDefaultInstance();
                                 realm.executeTransactionAsync(new Realm.Transaction() {
                                     @Override
@@ -260,7 +260,8 @@ public class GarageListPresenter extends MvpBasePresenter<GarageListView> {
                                 }, new Realm.Transaction.OnSuccess() {
                                     @Override
                                     public void onSuccess() {
-                                        getView().showError("Uploading Success");
+                                        getView().showError("Uploading Success!");
+                                       // getView().closeDialog("Uploading Success!");
                                         realm.close();
                                     }
                                 }, new Realm.Transaction.OnError() {

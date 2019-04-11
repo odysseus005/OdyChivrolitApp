@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -172,7 +173,6 @@ public class PartsActivity extends MvpViewStateActivity<PartsView, PartsPresente
 
         List<String> dealer = new ArrayList<>();
         dealerRealmResults = realm.where(Dealer.class).findAll();
-
         if(!dealerRealmResults.isEmpty()) {
             for (Dealer value : dealerRealmResults) {
                 dealer.add(value.getDealerName());
@@ -181,12 +181,12 @@ public class PartsActivity extends MvpViewStateActivity<PartsView, PartsPresente
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_custom_item, dealer);
            binding.spDealer.setAdapter(arrayAdapter);
             dealerSelect = dealerRealmResults.get(0);
-            binding.spContact.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            binding.spDealer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                     dealerSelect = dealerRealmResults.get(position);
-
 
                 }
 

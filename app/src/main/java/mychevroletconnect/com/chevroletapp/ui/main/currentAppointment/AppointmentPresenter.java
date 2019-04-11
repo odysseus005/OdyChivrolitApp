@@ -452,6 +452,7 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                                 @Override
                                 public void onSuccess() {
                                     realm.close();
+                                    try{
                                     if(response.body().getChecker().equals("2")){
                                         if(!(response.body().getData().equals(null)))
                                         getView().loadTimeslot();
@@ -463,6 +464,10 @@ public class AppointmentPresenter extends MvpBasePresenter<AppointmentView> {
                                             getView().loadTimeslot2();
                                         else
                                             getView().showError("Error to Retrieve Schedule");
+                                    }}catch (Exception e)
+                                    {
+                                        getView().showError("No Schedule Available");
+                                        e.printStackTrace();
                                     }
 
 

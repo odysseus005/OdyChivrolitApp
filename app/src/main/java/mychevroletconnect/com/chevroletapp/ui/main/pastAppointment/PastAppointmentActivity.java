@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 
@@ -362,8 +363,10 @@ public class PastAppointmentActivity
 
 
             Glide.with(getContext())
-                    .load(Endpoints.URL_IMAGE+appoint.getAppointgaragerId()+appoint.getAppointgaragerName()+".jpg")
+                    .load(Endpoints.URL_GARAGE+appoint.getAppointgaragerId()+appoint.getAppointgaragerName()+".jpg")
                     .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .error(R.drawable.placeholder_garage)
                     .into(detailBinding.appointDetailsImage);
 
@@ -398,6 +401,7 @@ public class PastAppointmentActivity
             dialogDetail.show();
         }catch (Exception e)
         {
+            e.printStackTrace();
             presenter.loadAppointmentList(String.valueOf(user.getUserId()));
             showError("Can't Load Appointment Details");
         }

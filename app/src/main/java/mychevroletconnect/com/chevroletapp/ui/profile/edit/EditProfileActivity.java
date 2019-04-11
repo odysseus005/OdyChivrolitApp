@@ -29,20 +29,24 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.StringSignature;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import id.zelory.compressor.Compressor;
 import mychevroletconnect.com.chevroletapp.app.Endpoints;
 import mychevroletconnect.com.chevroletapp.databinding.ActivityEditProfileBinding;
 import io.realm.Realm;
 import mychevroletconnect.com.chevroletapp.R;
 import mychevroletconnect.com.chevroletapp.model.data.User;
+import mychevroletconnect.com.chevroletapp.util.AppSettings;
 import mychevroletconnect.com.chevroletapp.util.CircleTransform;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
@@ -56,9 +60,9 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
     private String TAG = EditProfileActivity.class.getSimpleName();
     private ProgressDialog progressDialog;
     private User user;
-    private Dialog dialog;
     private ArrayList<String> gender;
     private ArrayList<String> civil;
+    private File compressedImageFile = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +106,12 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
             imageURL = Endpoints.URL_IMAGE+user.getImage();
             Log.d("TAG",imageURL);
        // }
+
+        AppSettings appSettings = AppSettings.getAppSettingsFromSharedPreference(this);
         Glide.with(this)
                 .load(imageURL)
                 .transform(new CircleTransform(this))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .signature(new StringSignature(appSettings.getProfile()))
                 .error(R.drawable.placeholder_profile)
                 .into(binding.imageView);
     }
@@ -310,9 +316,18 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         try {
             bitmap = BitmapFactory.decodeStream(new FileInputStream(imageFile), null, options);
-        } catch (FileNotFoundException e) {
+
+            compressedImageFile = new Compressor(this).compressToFile(imageFile);
+            //Glide.get(this).clearMemory();
+
+        } catch (IOException e) {
+            showAlert("Error Image Compression");
             e.printStackTrace();
         }
+
+        AppSettings appSettings = AppSettings.getAppSettingsFromSharedPreference(this);
+        appSettings.setProfile(String.valueOf(System.currentTimeMillis()));
+        appSettings.save(this);
 
         imageView.setImageBitmap(bitmap);
 
@@ -322,7 +337,12 @@ public class EditProfileActivity extends MvpActivity<EditProfileView, EditProfil
                 .setPositiveButton("UPLOAD", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        presenter.upload(user.getEmail()+".jpg",imageFile);
+
+
+                        if(compressedImageFile != null)
+                            presenter.upload(user.getEmail()/*+".jpg"*/,compressedImageFile);
+                        else
+                            presenter.upload(user.getEmail()/*+".jpg"*/,imageFile);
                     }
                 })
                 .setNegativeButton("CANCEL", null)

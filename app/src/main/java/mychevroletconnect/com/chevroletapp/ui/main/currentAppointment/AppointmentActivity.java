@@ -2,6 +2,7 @@ package mychevroletconnect.com.chevroletapp.ui.main.currentAppointment;
 
 import android.Manifest;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.crashlytics.android.Crashlytics;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import android.app.Dialog;
@@ -472,8 +473,10 @@ public class AppointmentActivity
 
 
         Glide.with(getContext())
-                .load(Endpoints.URL_IMAGE+appointment.getAppointgaragerId()+appointment.getAppointgaragerName()+".jpg")
+                .load(Endpoints.URL_GARAGE+appointment.getAppointgaragerId()+appointment.getAppointgaragerName()+".jpg")
                 .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .error(R.drawable.placeholder_garage)
                 .into(detailBinding.appointDetailsImage);
         Calendar now = Calendar.getInstance();

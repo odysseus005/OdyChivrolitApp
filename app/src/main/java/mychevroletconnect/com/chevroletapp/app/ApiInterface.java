@@ -99,8 +99,12 @@ public interface ApiInterface {
                           @Field(Constants.CIVIL_STATUS)String civil);
 
     @Multipart
-    @POST("upload.php?")
+    @POST(Endpoints.UPLOAD)
     Call<ResultResponse> uploadFile(@Part MultipartBody.Part file, @Part("name") RequestBody name);
+
+    @Multipart
+    @POST(Endpoints.UPLOAD_CAR)
+    Call<ResultResponse> uploadCar(@Part MultipartBody.Part file, @Part("name") RequestBody name);
 
 
 
